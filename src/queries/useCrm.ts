@@ -253,6 +253,26 @@ export function useMemberRoles() {
   });
 }
 
+/**
+ * invitation id → name of the crm role offered, for the signed-in user's own
+ * pending invitations (the invitation card). The invitee cannot read the
+ * organization's roles yet, so this goes through crm.get_my_invitation_roles.
+ */
+export function useMyInvitationRoles() {
+  const userId = useBoundStore((state) => state.ui.user?.id);
+
+  return useQuery({
+    queryKey: queryKeys.crm.myInvitationRoles(userId),
+    queryFn: async () =>
+      await crm().rpc("get_my_invitation_roles").throwOnError(),
+    enabled: !!userId,
+    select: (data) =>
+      new Map<string, string>(
+        (data.data ?? []).map((r) => [r.invitation_id, r.role_name]),
+      ),
+  });
+}
+
 /** invitation id → crm role id, for the active organization. */
 export function useInvitationRoles() {
   const orgId = useBoundStore((state) => state.ui.activeOrgId);

@@ -490,5 +490,9 @@
   "Aplicó el pack {pack} v{version}": "Applied the {pack} pack v{version}",
   "Actualizó el pack {pack}: v{before} → v{after}": "Upgraded the {pack} pack: v{before} → v{after}",
   "Editó {key} del pack": "Edited pack item {key}",
-  "Restableció {key} del pack": "Reset pack item {key}"
+  "Restableció {key} del pack": "Reset pack item {key}",
+  "Este enlace no es válido o ya caducó.": "This link is invalid or has expired.",
+  "Pide a quien te invitó que te envíe una nueva invitación.": "Ask whoever invited you to send a new invitation.",
+  "Ir a iniciar sesión": "Go to sign in",
+  "Entrando…": "Signing you in…"
 }

@@ -4,7 +4,8 @@ Every change we make to a file that came from upstream OpenBSP UI is listed here
 merges can be resolved quickly. Our own code (no entry needed): `src/queries/useCrm.ts`,
 `src/utils/crmRoles.ts`, `src/components/OrgStatusBanner.tsx`,
 `src/components/OrgProfileForm.tsx`, `src/utils/auditLog.ts`,
-`src/routes/_auth/settings/roles/**`, `src/routes/_auth/settings/activity/**`, `docs/`.
+`src/routes/_auth/settings/roles/**`, `src/routes/_auth/settings/activity/**`,
+`src/routes/auth.confirm.tsx`, `docs/`.
 Edits inside upstream files are marked with a `[crm]` comment.
 
 | Date | File | Change | Why | Task |
@@ -24,3 +25,9 @@ Edits inside upstream files are marked with a `[crm]` comment.
 | 2026-10-21 | `public/locales/en.json` | 53 new strings appended. | Activity log sentences and filters. | P1-08 |
 | 2026-10-21 | `src/routeTree.gen.ts` | Regenerated: adds `/settings/activity`. | New route. | P1-08 |
 | 2026-10-21 | `src/supabase/db_types.ts` | Re-copied from the API (adds `crm.audit_log`, `get_audit_log`, `write_audit`). | Audit types. | P1-08 |
+| 2026-10-21 | `src/routes/__root.tsx` | `/auth/confirm` is reachable signed out (added to the login redirect's exceptions). | Email links sign people in there. | P1-03 |
+| 2026-10-21 | `src/routes/_auth/conversations/index.tsx` | The invitation card names the crm role offered (via `crm.get_my_invitation_roles`), falling back to the tier. | Card said "Member" for every crm role. | P1-03 |
+| 2026-10-21 | `src/queries/queryKeys.ts` | `crm.myInvitationRoles` key. | Cache key. | P1-03 |
+| 2026-10-21 | `public/locales/en.json` | 4 new strings appended. | `/auth/confirm` page. | P1-03 |
+| 2026-10-21 | `src/routeTree.gen.ts` | Regenerated: adds `/auth/confirm`. | New route. | P1-03 |
+| 2026-10-21 | `src/supabase/db_types.ts` | Re-copied from the API (adds `get_my_invitation_roles`). | Types. | P1-03 |

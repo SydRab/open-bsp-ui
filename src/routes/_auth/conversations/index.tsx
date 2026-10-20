@@ -8,6 +8,8 @@ import Spinner from "@/components/Spinner";
 import { Bell } from "lucide-react";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useInvitations, useAnswerInvitation } from "@/queries/useAgents";
+// [crm] The card names the crm role offered (Sales Rep…), not just the tier.
+import { useMyInvitationRoles } from "@/queries/useCrm";
 
 export const Route = createFileRoute("/_auth/conversations/")({
   component: Conversations,
@@ -17,6 +19,7 @@ function Conversations() {
   const { translate: t } = useTranslation();
   const { data: invitations } = useInvitations();
   const answerInvitation = useAnswerInvitation();
+  const { data: invitationRoles } = useMyInvitationRoles();
 
   const roles: Record<string, string> = {
     owner: t("Propietario"),
@@ -51,7 +54,9 @@ function Conversations() {
                   <div className="flex flex-col gap-[6px] w-full">
                     <p>
                       {t("Te invitaron como")}{" "}
-                      {roles[invitation.role || "member"]}
+                      {invitationRoles?.get(invitation.id)
+                        ? t(invitationRoles.get(invitation.id)!)
+                        : roles[invitation.role || "member"]}
                     </p>
                     <div className="flex gap-[16px] justify-end">
                       {answerInvitation.isPending ? (

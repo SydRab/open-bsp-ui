@@ -63,6 +63,8 @@ export const queryKeys = {
     all: () => ["crm"] as const,
     profile: (orgId: NullableId) => ["crm", orgId, "profile"] as const,
     statuses: (userId: NullableId) => ["crm", "statuses", userId] as const,
+    myInvitationRoles: (userId: NullableId) =>
+      ["crm", "my_invitation_roles", userId] as const,
     // Prefix, for invalidating every user's cached permissions in an org.
     myPermissionsAll: (orgId: NullableId) =>
       ["crm", orgId, "my_permissions"] as const,

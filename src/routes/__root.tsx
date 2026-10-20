@@ -37,7 +37,9 @@ export const Route = createRootRoute({
     if (
       !user &&
       !location.pathname.startsWith("/login") &&
-      !location.pathname.startsWith("/onboard")
+      !location.pathname.startsWith("/onboard") &&
+      // [crm] Email links sign people in there (P1-03).
+      !location.pathname.startsWith("/auth/confirm")
     ) {
       throw redirect({
         to: "/login",
