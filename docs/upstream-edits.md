@@ -5,7 +5,8 @@ merges can be resolved quickly. Our own code (no entry needed): `src/queries/use
 `src/utils/crmRoles.ts`, `src/components/OrgStatusBanner.tsx`,
 `src/components/OrgProfileForm.tsx`, `src/utils/auditLog.ts`,
 `src/routes/_auth/settings/roles/**`, `src/routes/_auth/settings/activity/**`,
-`src/routes/auth.confirm.tsx`, `docs/`.
+`src/routes/auth.confirm.tsx`, `src/routes/_auth/settings/rules/**`,
+`src/components/SettingEditor.tsx`, `src/utils/settings.ts`, `docs/`.
 Edits inside upstream files are marked with a `[crm]` comment.
 
 | Date | File | Change | Why | Task |
@@ -31,3 +32,8 @@ Edits inside upstream files are marked with a `[crm]` comment.
 | 2026-10-21 | `public/locales/en.json` | 4 new strings appended. | `/auth/confirm` page. | P1-03 |
 | 2026-10-21 | `src/routeTree.gen.ts` | Regenerated: adds `/auth/confirm`. | New route. | P1-03 |
 | 2026-10-21 | `src/supabase/db_types.ts` | Re-copied from the API (adds `get_my_invitation_roles`). | Types. | P1-03 |
+| 2026-10-21 | `src/routes/_auth/settings/index.tsx` | "Rules & modules" entry. | Settings screen. | P1-04 |
+| 2026-10-21 | `src/queries/queryKeys.ts` | `crm.settings` key. | Cache key. | P1-04 |
+| 2026-10-21 | `public/locales/en.json` | 33 new strings appended. | Settings screen, setting and team activity entries. | P1-04 |
+| 2026-10-21 | `src/routeTree.gen.ts` | Regenerated: adds `/settings/rules`. | New route. | P1-04 |
+| 2026-10-21 | `src/supabase/db_types.ts` | Re-copied from the API (settings and teams). | Types. | P1-04 |

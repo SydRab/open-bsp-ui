@@ -35,6 +35,7 @@ import { Route as AuthContactsAddressIdRouteImport } from './routes/_auth/contac
 import { Route as AuthAgentsNewRouteImport } from './routes/_auth/agents/new'
 import { Route as AuthAgentsAgentIdRouteImport } from './routes/_auth/agents/$agentId'
 import { Route as AuthSettingsWebhooksIndexRouteImport } from './routes/_auth/settings/webhooks/index'
+import { Route as AuthSettingsRulesIndexRouteImport } from './routes/_auth/settings/rules/index'
 import { Route as AuthSettingsRolesIndexRouteImport } from './routes/_auth/settings/roles/index'
 import { Route as AuthSettingsOrganizationIndexRouteImport } from './routes/_auth/settings/organization/index'
 import { Route as AuthSettingsMembersIndexRouteImport } from './routes/_auth/settings/members/index'
@@ -199,6 +200,11 @@ const AuthSettingsWebhooksIndexRoute =
     path: '/settings/webhooks/',
     getParentRoute: () => AuthRoute,
   } as any)
+const AuthSettingsRulesIndexRoute = AuthSettingsRulesIndexRouteImport.update({
+  id: '/settings/rules/',
+  path: '/settings/rules/',
+  getParentRoute: () => AuthRoute,
+} as any)
 const AuthSettingsRolesIndexRoute = AuthSettingsRolesIndexRouteImport.update({
   id: '/settings/roles/',
   path: '/settings/roles/',
@@ -425,6 +431,7 @@ export interface FileRoutesByFullPath {
   '/settings/members': typeof AuthSettingsMembersIndexRoute
   '/settings/organization': typeof AuthSettingsOrganizationIndexRoute
   '/settings/roles': typeof AuthSettingsRolesIndexRoute
+  '/settings/rules': typeof AuthSettingsRulesIndexRoute
   '/settings/webhooks': typeof AuthSettingsWebhooksIndexRoute
   '/integrations/instagram/onboarding/$tokenId': typeof AuthIntegrationsInstagramOnboardingTokenIdRoute
   '/integrations/instagram/onboarding/new': typeof AuthIntegrationsInstagramOnboardingNewRoute
@@ -482,6 +489,7 @@ export interface FileRoutesByTo {
   '/settings/members': typeof AuthSettingsMembersIndexRoute
   '/settings/organization': typeof AuthSettingsOrganizationIndexRoute
   '/settings/roles': typeof AuthSettingsRolesIndexRoute
+  '/settings/rules': typeof AuthSettingsRulesIndexRoute
   '/settings/webhooks': typeof AuthSettingsWebhooksIndexRoute
   '/integrations/instagram/onboarding/$tokenId': typeof AuthIntegrationsInstagramOnboardingTokenIdRoute
   '/integrations/instagram/onboarding/new': typeof AuthIntegrationsInstagramOnboardingNewRoute
@@ -542,6 +550,7 @@ export interface FileRoutesById {
   '/_auth/settings/members/': typeof AuthSettingsMembersIndexRoute
   '/_auth/settings/organization/': typeof AuthSettingsOrganizationIndexRoute
   '/_auth/settings/roles/': typeof AuthSettingsRolesIndexRoute
+  '/_auth/settings/rules/': typeof AuthSettingsRulesIndexRoute
   '/_auth/settings/webhooks/': typeof AuthSettingsWebhooksIndexRoute
   '/_auth/integrations/instagram/onboarding/$tokenId': typeof AuthIntegrationsInstagramOnboardingTokenIdRoute
   '/_auth/integrations/instagram/onboarding/new': typeof AuthIntegrationsInstagramOnboardingNewRoute
@@ -602,6 +611,7 @@ export interface FileRouteTypes {
     | '/settings/members'
     | '/settings/organization'
     | '/settings/roles'
+    | '/settings/rules'
     | '/settings/webhooks'
     | '/integrations/instagram/onboarding/$tokenId'
     | '/integrations/instagram/onboarding/new'
@@ -659,6 +669,7 @@ export interface FileRouteTypes {
     | '/settings/members'
     | '/settings/organization'
     | '/settings/roles'
+    | '/settings/rules'
     | '/settings/webhooks'
     | '/integrations/instagram/onboarding/$tokenId'
     | '/integrations/instagram/onboarding/new'
@@ -718,6 +729,7 @@ export interface FileRouteTypes {
     | '/_auth/settings/members/'
     | '/_auth/settings/organization/'
     | '/_auth/settings/roles/'
+    | '/_auth/settings/rules/'
     | '/_auth/settings/webhooks/'
     | '/_auth/integrations/instagram/onboarding/$tokenId'
     | '/_auth/integrations/instagram/onboarding/new'
@@ -927,6 +939,13 @@ declare module '@tanstack/react-router' {
       path: '/settings/webhooks'
       fullPath: '/settings/webhooks'
       preLoaderRoute: typeof AuthSettingsWebhooksIndexRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/settings/rules/': {
+      id: '/_auth/settings/rules/'
+      path: '/settings/rules'
+      fullPath: '/settings/rules'
+      preLoaderRoute: typeof AuthSettingsRulesIndexRouteImport
       parentRoute: typeof AuthRoute
     }
     '/_auth/settings/roles/': {
@@ -1198,6 +1217,7 @@ interface AuthRouteChildren {
   AuthSettingsMembersIndexRoute: typeof AuthSettingsMembersIndexRoute
   AuthSettingsOrganizationIndexRoute: typeof AuthSettingsOrganizationIndexRoute
   AuthSettingsRolesIndexRoute: typeof AuthSettingsRolesIndexRoute
+  AuthSettingsRulesIndexRoute: typeof AuthSettingsRulesIndexRoute
   AuthSettingsWebhooksIndexRoute: typeof AuthSettingsWebhooksIndexRoute
   AuthIntegrationsInstagramOnboardingTokenIdRoute: typeof AuthIntegrationsInstagramOnboardingTokenIdRoute
   AuthIntegrationsInstagramOnboardingNewRoute: typeof AuthIntegrationsInstagramOnboardingNewRoute
@@ -1247,6 +1267,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthSettingsMembersIndexRoute: AuthSettingsMembersIndexRoute,
   AuthSettingsOrganizationIndexRoute: AuthSettingsOrganizationIndexRoute,
   AuthSettingsRolesIndexRoute: AuthSettingsRolesIndexRoute,
+  AuthSettingsRulesIndexRoute: AuthSettingsRulesIndexRoute,
   AuthSettingsWebhooksIndexRoute: AuthSettingsWebhooksIndexRoute,
   AuthIntegrationsInstagramOnboardingTokenIdRoute:
     AuthIntegrationsInstagramOnboardingTokenIdRoute,

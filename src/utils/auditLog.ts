@@ -2,6 +2,7 @@
 // shows. Sentences are translation keys with {placeholders}, so each language
 // can put the names where its grammar wants them.
 import type { AuditEntry } from "@/queries/useCrm";
+import { formatSettingValue } from "@/utils/settings";
 
 type Translate = (text: string) => string;
 
@@ -10,6 +11,8 @@ export type AuditLookups = {
   roleNames: Map<string, string>;
   /** Permission key → description. */
   permissionNames: Map<string, string>;
+  /** Setting key → label. */
+  settingNames: Map<string, string>;
 };
 
 /** The filter options of the Activity page: the part of the action before the dot. */
@@ -19,6 +22,8 @@ export const AUDIT_AREAS = [
   { value: "role", label: "Roles" },
   { value: "invitation", label: "Invitaciones" },
   { value: "pack", label: "Pack" },
+  { value: "setting", label: "Reglas y módulos" },
+  { value: "team", label: "Equipos" },
 ] as const;
 
 const FIELD_LABELS: Record<string, string> = {
@@ -214,6 +219,46 @@ export function describeAction(
       return values("Editó {key} del pack", { key: text(d.key) });
     case "pack.item_reset":
       return values("Restableció {key} del pack", { key: text(d.key) });
+
+    case "setting.changed":
+    case "setting.reset": {
+      const name = t(lookups.settingNames.get(text(d.key)) ?? text(d.key));
+      const scope =
+        d.scope === "team"
+          ? ` (${t("equipo")})`
+          : d.scope === "user"
+            ? ` (${t("personal")})`
+            : "";
+      return entry.action === "setting.reset"
+        ? values("Restableció {setting}", { setting: name + scope })
+        : values("Cambió {setting}: {before} → {after}", {
+            setting: name + scope,
+            // No before: the value came from a lower layer (pack or default).
+            before:
+              d.before === undefined
+                ? t("predeterminado")
+                : formatSettingValue(d.before, t),
+            after: formatSettingValue(d.after, t),
+          });
+    }
+
+    case "team.created":
+      return values("Creó el equipo {team}", { team: text(d.name) });
+    case "team.renamed":
+      return values("Renombró el equipo {before} → {after}", {
+        before: text(before.name),
+        after: text(after.name),
+      });
+    case "team.deleted":
+      return values("Eliminó el equipo {team}", { team: text(d.name) });
+    case "team.member_added":
+      return values("Añadió a {member} al equipo {team}", {
+        team: text(d.team),
+      });
+    case "team.member_removed":
+      return values("Quitó a {member} del equipo {team}", {
+        team: text(d.team),
+      });
 
     default:
       // An action this version of the UI does not know yet.

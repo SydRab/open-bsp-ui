@@ -20,6 +20,7 @@ import {
   useOrgProfile,
   usePermissionCatalog,
   useRoles,
+  useSettings,
 } from "@/queries/useCrm";
 import { AUDIT_AREAS, describeAction, describeActor } from "@/utils/auditLog";
 
@@ -39,12 +40,14 @@ function ActivityLog() {
   const { data: profile } = useOrgProfile();
   const { data: roles } = useRoles();
   const { data: catalog } = usePermissionCatalog();
+  const { data: settings } = useSettings();
   const { data: agents } = useCurrentAgents();
   const log = useAuditLog(filters, can("audit.view"));
 
   const lookups = {
     roleNames: new Map(roles?.map((r) => [r.key, r.name])),
     permissionNames: new Map(catalog?.map((p) => [p.key, p.description])),
+    settingNames: new Map(settings?.map((s) => [s.key, s.label])),
   };
 
   // Shown in the organization's time zone, like everything scheduled.

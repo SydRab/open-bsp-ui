@@ -10,6 +10,7 @@ import {
 import { FunctionsHttpError } from "@supabase/supabase-js";
 import { invokeFunction, supabase } from "@/supabase/client";
 import useBoundStore from "@/stores/useBoundStore";
+import type { Json } from "@/supabase/db_types";
 import { queryKeys } from "./queryKeys";
 
 const crm = () => supabase.schema("crm");
@@ -457,5 +458,80 @@ export function useAuditLog(filters: AuditFilters, allowed: boolean) {
         ? lastPage[lastPage.length - 1].id
         : null,
     enabled: !!orgId && allowed,
+  });
+}
+
+// Settings (P1-04) --------------------------------------------------------------
+
+export type SettingSchema = {
+  type?: "boolean" | "integer" | "number" | "string" | "array" | "object";
+  properties?: Record<string, SettingSchema>;
+  items?: SettingSchema;
+  minimum?: number;
+  maximum?: number;
+  pattern?: string;
+  mustContain?: string[];
+  required?: string[];
+};
+
+export type SettingRow = {
+  key: string;
+  category: string;
+  label: string;
+  description: string | null;
+  schema: SettingSchema;
+  value: unknown;
+  /** The layer the value comes from. */
+  source: "platform" | "pack" | "tenant" | "team" | "user";
+  is_locked: boolean;
+  tenant_value: unknown;
+  can_edit: boolean;
+  team_conflict: boolean;
+};
+
+/** Every setting with its effective value, for the active organization. */
+export function useSettings() {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useQuery({
+    queryKey: queryKeys.crm.settings(orgId),
+    queryFn: async () => {
+      const { data } = await crm()
+        .rpc("get_settings", { p_organization_id: orgId! })
+        .throwOnError();
+      // The generated type marks every column non-null and schema as Json.
+      return data as unknown as SettingRow[];
+    },
+    enabled: !!orgId,
+  });
+}
+
+/** Sets (value) or resets (null) the organization value of a setting. */
+export function useSaveSetting() {
+  const queryClient = useQueryClient();
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useMutation({
+    mutationFn: async ({ key, value }: { key: string; value: unknown }) => {
+      if (!orgId) throw new Error("No active organization");
+      if (value === null) {
+        await crm()
+          .rpc("reset_setting", { p_organization_id: orgId, p_key: key })
+          .throwOnError();
+      } else {
+        await crm()
+          .rpc("set_setting", {
+            p_organization_id: orgId,
+            p_key: key,
+            p_value: value as Json,
+          })
+          .throwOnError();
+      }
+    },
+    onSettled: () => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.settings(orgId),
+      });
+    },
   });
 }

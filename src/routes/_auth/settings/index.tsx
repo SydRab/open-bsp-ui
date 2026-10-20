@@ -10,6 +10,7 @@ import {
   Key,
   ShieldCheck,
   History,
+  SlidersHorizontal,
 } from "lucide-react";
 import { useMyPermissions } from "@/queries/useCrm";
 
@@ -67,6 +68,21 @@ function SettingsIndex() {
             onClick={() =>
               navigate({
                 to: "/settings/roles",
+                hash: (prevHash) => prevHash!,
+              })
+            }
+          />
+          {/* [crm] Rules & modules (P1-04) */}
+          <SectionItem
+            title={t("Reglas y módulos")}
+            aside={
+              <div className="p-[8px]">
+                <SlidersHorizontal className="w-[24px] h-[24px] text-muted-foreground" />
+              </div>
+            }
+            onClick={() =>
+              navigate({
+                to: "/settings/rules",
                 hash: (prevHash) => prevHash!,
               })
             }
