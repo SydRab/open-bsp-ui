@@ -3,7 +3,7 @@ import SectionHeader from "@/components/SectionHeader";
 import SectionItem from "@/components/SectionItem";
 import { useTranslation } from "@/hooks/useTranslation";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Building2, Users, Webhook, Key } from "lucide-react";
+import { Building2, Users, Webhook, Key, ShieldCheck } from "lucide-react";
 
 export const Route = createFileRoute("/_auth/settings/")({
   component: SettingsIndex,
@@ -43,6 +43,21 @@ function SettingsIndex() {
             onClick={() =>
               navigate({
                 to: "/settings/members",
+                hash: (prevHash) => prevHash!,
+              })
+            }
+          />
+          {/* [crm] Roles & permissions (P1-02) */}
+          <SectionItem
+            title={t("Roles y permisos")}
+            aside={
+              <div className="p-[8px]">
+                <ShieldCheck className="w-[24px] h-[24px] text-muted-foreground" />
+              </div>
+            }
+            onClick={() =>
+              navigate({
+                to: "/settings/roles",
                 hash: (prevHash) => prevHash!,
               })
             }
