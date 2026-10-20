@@ -58,6 +58,22 @@ export const queryKeys = {
     health: (orgId: NullableId, address: NullableId) =>
       [orgId, "whatsapp_web", "health", address] as const,
   },
+  // [crm] Our CRM layer (schema `crm`).
+  crm: {
+    all: () => ["crm"] as const,
+    profile: (orgId: NullableId) => ["crm", orgId, "profile"] as const,
+    statuses: (userId: NullableId) => ["crm", "statuses", userId] as const,
+    // Prefix, for invalidating every user's cached permissions in an org.
+    myPermissionsAll: (orgId: NullableId) =>
+      ["crm", orgId, "my_permissions"] as const,
+    myPermissions: (orgId: NullableId, userId: NullableId) =>
+      ["crm", orgId, "my_permissions", userId] as const,
+    roles: (orgId: NullableId) => ["crm", orgId, "roles"] as const,
+    catalog: () => ["crm", "permissions"] as const,
+    memberRoles: (orgId: NullableId) => ["crm", orgId, "member_roles"] as const,
+    invitationRoles: (orgId: NullableId) =>
+      ["crm", orgId, "invitation_roles"] as const,
+  },
   billing: {
     products: () => ["billing", "products"] as const,
     usage: (orgId: NullableId, interval: string) =>
