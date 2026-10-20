@@ -9,6 +9,7 @@ import {
 // [crm] Profile fields, and deletion as a request with a grace period.
 import { useMyPermissions, useRequestOrgDeletion } from "@/queries/useCrm";
 import OrgProfileForm from "@/components/OrgProfileForm";
+import BusinessDetailsForm from "@/components/BusinessDetailsForm";
 import { useCurrentAgent } from "@/queries/useAgents";
 import { createFileRoute, useNavigate, redirect } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
@@ -118,6 +119,9 @@ function EditOrganization() {
         </form>
 
         <OrgProfileForm />
+
+        {/* [crm] Business details (P1-07) */}
+        <BusinessDetailsForm />
       </SectionBody>
 
       <SectionFooter>

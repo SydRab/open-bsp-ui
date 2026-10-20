@@ -11,6 +11,7 @@ import {
   ShieldCheck,
   History,
   SlidersHorizontal,
+  ScrollText,
 } from "lucide-react";
 import { useMyPermissions } from "@/queries/useCrm";
 
@@ -83,6 +84,21 @@ function SettingsIndex() {
             onClick={() =>
               navigate({
                 to: "/settings/rules",
+                hash: (prevHash) => prevHash!,
+              })
+            }
+          />
+          {/* [crm] Disclaimer (P1-07) */}
+          <SectionItem
+            title={t("Aviso legal")}
+            aside={
+              <div className="p-[8px]">
+                <ScrollText className="w-[24px] h-[24px] text-muted-foreground" />
+              </div>
+            }
+            onClick={() =>
+              navigate({
+                to: "/settings/disclaimer",
                 hash: (prevHash) => prevHash!,
               })
             }

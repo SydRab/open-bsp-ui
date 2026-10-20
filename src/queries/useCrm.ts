@@ -535,3 +535,181 @@ export function useSaveSetting() {
     },
   });
 }
+
+// Business details and disclaimers (P1-07) ------------------------------------------
+
+export type Registration = { type: string; number: string };
+
+export type BusinessDetails = {
+  legal_name: string;
+  address: {
+    line1: string;
+    line2: string;
+    city: string;
+    state: string;
+    postal_code: string;
+    country: string;
+  };
+  support_email: string;
+  support_phone: string;
+  website: string;
+  registrations: Registration[];
+};
+
+export function useUpdateBusinessDetails() {
+  const queryClient = useQueryClient();
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useMutation({
+    mutationFn: async (data: BusinessDetails) => {
+      if (!orgId) throw new Error("No active organization");
+      // Empty address fields are left out; an all-empty address is null.
+      const address: Record<string, string> = Object.fromEntries(
+        Object.entries(data.address)
+          .map(([k, v]): [string, string] => [k, v.trim()])
+          .filter(([, v]) => v !== ""),
+      );
+      await crm()
+        .from("organization_profiles")
+        .update({
+          legal_name: data.legal_name,
+          address: Object.keys(address).length ? address : null,
+          support_email: data.support_email,
+          support_phone: data.support_phone,
+          website: data.website,
+          registrations: data.registrations.filter((r) => r.number.trim()),
+        })
+        .eq("organization_id", orgId)
+        .throwOnError();
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.profile(orgId),
+      });
+    },
+  });
+}
+
+export type Disclaimer = {
+  kind: "short" | "full";
+  locale: "en" | "hi";
+  text: string | null;
+  /** 0 = the pack's text. */
+  version: number | null;
+  source: "tenant" | "pack" | null;
+};
+
+/** The four disclaimers in force (short/full × English/Hindi). */
+export function useDisclaimers() {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useQuery({
+    queryKey: queryKeys.crm.disclaimers(orgId),
+    queryFn: async () => {
+      const { data } = await crm()
+        .rpc("get_disclaimers", { p_organization_id: orgId! })
+        .throwOnError();
+      return data as unknown as Disclaimer[];
+    },
+    enabled: !!orgId,
+  });
+}
+
+/** Every saved version, newest first. */
+export function useDisclaimerHistory() {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useQuery({
+    queryKey: [...queryKeys.crm.disclaimers(orgId), "history"],
+    queryFn: async () =>
+      await crm()
+        .from("disclaimer_versions")
+        .select("id, kind, locale, version, text, created_at")
+        .eq("organization_id", orgId!)
+        .order("created_at", { ascending: false })
+        .throwOnError(),
+    enabled: !!orgId,
+    select: (data) => data.data,
+  });
+}
+
+export function useSaveDisclaimer() {
+  const queryClient = useQueryClient();
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useMutation({
+    mutationFn: async (d: { kind: string; locale: string; text: string }) => {
+      if (!orgId) throw new Error("No active organization");
+      await crm()
+        .rpc("set_disclaimer", {
+          p_organization_id: orgId,
+          p_kind: d.kind,
+          p_locale: d.locale,
+          p_text: d.text,
+        })
+        .throwOnError();
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.disclaimers(orgId),
+      });
+    },
+  });
+}
+
+export type RenderedMessage = {
+  text: string;
+  attached: boolean;
+  disclaimer_kind: string | null;
+  disclaimer_locale: string | null;
+  disclaimer_version: number | null;
+};
+
+/** What a sender would send: the database's render_with_disclaimer. */
+export function useDisclaimerPreview(
+  contentType: string,
+  locale: string,
+  text: string,
+) {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useQuery({
+    queryKey: queryKeys.crm.disclaimerPreview(orgId, contentType, locale, text),
+    queryFn: async () => {
+      const { data } = await crm()
+        .rpc("render_with_disclaimer", {
+          p_organization_id: orgId!,
+          p_content_type: contentType,
+          p_text: text,
+          p_locale: locale,
+        })
+        .throwOnError();
+      return (data as unknown as RenderedMessage[])[0] ?? null;
+    },
+    enabled: !!orgId && text.trim() !== "",
+    retry: false,
+  });
+}
+
+/** How many pack templates carry the disclaimer as their footer. */
+export function useDisclaimerTemplateCount() {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useQuery({
+    queryKey: queryKeys.crm.disclaimerTemplates(orgId),
+    queryFn: async () =>
+      await crm()
+        .from("organization_pack_items")
+        .select("item_key, value")
+        .eq("organization_id", orgId!)
+        .eq("kind", "message_template")
+        .throwOnError(),
+    enabled: !!orgId,
+    select: (data) =>
+      data.data.filter(
+        (i) =>
+          (i.value as { attach_disclaimer?: boolean } | null)
+            ?.attach_disclaimer === true,
+      ).length,
+  });
+}

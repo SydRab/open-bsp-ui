@@ -39,6 +39,7 @@ import { Route as AuthSettingsRulesIndexRouteImport } from './routes/_auth/setti
 import { Route as AuthSettingsRolesIndexRouteImport } from './routes/_auth/settings/roles/index'
 import { Route as AuthSettingsOrganizationIndexRouteImport } from './routes/_auth/settings/organization/index'
 import { Route as AuthSettingsMembersIndexRouteImport } from './routes/_auth/settings/members/index'
+import { Route as AuthSettingsDisclaimerIndexRouteImport } from './routes/_auth/settings/disclaimer/index'
 import { Route as AuthSettingsApiKeysIndexRouteImport } from './routes/_auth/settings/api-keys/index'
 import { Route as AuthSettingsActivityIndexRouteImport } from './routes/_auth/settings/activity/index'
 import { Route as AuthIntegrationsWhatsappIndexRouteImport } from './routes/_auth/integrations/whatsapp/index'
@@ -220,6 +221,12 @@ const AuthSettingsMembersIndexRoute =
   AuthSettingsMembersIndexRouteImport.update({
     id: '/settings/members/',
     path: '/settings/members/',
+    getParentRoute: () => AuthRoute,
+  } as any)
+const AuthSettingsDisclaimerIndexRoute =
+  AuthSettingsDisclaimerIndexRouteImport.update({
+    id: '/settings/disclaimer/',
+    path: '/settings/disclaimer/',
     getParentRoute: () => AuthRoute,
   } as any)
 const AuthSettingsApiKeysIndexRoute =
@@ -428,6 +435,7 @@ export interface FileRoutesByFullPath {
   '/integrations/whatsapp': typeof AuthIntegrationsWhatsappIndexRoute
   '/settings/activity': typeof AuthSettingsActivityIndexRoute
   '/settings/api-keys': typeof AuthSettingsApiKeysIndexRoute
+  '/settings/disclaimer': typeof AuthSettingsDisclaimerIndexRoute
   '/settings/members': typeof AuthSettingsMembersIndexRoute
   '/settings/organization': typeof AuthSettingsOrganizationIndexRoute
   '/settings/roles': typeof AuthSettingsRolesIndexRoute
@@ -486,6 +494,7 @@ export interface FileRoutesByTo {
   '/integrations/whatsapp': typeof AuthIntegrationsWhatsappIndexRoute
   '/settings/activity': typeof AuthSettingsActivityIndexRoute
   '/settings/api-keys': typeof AuthSettingsApiKeysIndexRoute
+  '/settings/disclaimer': typeof AuthSettingsDisclaimerIndexRoute
   '/settings/members': typeof AuthSettingsMembersIndexRoute
   '/settings/organization': typeof AuthSettingsOrganizationIndexRoute
   '/settings/roles': typeof AuthSettingsRolesIndexRoute
@@ -547,6 +556,7 @@ export interface FileRoutesById {
   '/_auth/integrations/whatsapp/': typeof AuthIntegrationsWhatsappIndexRoute
   '/_auth/settings/activity/': typeof AuthSettingsActivityIndexRoute
   '/_auth/settings/api-keys/': typeof AuthSettingsApiKeysIndexRoute
+  '/_auth/settings/disclaimer/': typeof AuthSettingsDisclaimerIndexRoute
   '/_auth/settings/members/': typeof AuthSettingsMembersIndexRoute
   '/_auth/settings/organization/': typeof AuthSettingsOrganizationIndexRoute
   '/_auth/settings/roles/': typeof AuthSettingsRolesIndexRoute
@@ -608,6 +618,7 @@ export interface FileRouteTypes {
     | '/integrations/whatsapp'
     | '/settings/activity'
     | '/settings/api-keys'
+    | '/settings/disclaimer'
     | '/settings/members'
     | '/settings/organization'
     | '/settings/roles'
@@ -666,6 +677,7 @@ export interface FileRouteTypes {
     | '/integrations/whatsapp'
     | '/settings/activity'
     | '/settings/api-keys'
+    | '/settings/disclaimer'
     | '/settings/members'
     | '/settings/organization'
     | '/settings/roles'
@@ -726,6 +738,7 @@ export interface FileRouteTypes {
     | '/_auth/integrations/whatsapp/'
     | '/_auth/settings/activity/'
     | '/_auth/settings/api-keys/'
+    | '/_auth/settings/disclaimer/'
     | '/_auth/settings/members/'
     | '/_auth/settings/organization/'
     | '/_auth/settings/roles/'
@@ -967,6 +980,13 @@ declare module '@tanstack/react-router' {
       path: '/settings/members'
       fullPath: '/settings/members'
       preLoaderRoute: typeof AuthSettingsMembersIndexRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/settings/disclaimer/': {
+      id: '/_auth/settings/disclaimer/'
+      path: '/settings/disclaimer'
+      fullPath: '/settings/disclaimer'
+      preLoaderRoute: typeof AuthSettingsDisclaimerIndexRouteImport
       parentRoute: typeof AuthRoute
     }
     '/_auth/settings/api-keys/': {
@@ -1214,6 +1234,7 @@ interface AuthRouteChildren {
   AuthIntegrationsWhatsappIndexRoute: typeof AuthIntegrationsWhatsappIndexRoute
   AuthSettingsActivityIndexRoute: typeof AuthSettingsActivityIndexRoute
   AuthSettingsApiKeysIndexRoute: typeof AuthSettingsApiKeysIndexRoute
+  AuthSettingsDisclaimerIndexRoute: typeof AuthSettingsDisclaimerIndexRoute
   AuthSettingsMembersIndexRoute: typeof AuthSettingsMembersIndexRoute
   AuthSettingsOrganizationIndexRoute: typeof AuthSettingsOrganizationIndexRoute
   AuthSettingsRolesIndexRoute: typeof AuthSettingsRolesIndexRoute
@@ -1264,6 +1285,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthIntegrationsWhatsappIndexRoute: AuthIntegrationsWhatsappIndexRoute,
   AuthSettingsActivityIndexRoute: AuthSettingsActivityIndexRoute,
   AuthSettingsApiKeysIndexRoute: AuthSettingsApiKeysIndexRoute,
+  AuthSettingsDisclaimerIndexRoute: AuthSettingsDisclaimerIndexRoute,
   AuthSettingsMembersIndexRoute: AuthSettingsMembersIndexRoute,
   AuthSettingsOrganizationIndexRoute: AuthSettingsOrganizationIndexRoute,
   AuthSettingsRolesIndexRoute: AuthSettingsRolesIndexRoute,

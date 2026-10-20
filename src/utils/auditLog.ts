@@ -24,6 +24,7 @@ export const AUDIT_AREAS = [
   { value: "pack", label: "Pack" },
   { value: "setting", label: "Reglas y módulos" },
   { value: "team", label: "Equipos" },
+  { value: "disclaimer", label: "Aviso legal" },
 ] as const;
 
 const FIELD_LABELS: Record<string, string> = {
@@ -31,6 +32,12 @@ const FIELD_LABELS: Record<string, string> = {
   slug: "Identificador (slug)",
   timezone: "Zona horaria",
   locale: "Idioma",
+  legal_name: "Razón social",
+  address: "Dirección",
+  support_email: "Correo de soporte",
+  support_phone: "Teléfono de soporte",
+  website: "Sitio web",
+  registrations: "Números de registro",
 };
 
 // Upstream tiers, for invitations made without a crm role.
@@ -114,9 +121,11 @@ export function describeAction(
     case "organization.profile_updated":
       return values("Cambió el perfil: {changes}", {
         changes: Object.keys(after)
-          .map(
-            (k) =>
-              `${t(FIELD_LABELS[k] ?? k)} ${text(before[k]) || "—"} → ${text(after[k])}`,
+          .map((k) =>
+            // Address and registrations are lists: name the field only.
+            typeof after[k] === "object" && after[k] !== null
+              ? t(FIELD_LABELS[k] ?? k)
+              : `${t(FIELD_LABELS[k] ?? k)} ${text(before[k]) || "—"} → ${text(after[k]) || "—"}`,
           )
           .join(", "),
       });
@@ -219,6 +228,17 @@ export function describeAction(
       return values("Editó {key} del pack", { key: text(d.key) });
     case "pack.item_reset":
       return values("Restableció {key} del pack", { key: text(d.key) });
+
+    case "disclaimer.updated":
+      return values(
+        "Cambió el aviso {kind} ({locale}) a la versión {version}: «{after}»",
+        {
+          kind: d.kind === "full" ? t("completo") : t("corto"),
+          locale: text(d.locale).toUpperCase(),
+          version: text(d.version),
+          after: text(d.after),
+        },
+      );
 
     case "setting.changed":
     case "setting.reset": {

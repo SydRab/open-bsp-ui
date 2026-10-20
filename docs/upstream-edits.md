@@ -6,7 +6,8 @@ merges can be resolved quickly. Our own code (no entry needed): `src/queries/use
 `src/components/OrgProfileForm.tsx`, `src/utils/auditLog.ts`,
 `src/routes/_auth/settings/roles/**`, `src/routes/_auth/settings/activity/**`,
 `src/routes/auth.confirm.tsx`, `src/routes/_auth/settings/rules/**`,
-`src/components/SettingEditor.tsx`, `src/utils/settings.ts`, `docs/`.
+`src/components/SettingEditor.tsx`, `src/utils/settings.ts`,
+`src/components/BusinessDetailsForm.tsx`, `src/routes/_auth/settings/disclaimer/**`, `docs/`.
 Edits inside upstream files are marked with a `[crm]` comment.
 
 | Date | File | Change | Why | Task |
@@ -37,3 +38,9 @@ Edits inside upstream files are marked with a `[crm]` comment.
 | 2026-10-21 | `public/locales/en.json` | 33 new strings appended. | Settings screen, setting and team activity entries. | P1-04 |
 | 2026-10-21 | `src/routeTree.gen.ts` | Regenerated: adds `/settings/rules`. | New route. | P1-04 |
 | 2026-10-21 | `src/supabase/db_types.ts` | Re-copied from the API (settings and teams). | Types. | P1-04 |
+| 2026-10-21 | `src/routes/_auth/settings/organization/index.tsx` | Adds `BusinessDetailsForm` under the profile. | Business details. | P1-07 |
+| 2026-10-21 | `src/routes/_auth/settings/index.tsx` | "Disclaimer" entry. | Disclaimer page. | P1-07 |
+| 2026-10-21 | `src/queries/queryKeys.ts` | `crm.disclaimers`, `disclaimerPreview`, `disclaimerTemplates` keys. | Cache keys. | P1-07 |
+| 2026-10-21 | `public/locales/en.json` | 41 new strings appended; `completo`/`corto` lowercase. | Business details, disclaimer page, activity sentences. | P1-07 |
+| 2026-10-21 | `src/routeTree.gen.ts` | Regenerated: adds `/settings/disclaimer`. | New route. | P1-07 |
+| 2026-10-21 | `src/supabase/db_types.ts` | Re-copied from the API (business details, disclaimers). | Types. | P1-07 |

@@ -76,6 +76,24 @@ export const queryKeys = {
     invitationRoles: (orgId: NullableId) =>
       ["crm", orgId, "invitation_roles"] as const,
     settings: (orgId: NullableId) => ["crm", orgId, "settings"] as const,
+    disclaimers: (orgId: NullableId) => ["crm", orgId, "disclaimers"] as const,
+    disclaimerPreview: (
+      orgId: NullableId,
+      contentType: string,
+      locale: string,
+      text: string,
+    ) =>
+      [
+        "crm",
+        orgId,
+        "disclaimers",
+        "preview",
+        contentType,
+        locale,
+        text,
+      ] as const,
+    disclaimerTemplates: (orgId: NullableId) =>
+      ["crm", orgId, "disclaimer_templates"] as const,
     auditLog: (
       orgId: NullableId,
       filters: { area: string; actor: string; days: string },
