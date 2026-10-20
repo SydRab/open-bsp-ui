@@ -5,8 +5,10 @@ import { useTranslation } from "@/hooks/useTranslation";
 import {
   useCurrentOrganization,
   useUpdateCurrentOrganization,
-  useDeleteCurrentOrganization,
 } from "@/queries/useOrganizations";
+// [crm] Profile fields, and deletion as a request with a grace period.
+import { useMyPermissions, useRequestOrgDeletion } from "@/queries/useCrm";
+import OrgProfileForm from "@/components/OrgProfileForm";
 import { useCurrentAgent } from "@/queries/useAgents";
 import { createFileRoute, useNavigate, redirect } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
@@ -35,11 +37,14 @@ function EditOrganization() {
   const { data: agent } = useCurrentAgent();
   // Admins run the organization — the whole row, name included. Deleting it is
   // the owner's, like every other way of taking control.
-  const isAdmin = ["admin", "owner"].includes(agent?.role || "");
-  const isOwner = agent?.role === "owner";
+  const { can } = useMyPermissions();
+  const isAdmin =
+    ["admin", "owner"].includes(agent?.role || "") &&
+    can("organization.manage");
+  const canDelete = can("organization.delete");
   const setActiveOrg = useBoundStore((state) => state.ui.setActiveOrg);
   const updateOrg = useUpdateCurrentOrganization();
-  const deleteOrg = useDeleteCurrentOrganization();
+  const deleteOrg = useRequestOrgDeletion();
 
   const normalizedOrg = useMemo(() => {
     if (!org) return undefined;
@@ -64,15 +69,23 @@ function EditOrganization() {
     <>
       <SectionHeader
         title={t("Editar organización")}
-        onDelete={() =>
+        onDelete={() => {
+          if (
+            !window.confirm(
+              t(
+                "La organización dejará de estar accesible de inmediato y se eliminará definitivamente en 30 días. Un propietario puede cancelarlo antes. ¿Continuar?",
+              ),
+            )
+          )
+            return;
           deleteOrg.mutate(undefined, {
             onSuccess: () => {
               setActiveOrg(null);
               void navigate({ to: "/conversations" });
             },
-          })
-        }
-        deleteDisabled={!isOwner}
+          });
+        }}
+        deleteDisabled={!canDelete}
         deleteDisabledReason={t("Requiere permisos de propietario")}
         deleteLoading={deleteOrg.isPending}
       />
@@ -103,6 +116,8 @@ function EditOrganization() {
             disabled={!isAdmin}
           />
         </form>
+
+        <OrgProfileForm />
       </SectionBody>
 
       <SectionFooter>
