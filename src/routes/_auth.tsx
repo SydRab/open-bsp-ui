@@ -14,6 +14,9 @@ import { Bot, Building2, MessageSquarePlus, Settings } from "lucide-react";
 import { useResizable } from "@/hooks/useResizable";
 import { useCurrentAgents } from "@/queries/useAgents";
 import StatsCenter from "@/components/stats/StatsCenter";
+// [crm] Suspended / pending-deletion banner (P1-01).
+import OrgStatusBanner from "@/components/OrgStatusBanner";
+import { useMyOrgStatuses } from "@/queries/useCrm";
 
 export const Route = createFileRoute("/_auth")({
   component: AppLayout,
@@ -65,16 +68,25 @@ function AppLayout() {
   console.log("active conv", activeConvId);
 
   const showCenterPanel = activeConvId || isStatsRoute;
+  const { data: orgStatuses } = useMyOrgStatuses();
+  const showBanner = !!orgStatuses?.length;
 
   return (
     <div
       className="app-grid"
-      style={
-        panelWidth !== null
+      style={{
+        ...(panelWidth !== null
           ? { gridTemplateColumns: `${getMenuWidth()}px ${panelWidth}px 1fr` }
-          : undefined
-      }
+          : {}),
+        // [crm] The banner takes a full-width first row.
+        ...(showBanner ? { gridTemplateRows: "auto minmax(0, 1fr)" } : {}),
+      }}
     >
+      {showBanner && (
+        <div className="col-span-full">
+          <OrgStatusBanner />
+        </div>
+      )}
       {/* Menu - Fixed width */}
       <div className={showCenterPanel ? "hidden md:flex" : "flex"}>
         <Menu />
