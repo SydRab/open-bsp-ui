@@ -73,6 +73,10 @@ export const queryKeys = {
     memberRoles: (orgId: NullableId) => ["crm", orgId, "member_roles"] as const,
     invitationRoles: (orgId: NullableId) =>
       ["crm", orgId, "invitation_roles"] as const,
+    auditLog: (
+      orgId: NullableId,
+      filters: { area: string; actor: string; days: string },
+    ) => ["crm", orgId, "audit_log", filters] as const,
   },
   billing: {
     products: () => ["billing", "products"] as const,

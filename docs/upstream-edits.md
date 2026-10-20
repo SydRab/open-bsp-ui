@@ -3,7 +3,8 @@
 Every change we make to a file that came from upstream OpenBSP UI is listed here, so upstream
 merges can be resolved quickly. Our own code (no entry needed): `src/queries/useCrm.ts`,
 `src/utils/crmRoles.ts`, `src/components/OrgStatusBanner.tsx`,
-`src/components/OrgProfileForm.tsx`, `src/routes/_auth/settings/roles/**`, `docs/`.
+`src/components/OrgProfileForm.tsx`, `src/utils/auditLog.ts`,
+`src/routes/_auth/settings/roles/**`, `src/routes/_auth/settings/activity/**`, `docs/`.
 Edits inside upstream files are marked with a `[crm]` comment.
 
 | Date | File | Change | Why | Task |
@@ -18,3 +19,8 @@ Edits inside upstream files are marked with a `[crm]` comment.
 | 2026-10-21 | `public/locales/en.json` | 35 new strings appended. | Translations for the new UI. | P1-01–P1-03 |
 | 2026-10-21 | `src/routeTree.gen.ts` | Regenerated (generated file): adds `/settings/roles` routes. | New routes. | P1-02 |
 | 2026-10-21 | `src/supabase/db_types.ts` | Copied from the API's regenerated `_shared/db_types.ts` (now includes `crm`; `billing` kept). | crm types. | P1-02 |
+| 2026-10-21 | `src/routes/_auth/settings/index.tsx` | "Activity log" entry, shown only with `audit.view`. | Audit log page. | P1-08 |
+| 2026-10-21 | `src/queries/queryKeys.ts` | `crm.auditLog` key. | Audit log cache key. | P1-08 |
+| 2026-10-21 | `public/locales/en.json` | 53 new strings appended. | Activity log sentences and filters. | P1-08 |
+| 2026-10-21 | `src/routeTree.gen.ts` | Regenerated: adds `/settings/activity`. | New route. | P1-08 |
+| 2026-10-21 | `src/supabase/db_types.ts` | Re-copied from the API (adds `crm.audit_log`, `get_audit_log`, `write_audit`). | Audit types. | P1-08 |

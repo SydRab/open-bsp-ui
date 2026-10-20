@@ -1,7 +1,12 @@
 // [crm] Queries for our CRM layer (Postgres schema `crm`): organization
 // profile and lifecycle, roles and permissions, invitations with a crm role.
 // The database enforces every rule; these hooks only read and call it.
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { FunctionsHttpError } from "@supabase/supabase-js";
 import { invokeFunction, supabase } from "@/supabase/client";
 import useBoundStore from "@/stores/useBoundStore";
@@ -370,5 +375,67 @@ export function useRevokeCrmInvitation() {
         queryKey: queryKeys.invitations.all(orgId),
       });
     },
+  });
+}
+
+// Audit log (P1-08) ------------------------------------------------------------
+
+export type AuditFilters = {
+  /** The part of the action before the dot ("member", "role"…), or "". */
+  area: string;
+  /** The acting member's agent id, or "". */
+  actor: string;
+  /** "7", "30", "90", or "" for everything. */
+  days: string;
+};
+
+export type AuditEntry = {
+  id: number;
+  created_at: string;
+  actor_type: "user" | "api_key" | "service" | "system";
+  actor_agent_id: string | null;
+  actor_name: string | null;
+  action: string;
+  target_type: string | null;
+  target_id: string | null;
+  target_name: string | null;
+  details: Record<string, unknown>;
+};
+
+const AUDIT_PAGE_SIZE = 50;
+
+/**
+ * The active organization's audit log, newest first, 50 entries a page.
+ * Pass `allowed` (the caller holds audit.view) so nobody else fetches it.
+ */
+export function useAuditLog(filters: AuditFilters, allowed: boolean) {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useInfiniteQuery({
+    queryKey: queryKeys.crm.auditLog(orgId, filters),
+    queryFn: async ({ pageParam }) => {
+      const { data } = await crm()
+        .rpc("get_audit_log", {
+          p_organization_id: orgId!,
+          p_limit: AUDIT_PAGE_SIZE,
+          ...(pageParam !== null && { p_before_id: pageParam }),
+          ...(filters.area && { p_area: filters.area }),
+          ...(filters.actor && { p_actor: filters.actor }),
+          ...(filters.days && {
+            p_from: new Date(
+              Date.now() - Number(filters.days) * 24 * 60 * 60 * 1000,
+            ).toISOString(),
+          }),
+        })
+        .throwOnError();
+      // The generated type marks every column non-null; most can be null.
+      return data as unknown as AuditEntry[];
+    },
+    initialPageParam: null as number | null,
+    getNextPageParam: (lastPage) =>
+      lastPage.length === AUDIT_PAGE_SIZE
+        ? lastPage[lastPage.length - 1].id
+        : null,
+    enabled: !!orgId && allowed,
   });
 }

@@ -3,7 +3,15 @@ import SectionHeader from "@/components/SectionHeader";
 import SectionItem from "@/components/SectionItem";
 import { useTranslation } from "@/hooks/useTranslation";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Building2, Users, Webhook, Key, ShieldCheck } from "lucide-react";
+import {
+  Building2,
+  Users,
+  Webhook,
+  Key,
+  ShieldCheck,
+  History,
+} from "lucide-react";
+import { useMyPermissions } from "@/queries/useCrm";
 
 export const Route = createFileRoute("/_auth/settings/")({
   component: SettingsIndex,
@@ -12,6 +20,7 @@ export const Route = createFileRoute("/_auth/settings/")({
 function SettingsIndex() {
   const { translate: t } = useTranslation();
   const navigate = useNavigate();
+  const { can } = useMyPermissions();
 
   return (
     <>
@@ -62,6 +71,23 @@ function SettingsIndex() {
               })
             }
           />
+          {/* [crm] Activity log (P1-08) */}
+          {can("audit.view") && (
+            <SectionItem
+              title={t("Registro de actividad")}
+              aside={
+                <div className="p-[8px]">
+                  <History className="w-[24px] h-[24px] text-muted-foreground" />
+                </div>
+              }
+              onClick={() =>
+                navigate({
+                  to: "/settings/activity",
+                  hash: (prevHash) => prevHash!,
+                })
+              }
+            />
+          )}
           <SectionItem
             title={t("Webhooks")}
             aside={

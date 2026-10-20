@@ -38,6 +38,7 @@ import { Route as AuthSettingsRolesIndexRouteImport } from './routes/_auth/setti
 import { Route as AuthSettingsOrganizationIndexRouteImport } from './routes/_auth/settings/organization/index'
 import { Route as AuthSettingsMembersIndexRouteImport } from './routes/_auth/settings/members/index'
 import { Route as AuthSettingsApiKeysIndexRouteImport } from './routes/_auth/settings/api-keys/index'
+import { Route as AuthSettingsActivityIndexRouteImport } from './routes/_auth/settings/activity/index'
 import { Route as AuthIntegrationsWhatsappIndexRouteImport } from './routes/_auth/integrations/whatsapp/index'
 import { Route as AuthIntegrationsWhatsappWebIndexRouteImport } from './routes/_auth/integrations/whatsapp-web/index'
 import { Route as AuthIntegrationsInstagramIndexRouteImport } from './routes/_auth/integrations/instagram/index'
@@ -213,6 +214,12 @@ const AuthSettingsApiKeysIndexRoute =
   AuthSettingsApiKeysIndexRouteImport.update({
     id: '/settings/api-keys/',
     path: '/settings/api-keys/',
+    getParentRoute: () => AuthRoute,
+  } as any)
+const AuthSettingsActivityIndexRoute =
+  AuthSettingsActivityIndexRouteImport.update({
+    id: '/settings/activity/',
+    path: '/settings/activity/',
     getParentRoute: () => AuthRoute,
   } as any)
 const AuthIntegrationsWhatsappIndexRoute =
@@ -406,6 +413,7 @@ export interface FileRoutesByFullPath {
   '/integrations/instagram': typeof AuthIntegrationsInstagramIndexRoute
   '/integrations/whatsapp-web': typeof AuthIntegrationsWhatsappWebIndexRoute
   '/integrations/whatsapp': typeof AuthIntegrationsWhatsappIndexRoute
+  '/settings/activity': typeof AuthSettingsActivityIndexRoute
   '/settings/api-keys': typeof AuthSettingsApiKeysIndexRoute
   '/settings/members': typeof AuthSettingsMembersIndexRoute
   '/settings/organization': typeof AuthSettingsOrganizationIndexRoute
@@ -461,6 +469,7 @@ export interface FileRoutesByTo {
   '/integrations/instagram': typeof AuthIntegrationsInstagramIndexRoute
   '/integrations/whatsapp-web': typeof AuthIntegrationsWhatsappWebIndexRoute
   '/integrations/whatsapp': typeof AuthIntegrationsWhatsappIndexRoute
+  '/settings/activity': typeof AuthSettingsActivityIndexRoute
   '/settings/api-keys': typeof AuthSettingsApiKeysIndexRoute
   '/settings/members': typeof AuthSettingsMembersIndexRoute
   '/settings/organization': typeof AuthSettingsOrganizationIndexRoute
@@ -519,6 +528,7 @@ export interface FileRoutesById {
   '/_auth/integrations/instagram/': typeof AuthIntegrationsInstagramIndexRoute
   '/_auth/integrations/whatsapp-web/': typeof AuthIntegrationsWhatsappWebIndexRoute
   '/_auth/integrations/whatsapp/': typeof AuthIntegrationsWhatsappIndexRoute
+  '/_auth/settings/activity/': typeof AuthSettingsActivityIndexRoute
   '/_auth/settings/api-keys/': typeof AuthSettingsApiKeysIndexRoute
   '/_auth/settings/members/': typeof AuthSettingsMembersIndexRoute
   '/_auth/settings/organization/': typeof AuthSettingsOrganizationIndexRoute
@@ -577,6 +587,7 @@ export interface FileRouteTypes {
     | '/integrations/instagram'
     | '/integrations/whatsapp-web'
     | '/integrations/whatsapp'
+    | '/settings/activity'
     | '/settings/api-keys'
     | '/settings/members'
     | '/settings/organization'
@@ -632,6 +643,7 @@ export interface FileRouteTypes {
     | '/integrations/instagram'
     | '/integrations/whatsapp-web'
     | '/integrations/whatsapp'
+    | '/settings/activity'
     | '/settings/api-keys'
     | '/settings/members'
     | '/settings/organization'
@@ -689,6 +701,7 @@ export interface FileRouteTypes {
     | '/_auth/integrations/instagram/'
     | '/_auth/integrations/whatsapp-web/'
     | '/_auth/integrations/whatsapp/'
+    | '/_auth/settings/activity/'
     | '/_auth/settings/api-keys/'
     | '/_auth/settings/members/'
     | '/_auth/settings/organization/'
@@ -924,6 +937,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSettingsApiKeysIndexRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/settings/activity/': {
+      id: '/_auth/settings/activity/'
+      path: '/settings/activity'
+      fullPath: '/settings/activity'
+      preLoaderRoute: typeof AuthSettingsActivityIndexRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/integrations/whatsapp/': {
       id: '/_auth/integrations/whatsapp/'
       path: '/integrations/whatsapp'
@@ -1153,6 +1173,7 @@ interface AuthRouteChildren {
   AuthIntegrationsInstagramIndexRoute: typeof AuthIntegrationsInstagramIndexRoute
   AuthIntegrationsWhatsappWebIndexRoute: typeof AuthIntegrationsWhatsappWebIndexRoute
   AuthIntegrationsWhatsappIndexRoute: typeof AuthIntegrationsWhatsappIndexRoute
+  AuthSettingsActivityIndexRoute: typeof AuthSettingsActivityIndexRoute
   AuthSettingsApiKeysIndexRoute: typeof AuthSettingsApiKeysIndexRoute
   AuthSettingsMembersIndexRoute: typeof AuthSettingsMembersIndexRoute
   AuthSettingsOrganizationIndexRoute: typeof AuthSettingsOrganizationIndexRoute
@@ -1201,6 +1222,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthIntegrationsInstagramIndexRoute: AuthIntegrationsInstagramIndexRoute,
   AuthIntegrationsWhatsappWebIndexRoute: AuthIntegrationsWhatsappWebIndexRoute,
   AuthIntegrationsWhatsappIndexRoute: AuthIntegrationsWhatsappIndexRoute,
+  AuthSettingsActivityIndexRoute: AuthSettingsActivityIndexRoute,
   AuthSettingsApiKeysIndexRoute: AuthSettingsApiKeysIndexRoute,
   AuthSettingsMembersIndexRoute: AuthSettingsMembersIndexRoute,
   AuthSettingsOrganizationIndexRoute: AuthSettingsOrganizationIndexRoute,
