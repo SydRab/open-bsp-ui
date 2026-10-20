@@ -5,8 +5,15 @@ import {
   useCurrentAgents,
   useCurrentAgent,
   useOrgInvitations,
-  useRevokeInvitation,
 } from "@/queries/useAgents";
+// [crm] Roles shown are crm roles; inviting and revoking need members.invite.
+import {
+  useInvitationRoles,
+  useMemberRoles,
+  useMyPermissions,
+  useRevokeCrmInvitation,
+  useRoles,
+} from "@/queries/useCrm";
 import SectionItem from "@/components/SectionItem";
 import Avatar from "@/components/Avatar";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
@@ -22,13 +29,21 @@ function ListMembers() {
   const { data: agents } = useCurrentAgents();
   const { data: invitations } = useOrgInvitations();
   const { data: currentAgent } = useCurrentAgent();
-  const revokeInvitation = useRevokeInvitation();
-  const isOwner = currentAgent?.role === "owner";
+  const revokeInvitation = useRevokeCrmInvitation();
+  const { data: crmRoles } = useRoles();
+  const { data: memberRoles } = useMemberRoles();
+  const { data: invitationRoles } = useInvitationRoles();
+  const { can } = useMyPermissions();
+  const canInvite = can("members.invite");
 
-  const roles: Record<string, string> = {
+  const tierNames: Record<string, string> = {
     owner: t("Propietario"),
     admin: t("Administrador"),
     member: t("Miembro"),
+  };
+  const roleName = (roleId: string | undefined, tier: string | null) => {
+    const role = crmRoles?.find((r) => r.id === roleId);
+    return role ? t(role.name) : tierNames[tier || "member"];
   };
 
   return (
@@ -49,13 +64,13 @@ function ListMembers() {
               hash: (prevHash) => prevHash!,
             })
           }
-          disabled={!isOwner}
-          disabledReason={t("Requiere permisos de propietario")}
+          disabled={!canInvite}
+          disabledReason={t("Requiere el permiso para invitar miembros")}
         />
         {agents
           ?.filter((agent) => agent.user_id !== null)
           .map((agent) => {
-            const role = roles[agent.role || "member"];
+            const role = roleName(memberRoles?.get(agent.id), agent.role);
             const isMe = agent.id === currentAgent?.id;
 
             return (
@@ -85,7 +100,8 @@ function ListMembers() {
             key={invitation.id}
             title={invitation.email}
             description={
-              roles[invitation.role || "member"] + ` (${t("pendiente")})`
+              roleName(invitationRoles?.get(invitation.id), invitation.role) +
+              ` (${t("pendiente")})`
             }
             aside={
               <Avatar
@@ -95,10 +111,11 @@ function ListMembers() {
               />
             }
             onClick={() => {
-              if (isOwner) revokeInvitation.mutate(invitation.id);
+              if (canInvite && window.confirm(t("¿Revocar esta invitación?")))
+                revokeInvitation.mutate(invitation.id);
             }}
-            disabled={!isOwner}
-            disabledReason={t("Requiere permisos de propietario")}
+            disabled={!canInvite}
+            disabledReason={t("Requiere el permiso para invitar miembros")}
           />
         ))}
       </SectionBody>

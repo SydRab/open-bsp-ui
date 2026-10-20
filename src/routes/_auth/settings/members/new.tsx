@@ -1,35 +1,44 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import SectionHeader from "@/components/SectionHeader";
 import { useTranslation } from "@/hooks/useTranslation";
-import { useCreateInvitation, useCurrentAgent } from "@/queries/useAgents";
-import { type InvitationInsert } from "@/supabase/client";
+import { useCurrentAgent } from "@/queries/useAgents";
 import { useForm } from "react-hook-form";
 import SectionBody from "@/components/SectionBody";
 import SectionFooter from "@/components/SectionFooter";
 import Button from "@/components/Button";
 import SelectField from "@/components/SelectField";
+// [crm] Invite with one of the organization's crm roles; the crm-invitations
+// edge function creates the invitation and sends the email.
+import { useInviteMember, useMyPermissions, useRoles } from "@/queries/useCrm";
+import { assignableRoles } from "@/utils/crmRoles";
 
 export const Route = createFileRoute("/_auth/settings/members/new")({
   component: AddMember,
 });
 
+type InviteForm = { email: string; role_key: string };
+
 function AddMember() {
   const { translate: t } = useTranslation();
   const navigate = useNavigate();
-  const createInvitation = useCreateInvitation();
+  const inviteMember = useInviteMember();
   const { data: agent } = useCurrentAgent();
-  const isOwner = agent?.role === "owner";
+  const { data: roles } = useRoles();
+  const { can } = useMyPermissions();
+  const canInvite = can("members.invite");
+  const options = assignableRoles(roles, agent?.role);
 
   const {
     register,
     handleSubmit,
     control,
+    watch,
     formState: { isValid, isDirty },
-  } = useForm<Omit<InvitationInsert, "organization_id">>({
-    defaultValues: {
-      role: "member",
-    },
+  } = useForm<InviteForm>({
+    defaultValues: { role_key: "viewer" },
   });
+
+  const selected = roles?.find((r) => r.key === watch("role_key"));
 
   return (
     <>
@@ -39,36 +48,43 @@ function AddMember() {
         <form
           id="create-member-form"
           onSubmit={handleSubmit((data) =>
-            createInvitation.mutate(
-              { email: data.email, role: data.role },
+            inviteMember.mutate(
+              { email: data.email, roleKey: data.role_key },
               {
-                onSuccess: () =>
-                  navigate({
+                onSuccess: (result) => {
+                  if (result?.email_delivery === "failed") {
+                    window.alert(
+                      t(
+                        "La invitación se creó, pero no se pudo enviar el correo. La persona la verá al iniciar sesión.",
+                      ),
+                    );
+                  }
+                  void navigate({
                     to: "/settings/members",
                     hash: (prevHash) => prevHash!,
-                  }),
+                  });
+                },
               },
             ),
           )}
         >
-          <fieldset disabled={!isOwner} className="contents">
-            <p>
-              {t(
-                "Los propietarios tienen control total, los administradores gestionan configuraciones y los miembros responden a las conversaciones.",
-              )}
-            </p>
-
+          <fieldset disabled={!canInvite} className="contents">
             <SelectField
-              name="role"
+              name="role_key"
               control={control}
               label={t("Rol")}
-              options={[
-                { value: "member", label: t("Miembro") },
-                { value: "admin", label: t("Administrador") },
-                { value: "owner", label: t("Propietario") },
-              ]}
+              options={options.map((r) => ({
+                value: r.key,
+                label: t(r.name),
+              }))}
               required
             />
+
+            {selected?.description && (
+              <p className="text-muted-foreground text-[14px]">
+                {t(selected.description)}
+              </p>
+            )}
 
             <label>
               <div className="label">{t("Correo electrónico")}</div>
@@ -85,6 +101,12 @@ function AddMember() {
                 })}
               />
             </label>
+
+            {inviteMember.error && (
+              <div className="text-destructive text-[13px]">
+                {inviteMember.error.message}
+              </div>
+            )}
           </fieldset>
         </form>
       </SectionBody>
@@ -93,10 +115,10 @@ function AddMember() {
         <Button
           form="create-member-form"
           type="submit"
-          disabled={!isOwner}
+          disabled={!canInvite}
           invalid={!isValid || !isDirty}
-          loading={createInvitation.isPending}
-          disabledReason={t("Requiere permisos de propietario")}
+          loading={inviteMember.isPending}
+          disabledReason={t("Requiere el permiso para invitar miembros")}
           className="primary"
         >
           {t("Invitar")}
