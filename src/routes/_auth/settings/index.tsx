@@ -14,6 +14,7 @@ import {
   ScrollText,
   TextCursorInput,
   Gem,
+  Fingerprint,
 } from "lucide-react";
 import { useMyPermissions } from "@/queries/useCrm";
 
@@ -56,6 +57,21 @@ function SettingsIndex() {
             onClick={() =>
               navigate({
                 to: "/settings/members",
+                hash: (prevHash) => prevHash!,
+              })
+            }
+          />
+          {/* [crm] Security / 2FA (P1-11) */}
+          <SectionItem
+            title={t("Seguridad")}
+            aside={
+              <div className="p-[8px]">
+                <Fingerprint className="w-[24px] h-[24px] text-muted-foreground" />
+              </div>
+            }
+            onClick={() =>
+              navigate({
+                to: "/settings/security",
                 hash: (prevHash) => prevHash!,
               })
             }

@@ -16,7 +16,11 @@ import { useCurrentAgents } from "@/queries/useAgents";
 import StatsCenter from "@/components/stats/StatsCenter";
 // [crm] Suspended / pending-deletion banner (P1-01).
 import OrgStatusBanner from "@/components/OrgStatusBanner";
-import { useMyOrgStatuses } from "@/queries/useCrm";
+import { useMyOrgStatuses, useNeedsMfaStepUp } from "@/queries/useCrm";
+// [crm] Branding tokens (P1-11): applies the org's color live, no UI of its own.
+import BrandingProvider from "@/components/BrandingProvider";
+// [crm] 2FA step-up banner (P1-11).
+import MfaStepUpBanner from "@/components/MfaStepUpBanner";
 
 export const Route = createFileRoute("/_auth")({
   component: AppLayout,
@@ -69,7 +73,8 @@ function AppLayout() {
 
   const showCenterPanel = activeConvId || isStatsRoute;
   const { data: orgStatuses } = useMyOrgStatuses();
-  const showBanner = !!orgStatuses?.length;
+  const { data: needsMfaStepUp } = useNeedsMfaStepUp();
+  const showBanner = !!orgStatuses?.length || !!needsMfaStepUp;
 
   return (
     <div
@@ -82,9 +87,11 @@ function AppLayout() {
         ...(showBanner ? { gridTemplateRows: "auto minmax(0, 1fr)" } : {}),
       }}
     >
+      <BrandingProvider />
       {showBanner && (
         <div className="col-span-full">
           <OrgStatusBanner />
+          <MfaStepUpBanner />
         </div>
       )}
       {/* Menu - Fixed width */}

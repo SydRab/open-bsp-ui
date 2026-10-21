@@ -104,6 +104,8 @@ export const queryKeys = {
       orgId: NullableId,
       filters: { area: string; actor: string; days: string },
     ) => ["crm", orgId, "audit_log", filters] as const,
+    needsMfaStepUp: (orgId: NullableId) =>
+      ["crm", orgId, "needs_mfa_step_up"] as const,
   },
   // [crm] Super-admin console (P1-10) — platform-wide, not scoped to the
   // active org, so no orgId prefix (except tenant-specific lookups).

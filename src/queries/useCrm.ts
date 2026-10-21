@@ -140,6 +140,58 @@ export function useCancelOrgDeletion() {
   });
 }
 
+// 2FA (P1-11) ----------------------------------------------------------------------
+
+/**
+ * Turning this on needs the caller's OWN session to already be aal2
+ * (crm.set_require_mfa_for_admins' own guard) — "enable two-factor
+ * authentication on your own account first" is the database's message when
+ * it isn't, shown as-is.
+ */
+export function useSetRequireMfaForAdmins() {
+  const queryClient = useQueryClient();
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useMutation({
+    mutationFn: async (required: boolean) => {
+      if (!orgId) throw new Error("No active organization");
+      await crm()
+        .rpc("set_require_mfa_for_admins", {
+          p_organization_id: orgId,
+          p_required: required,
+        })
+        .throwOnError();
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.profile(orgId),
+      });
+    },
+  });
+}
+
+/**
+ * Whether the signed-in member would hold their admin/owner-tier
+ * permissions in the active organization if they verified a 2FA code right
+ * now — true when they currently don't because the organization requires it
+ * and their session is only aal1. Distinguishes "needs a step-up" from
+ * "doesn't have this permission at all," which crm.get_permitted_orgs can't
+ * (it silently drops the org in both cases).
+ */
+export function useNeedsMfaStepUp() {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useQuery({
+    queryKey: queryKeys.crm.needsMfaStepUp(orgId),
+    queryFn: async () =>
+      await crm()
+        .rpc("needs_mfa_step_up", { p_organization_id: orgId! })
+        .throwOnError(),
+    enabled: !!orgId,
+    select: (data) => data.data === true,
+  });
+}
+
 export type CrmRole = {
   id: string;
   key: string;

@@ -26,7 +26,7 @@ import { useIsPlatformAdmin } from "@/queries/useAdmin";
 // [crm] Permission-aware navigation (P1-11): hide a section entirely rather
 // than show it disabled — there is nothing useful to do there without the
 // permission, unlike a single gated action.
-import { useMyPermissions } from "@/queries/useCrm";
+import { useMyPermissions, useSettings } from "@/queries/useCrm";
 
 export default function Menu() {
   const user = useBoundStore((state) => state.ui.user);
@@ -43,6 +43,9 @@ export default function Menu() {
   const { data: organizations } = useOrganizations();
   const { data: isPlatformAdmin } = useIsPlatformAdmin();
   const { can } = useMyPermissions();
+  const { data: settings } = useSettings();
+  const logoUrl = settings?.find((s) => s.key === "branding.logo_url")
+    ?.value as string | undefined;
 
   const {
     translate: t,
@@ -63,6 +66,15 @@ export default function Menu() {
     >
       {/* Upper section */}
       <div className="flex flex-col items-center">
+        {/* [crm] Branding tokens (P1-11) */}
+        {logoUrl && (
+          <img
+            src={logoUrl}
+            alt=""
+            className="w-[28px] h-[28px] object-contain mt-[10px] rounded-[4px]"
+          />
+        )}
+
         {/* Conversations button */}
         {can("conversations.view") && (
           <LinkButton

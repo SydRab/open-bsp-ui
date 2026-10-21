@@ -10,6 +10,7 @@ import {
 import { useMyPermissions, useRequestOrgDeletion } from "@/queries/useCrm";
 import OrgProfileForm from "@/components/OrgProfileForm";
 import BusinessDetailsForm from "@/components/BusinessDetailsForm";
+import BrandingForm from "@/components/BrandingForm";
 import { useCurrentAgent } from "@/queries/useAgents";
 import { createFileRoute, useNavigate, redirect } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
@@ -122,6 +123,9 @@ function EditOrganization() {
 
         {/* [crm] Business details (P1-07) */}
         <BusinessDetailsForm />
+
+        {/* [crm] Branding tokens (P1-11) */}
+        <BrandingForm />
       </SectionBody>
 
       <SectionFooter>
