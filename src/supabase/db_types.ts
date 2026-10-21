@@ -1009,6 +1009,9 @@ isOneToOne: false
 "my_permissions":
 { Args: { "p_organization_id": string }; Returns: string[]
                            },
+"needs_mfa_step_up":
+{ Args: { "p_organization_id": string }; Returns: boolean
+                           },
 "pack_items":
 { Args: { "p_definition": Json }; Returns: {
               "item_key": string,"kind": string,"sort_order": number,"value": Json
