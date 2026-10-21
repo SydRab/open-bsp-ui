@@ -17,6 +17,7 @@ import {
 } from "@/supabase/client";
 import { formatPhoneNumber } from "@/utils/FormatUtils";
 import type { Database } from "@/supabase/db_types";
+import ContactFieldsForm from "@/components/ContactFieldsForm";
 
 type Service = Database["public"]["Enums"]["service"];
 
@@ -84,6 +85,8 @@ function ContactDetail() {
         <SectionBody>
           <form
             id="contact-form"
+            // [crm] Don't fill the page: the Details section follows (P1-06).
+            className="grow-0"
             onSubmit={handleSubmit((data) =>
               updateAddress.mutate({
                 organization_address: entry.organization_address,
@@ -136,6 +139,9 @@ function ContactDetail() {
               />
             </label>
           </form>
+
+          {/* [crm] Custom fields (P1-06) */}
+          <ContactFieldsForm service={entry.service} address={entry.address} />
         </SectionBody>
 
         {!synced && (

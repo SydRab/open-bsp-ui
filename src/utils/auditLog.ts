@@ -25,6 +25,7 @@ export const AUDIT_AREAS = [
   { value: "setting", label: "Reglas y módulos" },
   { value: "team", label: "Equipos" },
   { value: "disclaimer", label: "Aviso legal" },
+  { value: "custom_field", label: "Campos personalizados" },
 ] as const;
 
 const FIELD_LABELS: Record<string, string> = {
@@ -228,6 +229,25 @@ export function describeAction(
       return values("Editó {key} del pack", { key: text(d.key) });
     case "pack.item_reset":
       return values("Restableció {key} del pack", { key: text(d.key) });
+
+    case "custom_field.created":
+      return values("Creó el campo {field}", {
+        field: text(d.label) || text(entry.target_id),
+      });
+    case "custom_field.updated":
+      return values("Editó el campo {field}", {
+        field:
+          text(after.label && (after.label as Record<string, unknown>).en) ||
+          text(entry.target_id),
+      });
+    case "custom_field.archived":
+      return values("Archivó el campo {field}", {
+        field: text(entry.target_id),
+      });
+    case "custom_field.restored":
+      return values("Restauró el campo {field}", {
+        field: text(entry.target_id),
+      });
 
     case "disclaimer.updated":
       return values(

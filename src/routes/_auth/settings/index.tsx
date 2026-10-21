@@ -12,6 +12,7 @@ import {
   History,
   SlidersHorizontal,
   ScrollText,
+  TextCursorInput,
 } from "lucide-react";
 import { useMyPermissions } from "@/queries/useCrm";
 
@@ -84,6 +85,21 @@ function SettingsIndex() {
             onClick={() =>
               navigate({
                 to: "/settings/rules",
+                hash: (prevHash) => prevHash!,
+              })
+            }
+          />
+          {/* [crm] Custom fields (P1-06) */}
+          <SectionItem
+            title={t("Campos personalizados")}
+            aside={
+              <div className="p-[8px]">
+                <TextCursorInput className="w-[24px] h-[24px] text-muted-foreground" />
+              </div>
+            }
+            onClick={() =>
+              navigate({
+                to: "/settings/fields",
                 hash: (prevHash) => prevHash!,
               })
             }

@@ -7,7 +7,9 @@ merges can be resolved quickly. Our own code (no entry needed): `src/queries/use
 `src/routes/_auth/settings/roles/**`, `src/routes/_auth/settings/activity/**`,
 `src/routes/auth.confirm.tsx`, `src/routes/_auth/settings/rules/**`,
 `src/components/SettingEditor.tsx`, `src/utils/settings.ts`,
-`src/components/BusinessDetailsForm.tsx`, `src/routes/_auth/settings/disclaimer/**`, `docs/`.
+`src/components/BusinessDetailsForm.tsx`, `src/routes/_auth/settings/disclaimer/**`,
+`src/components/ContactFieldsForm.tsx`, `src/components/CustomFieldForm.tsx`,
+`src/routes/_auth/settings/fields/**`, `docs/`.
 Edits inside upstream files are marked with a `[crm]` comment.
 
 | Date | File | Change | Why | Task |
@@ -44,3 +46,9 @@ Edits inside upstream files are marked with a `[crm]` comment.
 | 2026-10-21 | `public/locales/en.json` | 41 new strings appended; `completo`/`corto` lowercase. | Business details, disclaimer page, activity sentences. | P1-07 |
 | 2026-10-21 | `src/routeTree.gen.ts` | Regenerated: adds `/settings/disclaimer`. | New route. | P1-07 |
 | 2026-10-21 | `src/supabase/db_types.ts` | Re-copied from the API (business details, disclaimers). | Types. | P1-07 |
+| 2026-10-21 | `src/routes/_auth/contacts/$addressId.tsx` | Adds the `ContactFieldsForm` (Details) section; the contact form gets `grow-0` so Details follows it. | Custom field values on the contact page. | P1-06 |
+| 2026-10-21 | `src/routes/_auth/settings/index.tsx` | "Custom fields" entry. | Field definitions screen. | P1-06 |
+| 2026-10-21 | `src/queries/queryKeys.ts` | `crm.customFields`, `crm.contactByAddress` keys. | Cache keys. | P1-06 |
+| 2026-10-21 | `public/locales/en.json` | 38 new strings appended. | Custom fields screens, contact details, activity sentences. | P1-06 |
+| 2026-10-21 | `src/routeTree.gen.ts` | Regenerated: adds `/settings/fields`, `/settings/fields/new`, `/settings/fields/$fieldId`. | New routes. | P1-06 |
+| 2026-10-21 | `src/supabase/db_types.ts` | Re-copied from the API (contacts, custom fields). | Types. | P1-06 |

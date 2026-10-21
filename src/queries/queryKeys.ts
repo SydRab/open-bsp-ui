@@ -92,6 +92,10 @@ export const queryKeys = {
         locale,
         text,
       ] as const,
+    customFields: (orgId: NullableId) =>
+      ["crm", orgId, "custom_fields"] as const,
+    contactByAddress: (orgId: NullableId, service: string, address: string) =>
+      ["crm", orgId, "contact", service, address] as const,
     disclaimerTemplates: (orgId: NullableId) =>
       ["crm", orgId, "disclaimer_templates"] as const,
     auditLog: (

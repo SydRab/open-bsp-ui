@@ -10,7 +10,7 @@ import {
 import { FunctionsHttpError } from "@supabase/supabase-js";
 import { invokeFunction, supabase } from "@/supabase/client";
 import useBoundStore from "@/stores/useBoundStore";
-import type { Json } from "@/supabase/db_types";
+import type { Database, Json } from "@/supabase/db_types";
 import { queryKeys } from "./queryKeys";
 
 const crm = () => supabase.schema("crm");
@@ -711,5 +711,199 @@ export function useDisclaimerTemplateCount() {
           (i.value as { attach_disclaimer?: boolean } | null)
             ?.attach_disclaimer === true,
       ).length,
+  });
+}
+
+// Custom fields and person-level contacts (P1-06) -----------------------------------
+
+export type FieldType =
+  | "text"
+  | "long_text"
+  | "number"
+  | "date"
+  | "boolean"
+  | "select"
+  | "multi_select"
+  | "email"
+  | "phone"
+  | "url";
+
+export type Localized = { en: string; hi?: string };
+
+export type FieldOption = {
+  value: string;
+  label: Localized;
+  archived?: boolean;
+};
+
+export type FieldDefinition = {
+  key: string;
+  entity: "contact" | "deal";
+  type: FieldType;
+  label: Localized;
+  required?: boolean;
+  archived?: boolean;
+  options?: FieldOption[];
+};
+
+export type CustomField = {
+  id: string;
+  key: string;
+  definition: FieldDefinition;
+  /** Comes from the pack (false = the organization's own field). */
+  fromPack: boolean;
+  sortOrder: number;
+};
+
+/** The organization's custom field definitions (all entities), in order. */
+export function useCustomFields() {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useQuery({
+    queryKey: queryKeys.crm.customFields(orgId),
+    queryFn: async () =>
+      await crm()
+        .from("organization_pack_items")
+        .select("id, item_key, value, pack_value, sort_order")
+        .eq("organization_id", orgId!)
+        .eq("kind", "custom_field")
+        .order("sort_order")
+        .throwOnError(),
+    enabled: !!orgId,
+    select: (data): CustomField[] =>
+      data.data.map((item) => ({
+        id: item.id,
+        key: item.item_key,
+        definition: item.value as unknown as FieldDefinition,
+        fromPack: item.pack_value !== null,
+        sortOrder: item.sort_order,
+      })),
+  });
+}
+
+export function useCreateCustomField() {
+  const queryClient = useQueryClient();
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useMutation({
+    mutationFn: async (f: FieldDefinition) => {
+      if (!orgId) throw new Error("No active organization");
+      await crm()
+        .rpc("create_custom_field", {
+          p_organization_id: orgId,
+          p_entity: f.entity,
+          p_key: f.key,
+          p_type: f.type,
+          p_label: f.label as unknown as Json,
+          p_options: (f.options ?? []) as unknown as Json,
+          p_required: f.required ?? false,
+        })
+        .throwOnError();
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.customFields(orgId),
+      });
+    },
+  });
+}
+
+export function useUpdateCustomField() {
+  const queryClient = useQueryClient();
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useMutation({
+    mutationFn: async (f: { id: string } & FieldDefinition) => {
+      await crm()
+        .rpc("update_custom_field", {
+          p_field_id: f.id,
+          p_label: f.label as unknown as Json,
+          p_options: (f.options ?? []) as unknown as Json,
+          p_required: f.required ?? false,
+        })
+        .throwOnError();
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.customFields(orgId),
+      });
+    },
+  });
+}
+
+export function useArchiveCustomField() {
+  const queryClient = useQueryClient();
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useMutation({
+    mutationFn: async (f: { id: string; archived: boolean }) => {
+      await crm()
+        .rpc("archive_custom_field", {
+          p_field_id: f.id,
+          p_archived: f.archived,
+        })
+        .throwOnError();
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.customFields(orgId),
+      });
+    },
+  });
+}
+
+export type CrmContact = {
+  id: string;
+  display_name: string | null;
+  custom_fields: Record<string, unknown>;
+};
+
+/** The person behind one address (null when not visible or not linked). */
+export function useContactByAddress(service: string, address: string) {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useQuery({
+    queryKey: queryKeys.crm.contactByAddress(orgId, service, address),
+    queryFn: async () => {
+      const { data } = await crm()
+        .from("contact_addresses")
+        .select("contact_id")
+        .eq("organization_id", orgId!)
+        .eq("service", service as Database["public"]["Enums"]["service"])
+        .eq("address", address)
+        .maybeSingle()
+        .throwOnError();
+      if (!data) return null;
+      const { data: contact } = await crm()
+        .from("contacts")
+        .select("id, display_name, custom_fields")
+        .eq("id", data.contact_id)
+        .maybeSingle()
+        .throwOnError();
+      return contact as CrmContact | null;
+    },
+    enabled: !!orgId && !!address,
+  });
+}
+
+/** Saves the contact form's field values (null clears a field). */
+export function useSaveContactFields() {
+  const queryClient = useQueryClient();
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useMutation({
+    mutationFn: async (c: { id: string; values: Record<string, unknown> }) => {
+      await crm()
+        .rpc("set_contact_fields", {
+          p_contact_id: c.id,
+          p_values: c.values as Json,
+        })
+        .throwOnError();
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: ["crm", orgId, "contact"],
+      });
+    },
   });
 }
