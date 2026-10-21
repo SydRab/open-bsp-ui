@@ -23,6 +23,10 @@ import { useOrganizations } from "@/queries/useOrganizations";
 // [crm] Super-admin console (P1-10): a separate axis from tenant roles, so
 // this is its own hook rather than useMyPermissions/can().
 import { useIsPlatformAdmin } from "@/queries/useAdmin";
+// [crm] Permission-aware navigation (P1-11): hide a section entirely rather
+// than show it disabled — there is nothing useful to do there without the
+// permission, unlike a single gated action.
+import { useMyPermissions } from "@/queries/useCrm";
 
 export default function Menu() {
   const user = useBoundStore((state) => state.ui.user);
@@ -38,6 +42,7 @@ export default function Menu() {
 
   const { data: organizations } = useOrganizations();
   const { data: isPlatformAdmin } = useIsPlatformAdmin();
+  const { can } = useMyPermissions();
 
   const {
     translate: t,
@@ -59,54 +64,64 @@ export default function Menu() {
       {/* Upper section */}
       <div className="flex flex-col items-center">
         {/* Conversations button */}
-        <LinkButton
-          to="/conversations"
-          title={t("Mensajes")}
-          isActive={pathname.startsWith("/conversations")}
-          className="mt-[10px]"
-        >
-          <MessageSquareText className="w-[24px] h-[24px] stroke-[2]" />
-        </LinkButton>
+        {can("conversations.view") && (
+          <LinkButton
+            to="/conversations"
+            title={t("Mensajes")}
+            isActive={pathname.startsWith("/conversations")}
+            className="mt-[10px]"
+          >
+            <MessageSquareText className="w-[24px] h-[24px] stroke-[2]" />
+          </LinkButton>
+        )}
 
         {/* Agents button */}
-        <LinkButton
-          to="/agents"
-          title={t("Agentes")}
-          isActive={pathname.startsWith("/agents")}
-          className="mt-[10px]"
-        >
-          <Bot className="w-[24px] h-[24px] stroke-[2]" />
-        </LinkButton>
+        {can("ai_agents.manage") && (
+          <LinkButton
+            to="/agents"
+            title={t("Agentes")}
+            isActive={pathname.startsWith("/agents")}
+            className="mt-[10px]"
+          >
+            <Bot className="w-[24px] h-[24px] stroke-[2]" />
+          </LinkButton>
+        )}
 
         {/* Contacts button */}
-        <LinkButton
-          to="/contacts"
-          title={t("Contactos")}
-          isActive={pathname.startsWith("/contacts")}
-          className="mt-[10px]"
-        >
-          <NotebookTabs className="w-[24px] h-[24px] stroke-[2]" />
-        </LinkButton>
+        {can("contacts.view") && (
+          <LinkButton
+            to="/contacts"
+            title={t("Contactos")}
+            isActive={pathname.startsWith("/contacts")}
+            className="mt-[10px]"
+          >
+            <NotebookTabs className="w-[24px] h-[24px] stroke-[2]" />
+          </LinkButton>
+        )}
 
         {/* Integrations button */}
-        <LinkButton
-          to="/integrations"
-          title={t("Integraciones")}
-          isActive={pathname.startsWith("/integrations")}
-          className="mt-[10px]"
-        >
-          <Unplug className="w-[24px] h-[24px] stroke-[2]" />
-        </LinkButton>
+        {can("integrations.manage") && (
+          <LinkButton
+            to="/integrations"
+            title={t("Integraciones")}
+            isActive={pathname.startsWith("/integrations")}
+            className="mt-[10px]"
+          >
+            <Unplug className="w-[24px] h-[24px] stroke-[2]" />
+          </LinkButton>
+        )}
 
         {/* Stats button */}
-        <LinkButton
-          to="/stats"
-          title={t("Estadísticas")}
-          isActive={pathname.startsWith("/stats")}
-          className="mt-[10px]"
-        >
-          <BarChart3 className="w-[24px] h-[24px] stroke-[2]" />
-        </LinkButton>
+        {can("reports.view") && (
+          <LinkButton
+            to="/stats"
+            title={t("Estadísticas")}
+            isActive={pathname.startsWith("/stats")}
+            className="mt-[10px]"
+          >
+            <BarChart3 className="w-[24px] h-[24px] stroke-[2]" />
+          </LinkButton>
+        )}
       </div>
 
       {/* Lower section */}
@@ -171,7 +186,7 @@ export default function Menu() {
                 key: "lang",
                 label: t("Idioma"),
                 icon: <Languages className="w-[16px] h-[16px]" />,
-                children: (["es", "en", "pt", "sw", "fr"] as const).map(
+                children: (["es", "en", "pt", "sw", "fr", "hi"] as const).map(
                   (lang) => ({
                     key: lang,
                     label: {
@@ -180,6 +195,7 @@ export default function Menu() {
                       pt: "Português",
                       sw: "Kiswahili",
                       fr: "Français",
+                      hi: "हिन्दी",
                     }[lang],
                     className:
                       lang === currentLanguage

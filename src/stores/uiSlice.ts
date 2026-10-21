@@ -56,9 +56,9 @@ export type TemplateDraft = {
   headVarValues: string[];
 };
 
-export type Language = "es" | "en" | "pt" | "sw" | "fr";
+export type Language = "es" | "en" | "pt" | "sw" | "fr" | "hi";
 
-const SUPPORTED_LANGUAGES: Language[] = ["es", "en", "pt", "sw", "fr"];
+const SUPPORTED_LANGUAGES: Language[] = ["es", "en", "pt", "sw", "fr", "hi"];
 
 export function detectDefaultLanguage(): Language {
   const candidates =
