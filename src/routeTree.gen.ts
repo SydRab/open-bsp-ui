@@ -23,6 +23,7 @@ import { Route as AuthIntegrationsIndexRouteImport } from './routes/_auth/integr
 import { Route as AuthConversationsIndexRouteImport } from './routes/_auth/conversations/index'
 import { Route as AuthContactsIndexRouteImport } from './routes/_auth/contacts/index'
 import { Route as AuthAgentsIndexRouteImport } from './routes/_auth/agents/index'
+import { Route as AuthAdminIndexRouteImport } from './routes/_auth/admin/index'
 import { Route as OnboardWhatsappTokenRouteImport } from './routes/onboard.whatsapp.$token'
 import { Route as OnboardInstagramCallbackRouteImport } from './routes/onboard.instagram.callback'
 import { Route as OnboardInstagramTokenRouteImport } from './routes/onboard.instagram.$token'
@@ -34,6 +35,10 @@ import { Route as AuthContactsNewRouteImport } from './routes/_auth/contacts/new
 import { Route as AuthContactsAddressIdRouteImport } from './routes/_auth/contacts/$addressId'
 import { Route as AuthAgentsNewRouteImport } from './routes/_auth/agents/new'
 import { Route as AuthAgentsAgentIdRouteImport } from './routes/_auth/agents/$agentId'
+import { Route as AuthAdminFeaturesRouteImport } from './routes/_auth/admin/features'
+import { Route as AuthAdminAuditRouteImport } from './routes/_auth/admin/audit'
+import { Route as AuthAdminAdminsRouteImport } from './routes/_auth/admin/admins'
+import { Route as AuthAdminOrgIdRouteImport } from './routes/_auth/admin/$orgId'
 import { Route as AuthSettingsWebhooksIndexRouteImport } from './routes/_auth/settings/webhooks/index'
 import { Route as AuthSettingsRulesIndexRouteImport } from './routes/_auth/settings/rules/index'
 import { Route as AuthSettingsRolesIndexRouteImport } from './routes/_auth/settings/roles/index'
@@ -142,6 +147,11 @@ const AuthAgentsIndexRoute = AuthAgentsIndexRouteImport.update({
   path: '/agents/',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthAdminIndexRoute = AuthAdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => AuthRoute,
+} as any)
 const OnboardWhatsappTokenRoute = OnboardWhatsappTokenRouteImport.update({
   id: '/onboard/whatsapp/$token',
   path: '/onboard/whatsapp/$token',
@@ -197,6 +207,26 @@ const AuthAgentsNewRoute = AuthAgentsNewRouteImport.update({
 const AuthAgentsAgentIdRoute = AuthAgentsAgentIdRouteImport.update({
   id: '/agents/$agentId',
   path: '/agents/$agentId',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthAdminFeaturesRoute = AuthAdminFeaturesRouteImport.update({
+  id: '/admin/features',
+  path: '/admin/features',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthAdminAuditRoute = AuthAdminAuditRouteImport.update({
+  id: '/admin/audit',
+  path: '/admin/audit',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthAdminAdminsRoute = AuthAdminAdminsRouteImport.update({
+  id: '/admin/admins',
+  path: '/admin/admins',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthAdminOrgIdRoute = AuthAdminOrgIdRouteImport.update({
+  id: '/admin/$orgId',
+  path: '/admin/$orgId',
   getParentRoute: () => AuthRoute,
 } as any)
 const AuthSettingsWebhooksIndexRoute =
@@ -427,6 +457,10 @@ export interface FileRoutesByFullPath {
   '/oauth/consent': typeof OauthConsentRoute
   '/oauth/instagram': typeof OauthInstagramRoute
   '/': typeof AuthIndexRoute
+  '/admin/$orgId': typeof AuthAdminOrgIdRoute
+  '/admin/admins': typeof AuthAdminAdminsRoute
+  '/admin/audit': typeof AuthAdminAuditRoute
+  '/admin/features': typeof AuthAdminFeaturesRoute
   '/agents/$agentId': typeof AuthAgentsAgentIdRoute
   '/agents/new': typeof AuthAgentsNewRoute
   '/contacts/$addressId': typeof AuthContactsAddressIdRoute
@@ -438,6 +472,7 @@ export interface FileRoutesByFullPath {
   '/onboard/instagram/$token': typeof OnboardInstagramTokenRoute
   '/onboard/instagram/callback': typeof OnboardInstagramCallbackRoute
   '/onboard/whatsapp/$token': typeof OnboardWhatsappTokenRoute
+  '/admin': typeof AuthAdminIndexRoute
   '/agents': typeof AuthAgentsIndexRoute
   '/contacts': typeof AuthContactsIndexRoute
   '/conversations': typeof AuthConversationsIndexRoute
@@ -490,6 +525,10 @@ export interface FileRoutesByTo {
   '/oauth/consent': typeof OauthConsentRoute
   '/oauth/instagram': typeof OauthInstagramRoute
   '/': typeof AuthIndexRoute
+  '/admin/$orgId': typeof AuthAdminOrgIdRoute
+  '/admin/admins': typeof AuthAdminAdminsRoute
+  '/admin/audit': typeof AuthAdminAuditRoute
+  '/admin/features': typeof AuthAdminFeaturesRoute
   '/agents/$agentId': typeof AuthAgentsAgentIdRoute
   '/agents/new': typeof AuthAgentsNewRoute
   '/contacts/$addressId': typeof AuthContactsAddressIdRoute
@@ -501,6 +540,7 @@ export interface FileRoutesByTo {
   '/onboard/instagram/$token': typeof OnboardInstagramTokenRoute
   '/onboard/instagram/callback': typeof OnboardInstagramCallbackRoute
   '/onboard/whatsapp/$token': typeof OnboardWhatsappTokenRoute
+  '/admin': typeof AuthAdminIndexRoute
   '/agents': typeof AuthAgentsIndexRoute
   '/contacts': typeof AuthContactsIndexRoute
   '/conversations': typeof AuthConversationsIndexRoute
@@ -556,6 +596,10 @@ export interface FileRoutesById {
   '/oauth/consent': typeof OauthConsentRoute
   '/oauth/instagram': typeof OauthInstagramRoute
   '/_auth/': typeof AuthIndexRoute
+  '/_auth/admin/$orgId': typeof AuthAdminOrgIdRoute
+  '/_auth/admin/admins': typeof AuthAdminAdminsRoute
+  '/_auth/admin/audit': typeof AuthAdminAuditRoute
+  '/_auth/admin/features': typeof AuthAdminFeaturesRoute
   '/_auth/agents/$agentId': typeof AuthAgentsAgentIdRoute
   '/_auth/agents/new': typeof AuthAgentsNewRoute
   '/_auth/contacts/$addressId': typeof AuthContactsAddressIdRoute
@@ -567,6 +611,7 @@ export interface FileRoutesById {
   '/onboard/instagram/$token': typeof OnboardInstagramTokenRoute
   '/onboard/instagram/callback': typeof OnboardInstagramCallbackRoute
   '/onboard/whatsapp/$token': typeof OnboardWhatsappTokenRoute
+  '/_auth/admin/': typeof AuthAdminIndexRoute
   '/_auth/agents/': typeof AuthAgentsIndexRoute
   '/_auth/contacts/': typeof AuthContactsIndexRoute
   '/_auth/conversations/': typeof AuthConversationsIndexRoute
@@ -622,6 +667,10 @@ export interface FileRouteTypes {
     | '/oauth/consent'
     | '/oauth/instagram'
     | '/'
+    | '/admin/$orgId'
+    | '/admin/admins'
+    | '/admin/audit'
+    | '/admin/features'
     | '/agents/$agentId'
     | '/agents/new'
     | '/contacts/$addressId'
@@ -633,6 +682,7 @@ export interface FileRouteTypes {
     | '/onboard/instagram/$token'
     | '/onboard/instagram/callback'
     | '/onboard/whatsapp/$token'
+    | '/admin'
     | '/agents'
     | '/contacts'
     | '/conversations'
@@ -685,6 +735,10 @@ export interface FileRouteTypes {
     | '/oauth/consent'
     | '/oauth/instagram'
     | '/'
+    | '/admin/$orgId'
+    | '/admin/admins'
+    | '/admin/audit'
+    | '/admin/features'
     | '/agents/$agentId'
     | '/agents/new'
     | '/contacts/$addressId'
@@ -696,6 +750,7 @@ export interface FileRouteTypes {
     | '/onboard/instagram/$token'
     | '/onboard/instagram/callback'
     | '/onboard/whatsapp/$token'
+    | '/admin'
     | '/agents'
     | '/contacts'
     | '/conversations'
@@ -750,6 +805,10 @@ export interface FileRouteTypes {
     | '/oauth/consent'
     | '/oauth/instagram'
     | '/_auth/'
+    | '/_auth/admin/$orgId'
+    | '/_auth/admin/admins'
+    | '/_auth/admin/audit'
+    | '/_auth/admin/features'
     | '/_auth/agents/$agentId'
     | '/_auth/agents/new'
     | '/_auth/contacts/$addressId'
@@ -761,6 +820,7 @@ export interface FileRouteTypes {
     | '/onboard/instagram/$token'
     | '/onboard/instagram/callback'
     | '/onboard/whatsapp/$token'
+    | '/_auth/admin/'
     | '/_auth/agents/'
     | '/_auth/contacts/'
     | '/_auth/conversations/'
@@ -919,6 +979,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthAgentsIndexRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/admin/': {
+      id: '/_auth/admin/'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthAdminIndexRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/onboard/whatsapp/$token': {
       id: '/onboard/whatsapp/$token'
       path: '/onboard/whatsapp/$token'
@@ -994,6 +1061,34 @@ declare module '@tanstack/react-router' {
       path: '/agents/$agentId'
       fullPath: '/agents/$agentId'
       preLoaderRoute: typeof AuthAgentsAgentIdRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/admin/features': {
+      id: '/_auth/admin/features'
+      path: '/admin/features'
+      fullPath: '/admin/features'
+      preLoaderRoute: typeof AuthAdminFeaturesRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/admin/audit': {
+      id: '/_auth/admin/audit'
+      path: '/admin/audit'
+      fullPath: '/admin/audit'
+      preLoaderRoute: typeof AuthAdminAuditRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/admin/admins': {
+      id: '/_auth/admin/admins'
+      path: '/admin/admins'
+      fullPath: '/admin/admins'
+      preLoaderRoute: typeof AuthAdminAdminsRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/admin/$orgId': {
+      id: '/_auth/admin/$orgId'
+      path: '/admin/$orgId'
+      fullPath: '/admin/$orgId'
+      preLoaderRoute: typeof AuthAdminOrgIdRouteImport
       parentRoute: typeof AuthRoute
     }
     '/_auth/settings/webhooks/': {
@@ -1284,12 +1379,17 @@ const AuthStatsRouteWithChildren = AuthStatsRoute._addFileChildren(
 interface AuthRouteChildren {
   AuthStatsRoute: typeof AuthStatsRouteWithChildren
   AuthIndexRoute: typeof AuthIndexRoute
+  AuthAdminOrgIdRoute: typeof AuthAdminOrgIdRoute
+  AuthAdminAdminsRoute: typeof AuthAdminAdminsRoute
+  AuthAdminAuditRoute: typeof AuthAdminAuditRoute
+  AuthAdminFeaturesRoute: typeof AuthAdminFeaturesRoute
   AuthAgentsAgentIdRoute: typeof AuthAgentsAgentIdRoute
   AuthAgentsNewRoute: typeof AuthAgentsNewRoute
   AuthContactsAddressIdRoute: typeof AuthContactsAddressIdRoute
   AuthContactsNewRoute: typeof AuthContactsNewRoute
   AuthConversationsNewRoute: typeof AuthConversationsNewRoute
   AuthIntegrationsMediaPreprocessingRoute: typeof AuthIntegrationsMediaPreprocessingRoute
+  AuthAdminIndexRoute: typeof AuthAdminIndexRoute
   AuthAgentsIndexRoute: typeof AuthAgentsIndexRoute
   AuthContactsIndexRoute: typeof AuthContactsIndexRoute
   AuthConversationsIndexRoute: typeof AuthConversationsIndexRoute
@@ -1338,6 +1438,10 @@ interface AuthRouteChildren {
 const AuthRouteChildren: AuthRouteChildren = {
   AuthStatsRoute: AuthStatsRouteWithChildren,
   AuthIndexRoute: AuthIndexRoute,
+  AuthAdminOrgIdRoute: AuthAdminOrgIdRoute,
+  AuthAdminAdminsRoute: AuthAdminAdminsRoute,
+  AuthAdminAuditRoute: AuthAdminAuditRoute,
+  AuthAdminFeaturesRoute: AuthAdminFeaturesRoute,
   AuthAgentsAgentIdRoute: AuthAgentsAgentIdRoute,
   AuthAgentsNewRoute: AuthAgentsNewRoute,
   AuthContactsAddressIdRoute: AuthContactsAddressIdRoute,
@@ -1345,6 +1449,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthConversationsNewRoute: AuthConversationsNewRoute,
   AuthIntegrationsMediaPreprocessingRoute:
     AuthIntegrationsMediaPreprocessingRoute,
+  AuthAdminIndexRoute: AuthAdminIndexRoute,
   AuthAgentsIndexRoute: AuthAgentsIndexRoute,
   AuthContactsIndexRoute: AuthContactsIndexRoute,
   AuthConversationsIndexRoute: AuthConversationsIndexRoute,

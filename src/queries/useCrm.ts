@@ -928,8 +928,8 @@ export type Feature = {
  * Every feature with its effective value for the active organization: what
  * the plan includes, what an override changed, and which tier would unlock
  * something the plan does not have. Overrides and the kill switch are
- * platform-only (crm.set_organization_feature, crm.set_feature_kill_switch);
- * there is no UI for them yet (P1-10).
+ * platform-only (crm.set_organization_feature, crm.set_feature_kill_switch) —
+ * managed from the super-admin console (P1-10), not here.
  */
 export function useFeatures() {
   const orgId = useBoundStore((state) => state.ui.activeOrgId);
@@ -943,5 +943,21 @@ export function useFeatures() {
       return data as unknown as Feature[];
     },
     enabled: !!orgId,
+  });
+}
+
+/** The platform's feature catalog (not resolved for any one organization) —
+ * what the super-admin console's kill switches act on (P1-10). */
+export function useFeatureCatalog() {
+  return useQuery({
+    queryKey: queryKeys.crm.featureCatalog(),
+    queryFn: async () =>
+      await crm()
+        .from("features")
+        .select("key, category, label, description, kill_switch")
+        .order("sort_order")
+        .throwOnError(),
+    select: (data) => data.data,
+    staleTime: Infinity,
   });
 }

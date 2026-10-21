@@ -99,13 +99,30 @@ export const queryKeys = {
     disclaimerTemplates: (orgId: NullableId) =>
       ["crm", orgId, "disclaimer_templates"] as const,
     features: (orgId: NullableId) => ["crm", orgId, "features"] as const,
+    featureCatalog: () => ["crm", "feature_catalog"] as const,
     auditLog: (
       orgId: NullableId,
       filters: { area: string; actor: string; days: string },
     ) => ["crm", orgId, "audit_log", filters] as const,
   },
+  // [crm] Super-admin console (P1-10) — platform-wide, not scoped to the
+  // active org, so no orgId prefix (except tenant-specific lookups).
+  admin: {
+    all: () => ["admin"] as const,
+    isPlatformAdmin: () => ["admin", "is_platform_admin"] as const,
+    tenants: (search: string) => ["admin", "tenants", search] as const,
+    supportAccess: (orgId: NullableId) =>
+      ["admin", "support_access", orgId ?? null] as const,
+    tenantConfig: (orgId: NullableId) =>
+      ["admin", "tenant_config", orgId] as const,
+    tenantAuditLog: (orgId: NullableId) =>
+      ["admin", "tenant_audit_log", orgId] as const,
+    platformAdmins: () => ["admin", "platform_admins"] as const,
+    platformAuditLog: () => ["admin", "platform_audit_log"] as const,
+  },
   billing: {
     products: () => ["billing", "products"] as const,
+    tiers: () => ["billing", "tiers"] as const,
     usage: (orgId: NullableId, interval: string) =>
       [orgId, "billing", "usage", interval] as const,
     subscription: (orgId: NullableId) =>

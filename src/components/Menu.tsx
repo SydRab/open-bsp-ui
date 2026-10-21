@@ -12,6 +12,7 @@ import {
   Languages,
   Plus,
   NotebookTabs,
+  ShieldUser,
 } from "lucide-react";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { LinkButton } from "./LinkButton";
@@ -19,6 +20,9 @@ import { resetAuthorizedCache } from "@/utils/IdbUtils";
 import { useCurrentAgent } from "@/queries/useAgents";
 import { Dropdown } from "antd";
 import { useOrganizations } from "@/queries/useOrganizations";
+// [crm] Super-admin console (P1-10): a separate axis from tenant roles, so
+// this is its own hook rather than useMyPermissions/can().
+import { useIsPlatformAdmin } from "@/queries/useAdmin";
 
 export default function Menu() {
   const user = useBoundStore((state) => state.ui.user);
@@ -33,6 +37,7 @@ export default function Menu() {
   const activeOrgId = useBoundStore((state) => state.ui.activeOrgId);
 
   const { data: organizations } = useOrganizations();
+  const { data: isPlatformAdmin } = useIsPlatformAdmin();
 
   const {
     translate: t,
@@ -106,6 +111,17 @@ export default function Menu() {
 
       {/* Lower section */}
       <div className="flex flex-col items-center">
+        {/* [crm] Super-admin console (P1-10) */}
+        {isPlatformAdmin && (
+          <LinkButton
+            to="/admin"
+            title={t("Panel de administración")}
+            isActive={pathname.startsWith("/admin")}
+          >
+            <ShieldUser className="w-[20px] h-[20px] stroke-[2]" />
+          </LinkButton>
+        )}
+
         {/* Settings button */}
         <LinkButton
           to="/settings"

@@ -18,6 +18,24 @@ export function useProducts() {
   });
 }
 
+/** Every active billing tier — a small global catalog, not org-scoped. Used
+ * by the super-admin console's tier-change picker (P1-10). */
+export function useTiers() {
+  return useQuery({
+    queryKey: queryKeys.billing.tiers(),
+    queryFn: async () =>
+      await supabase
+        .schema("billing")
+        .from("tiers")
+        .select()
+        .eq("active", true)
+        .order("level")
+        .throwOnError(),
+    staleTime: 1000 * 60 * 60,
+    select: (data) => data.data,
+  });
+}
+
 export function useUsage(interval: string) {
   const orgId = useBoundStore((state) => state.ui.activeOrgId);
 
