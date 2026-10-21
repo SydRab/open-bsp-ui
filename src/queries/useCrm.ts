@@ -907,3 +907,41 @@ export function useSaveContactFields() {
     },
   });
 }
+
+// Feature flags and plan entitlements (P1-09) ----------------------------------------
+
+export type Feature = {
+  key: string;
+  category: string;
+  label: string;
+  description: string | null;
+  enabled: boolean;
+  /** Why it resolved this way. */
+  source: "kill_switch" | "override" | "tier" | "unrestricted";
+  override_reason: string | null;
+  override_expires_at: string | null;
+  /** The lowest tier that includes it, when not already enabled. */
+  unlocks_at_tier: string | null;
+};
+
+/**
+ * Every feature with its effective value for the active organization: what
+ * the plan includes, what an override changed, and which tier would unlock
+ * something the plan does not have. Overrides and the kill switch are
+ * platform-only (crm.set_organization_feature, crm.set_feature_kill_switch);
+ * there is no UI for them yet (P1-10).
+ */
+export function useFeatures() {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useQuery({
+    queryKey: queryKeys.crm.features(orgId),
+    queryFn: async () => {
+      const { data } = await crm()
+        .rpc("get_features", { p_organization_id: orgId! })
+        .throwOnError();
+      return data as unknown as Feature[];
+    },
+    enabled: !!orgId,
+  });
+}

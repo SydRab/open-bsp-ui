@@ -98,6 +98,7 @@ export const queryKeys = {
       ["crm", orgId, "contact", service, address] as const,
     disclaimerTemplates: (orgId: NullableId) =>
       ["crm", orgId, "disclaimer_templates"] as const,
+    features: (orgId: NullableId) => ["crm", orgId, "features"] as const,
     auditLog: (
       orgId: NullableId,
       filters: { area: string; actor: string; days: string },

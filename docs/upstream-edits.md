@@ -9,7 +9,7 @@ merges can be resolved quickly. Our own code (no entry needed): `src/queries/use
 `src/components/SettingEditor.tsx`, `src/utils/settings.ts`,
 `src/components/BusinessDetailsForm.tsx`, `src/routes/_auth/settings/disclaimer/**`,
 `src/components/ContactFieldsForm.tsx`, `src/components/CustomFieldForm.tsx`,
-`src/routes/_auth/settings/fields/**`, `docs/`.
+`src/routes/_auth/settings/fields/**`, `src/routes/_auth/settings/plan/**`, `docs/`.
 Edits inside upstream files are marked with a `[crm]` comment.
 
 | Date | File | Change | Why | Task |
@@ -52,3 +52,10 @@ Edits inside upstream files are marked with a `[crm]` comment.
 | 2026-10-21 | `public/locales/en.json` | 38 new strings appended. | Custom fields screens, contact details, activity sentences. | P1-06 |
 | 2026-10-21 | `src/routeTree.gen.ts` | Regenerated: adds `/settings/fields`, `/settings/fields/new`, `/settings/fields/$fieldId`. | New routes. | P1-06 |
 | 2026-10-21 | `src/supabase/db_types.ts` | Re-copied from the API (contacts, custom fields). | Types. | P1-06 |
+| 2026-10-21 | `src/routes/_auth/settings/index.tsx` | "Plan & features" entry. | Plan & features screen. | P1-09 |
+| 2026-10-21 | `src/routes/_auth/settings/rules/index.tsx` | A module setting not in the plan (`crm.get_features`) is disabled and labeled "Not in your plan", regardless of `can_edit`; the chip replaces the normal source tag. | Rules & modules locks non-entitled modules. | P1-09 |
+| 2026-10-21 | `src/routes/_auth/settings/activity/index.tsx` | `featureNames` lookup added to `AuditLookups`. | Activity sentences name the feature. | P1-09 |
+| 2026-10-21 | `src/queries/queryKeys.ts` | `crm.features` key. | Cache key. | P1-09 |
+| 2026-10-21 | `public/locales/en.json` | 18 new strings appended. | Plan & features screen, locked modules, activity sentences. | P1-09 |
+| 2026-10-21 | `src/routeTree.gen.ts` | Regenerated: adds `/settings/plan`. | New route. | P1-09 |
+| 2026-10-21 | `src/supabase/db_types.ts` | Re-copied from the API (feature flags, `billing.tiers` Pro row, `members` product). | Types. | P1-09 |

@@ -10,7 +10,12 @@ import SectionHeader from "@/components/SectionHeader";
 import SettingEditor from "@/components/SettingEditor";
 import Spinner from "@/components/Spinner";
 import { useTranslation } from "@/hooks/useTranslation";
-import { type SettingRow, useSaveSetting, useSettings } from "@/queries/useCrm";
+import {
+  type SettingRow,
+  useFeatures,
+  useSaveSetting,
+  useSettings,
+} from "@/queries/useCrm";
 
 export const Route = createFileRoute("/_auth/settings/rules/")({
   component: Rules,
@@ -34,7 +39,16 @@ const SOURCE_LABELS: Record<SettingRow["source"], string> = {
 function Rules() {
   const { translate: t } = useTranslation();
   const { data: settings, isLoading } = useSettings();
+  const { data: features } = useFeatures();
   const save = useSaveSetting();
+
+  // A module not in the plan (P1-09) stays off regardless of can_edit: the
+  // database already refuses crm.set_setting for it, this just explains why.
+  const planLocked = new Map(
+    (features ?? [])
+      .filter((f) => !f.enabled)
+      .map((f) => [`modules.${f.key}`, f.unlocks_at_tier]),
+  );
 
   const known = new Set(CATEGORIES.map((c) => c.key));
   const groups = [
@@ -68,6 +82,8 @@ function Rules() {
                 <SettingBlock
                   key={setting.key}
                   setting={setting}
+                  // undefined when the plan includes it (or it isn't a module).
+                  planUnlocksAtTier={planLocked.get(setting.key)}
                   saving={save.isPending && save.variables?.key === setting.key}
                   // Shown under the setting that was saved, until the next save.
                   error={
@@ -88,26 +104,42 @@ function Rules() {
 
 function SettingBlock({
   setting,
+  planUnlocksAtTier,
   saving,
   error,
   onSave,
 }: {
   setting: SettingRow;
+  /** Set (to the tier that would include it, or null) when a module is not
+   * in the current plan; crm.set_setting already refuses turning it on. */
+  planUnlocksAtTier?: string | null;
   saving: boolean;
   error?: string;
   onSave: (value: unknown) => void;
 }) {
   const { translate: t } = useTranslation();
-  const disabled = !setting.can_edit;
+  const planLocked = planUnlocksAtTier !== undefined;
+  const disabled = !setting.can_edit || planLocked;
   const inline = setting.schema.type === "boolean";
 
   const meta = (
     <div className="flex flex-wrap items-center gap-[8px] text-[12px] text-muted-foreground">
-      <span className="rounded-full bg-accent px-[8px] py-[1px]">
-        {setting.is_locked
-          ? t("Fijado por la plataforma")
-          : t(SOURCE_LABELS[setting.source])}
-      </span>
+      {planLocked ? (
+        <span className="rounded-full bg-accent px-[8px] py-[1px]">
+          {planUnlocksAtTier
+            ? t("No incluido en tu plan (disponible en {tier})").replace(
+                "{tier}",
+                planUnlocksAtTier,
+              )
+            : t("No incluido en tu plan")}
+        </span>
+      ) : (
+        <span className="rounded-full bg-accent px-[8px] py-[1px]">
+          {setting.is_locked
+            ? t("Fijado por la plataforma")
+            : t(SOURCE_LABELS[setting.source])}
+        </span>
+      )}
       {setting.team_conflict && (
         <span className="text-destructive">
           {t(

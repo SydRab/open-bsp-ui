@@ -16,6 +16,7 @@ import { useCurrentAgents } from "@/queries/useAgents";
 import {
   type AuditFilters,
   useAuditLog,
+  useFeatures,
   useMyPermissions,
   useOrgProfile,
   usePermissionCatalog,
@@ -41,6 +42,7 @@ function ActivityLog() {
   const { data: roles } = useRoles();
   const { data: catalog } = usePermissionCatalog();
   const { data: settings } = useSettings();
+  const { data: features } = useFeatures();
   const { data: agents } = useCurrentAgents();
   const log = useAuditLog(filters, can("audit.view"));
 
@@ -48,6 +50,7 @@ function ActivityLog() {
     roleNames: new Map(roles?.map((r) => [r.key, r.name])),
     permissionNames: new Map(catalog?.map((p) => [p.key, p.description])),
     settingNames: new Map(settings?.map((s) => [s.key, s.label])),
+    featureNames: new Map(features?.map((f) => [f.key, f.label])),
   };
 
   // Shown in the organization's time zone, like everything scheduled.

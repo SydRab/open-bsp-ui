@@ -13,6 +13,8 @@ export type AuditLookups = {
   permissionNames: Map<string, string>;
   /** Setting key → label. */
   settingNames: Map<string, string>;
+  /** Feature key → label. */
+  featureNames: Map<string, string>;
 };
 
 /** The filter options of the Activity page: the part of the action before the dot. */
@@ -26,6 +28,7 @@ export const AUDIT_AREAS = [
   { value: "team", label: "Equipos" },
   { value: "disclaimer", label: "Aviso legal" },
   { value: "custom_field", label: "Campos personalizados" },
+  { value: "feature", label: "Plan y funciones" },
 ] as const;
 
 const FIELD_LABELS: Record<string, string> = {
@@ -247,6 +250,25 @@ export function describeAction(
     case "custom_field.restored":
       return values("Restauró el campo {field}", {
         field: text(entry.target_id),
+      });
+
+    case "feature.override_set": {
+      const name = t(
+        lookups.featureNames.get(entry.target_id ?? "") ??
+          text(entry.target_id),
+      );
+      return d.enabled
+        ? values("Activó {feature} para esta organización", { feature: name })
+        : values("Desactivó {feature} para esta organización", {
+            feature: name,
+          });
+    }
+    case "feature.override_cleared":
+      return values("Quitó la excepción de {feature}; se usa la del plan", {
+        feature: t(
+          lookups.featureNames.get(entry.target_id ?? "") ??
+            text(entry.target_id),
+        ),
       });
 
     case "disclaimer.updated":

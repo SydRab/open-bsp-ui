@@ -37,6 +37,7 @@ import { Route as AuthAgentsAgentIdRouteImport } from './routes/_auth/agents/$ag
 import { Route as AuthSettingsWebhooksIndexRouteImport } from './routes/_auth/settings/webhooks/index'
 import { Route as AuthSettingsRulesIndexRouteImport } from './routes/_auth/settings/rules/index'
 import { Route as AuthSettingsRolesIndexRouteImport } from './routes/_auth/settings/roles/index'
+import { Route as AuthSettingsPlanIndexRouteImport } from './routes/_auth/settings/plan/index'
 import { Route as AuthSettingsOrganizationIndexRouteImport } from './routes/_auth/settings/organization/index'
 import { Route as AuthSettingsMembersIndexRouteImport } from './routes/_auth/settings/members/index'
 import { Route as AuthSettingsFieldsIndexRouteImport } from './routes/_auth/settings/fields/index'
@@ -212,6 +213,11 @@ const AuthSettingsRulesIndexRoute = AuthSettingsRulesIndexRouteImport.update({
 const AuthSettingsRolesIndexRoute = AuthSettingsRolesIndexRouteImport.update({
   id: '/settings/roles/',
   path: '/settings/roles/',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthSettingsPlanIndexRoute = AuthSettingsPlanIndexRouteImport.update({
+  id: '/settings/plan/',
+  path: '/settings/plan/',
   getParentRoute: () => AuthRoute,
 } as any)
 const AuthSettingsOrganizationIndexRoute =
@@ -460,6 +466,7 @@ export interface FileRoutesByFullPath {
   '/settings/fields': typeof AuthSettingsFieldsIndexRoute
   '/settings/members': typeof AuthSettingsMembersIndexRoute
   '/settings/organization': typeof AuthSettingsOrganizationIndexRoute
+  '/settings/plan': typeof AuthSettingsPlanIndexRoute
   '/settings/roles': typeof AuthSettingsRolesIndexRoute
   '/settings/rules': typeof AuthSettingsRulesIndexRoute
   '/settings/webhooks': typeof AuthSettingsWebhooksIndexRoute
@@ -522,6 +529,7 @@ export interface FileRoutesByTo {
   '/settings/fields': typeof AuthSettingsFieldsIndexRoute
   '/settings/members': typeof AuthSettingsMembersIndexRoute
   '/settings/organization': typeof AuthSettingsOrganizationIndexRoute
+  '/settings/plan': typeof AuthSettingsPlanIndexRoute
   '/settings/roles': typeof AuthSettingsRolesIndexRoute
   '/settings/rules': typeof AuthSettingsRulesIndexRoute
   '/settings/webhooks': typeof AuthSettingsWebhooksIndexRoute
@@ -587,6 +595,7 @@ export interface FileRoutesById {
   '/_auth/settings/fields/': typeof AuthSettingsFieldsIndexRoute
   '/_auth/settings/members/': typeof AuthSettingsMembersIndexRoute
   '/_auth/settings/organization/': typeof AuthSettingsOrganizationIndexRoute
+  '/_auth/settings/plan/': typeof AuthSettingsPlanIndexRoute
   '/_auth/settings/roles/': typeof AuthSettingsRolesIndexRoute
   '/_auth/settings/rules/': typeof AuthSettingsRulesIndexRoute
   '/_auth/settings/webhooks/': typeof AuthSettingsWebhooksIndexRoute
@@ -652,6 +661,7 @@ export interface FileRouteTypes {
     | '/settings/fields'
     | '/settings/members'
     | '/settings/organization'
+    | '/settings/plan'
     | '/settings/roles'
     | '/settings/rules'
     | '/settings/webhooks'
@@ -714,6 +724,7 @@ export interface FileRouteTypes {
     | '/settings/fields'
     | '/settings/members'
     | '/settings/organization'
+    | '/settings/plan'
     | '/settings/roles'
     | '/settings/rules'
     | '/settings/webhooks'
@@ -778,6 +789,7 @@ export interface FileRouteTypes {
     | '/_auth/settings/fields/'
     | '/_auth/settings/members/'
     | '/_auth/settings/organization/'
+    | '/_auth/settings/plan/'
     | '/_auth/settings/roles/'
     | '/_auth/settings/rules/'
     | '/_auth/settings/webhooks/'
@@ -1003,6 +1015,13 @@ declare module '@tanstack/react-router' {
       path: '/settings/roles'
       fullPath: '/settings/roles'
       preLoaderRoute: typeof AuthSettingsRolesIndexRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/settings/plan/': {
+      id: '/_auth/settings/plan/'
+      path: '/settings/plan'
+      fullPath: '/settings/plan'
+      preLoaderRoute: typeof AuthSettingsPlanIndexRouteImport
       parentRoute: typeof AuthRoute
     }
     '/_auth/settings/organization/': {
@@ -1298,6 +1317,7 @@ interface AuthRouteChildren {
   AuthSettingsFieldsIndexRoute: typeof AuthSettingsFieldsIndexRoute
   AuthSettingsMembersIndexRoute: typeof AuthSettingsMembersIndexRoute
   AuthSettingsOrganizationIndexRoute: typeof AuthSettingsOrganizationIndexRoute
+  AuthSettingsPlanIndexRoute: typeof AuthSettingsPlanIndexRoute
   AuthSettingsRolesIndexRoute: typeof AuthSettingsRolesIndexRoute
   AuthSettingsRulesIndexRoute: typeof AuthSettingsRulesIndexRoute
   AuthSettingsWebhooksIndexRoute: typeof AuthSettingsWebhooksIndexRoute
@@ -1352,6 +1372,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthSettingsFieldsIndexRoute: AuthSettingsFieldsIndexRoute,
   AuthSettingsMembersIndexRoute: AuthSettingsMembersIndexRoute,
   AuthSettingsOrganizationIndexRoute: AuthSettingsOrganizationIndexRoute,
+  AuthSettingsPlanIndexRoute: AuthSettingsPlanIndexRoute,
   AuthSettingsRolesIndexRoute: AuthSettingsRolesIndexRoute,
   AuthSettingsRulesIndexRoute: AuthSettingsRulesIndexRoute,
   AuthSettingsWebhooksIndexRoute: AuthSettingsWebhooksIndexRoute,

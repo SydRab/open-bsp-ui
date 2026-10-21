@@ -13,6 +13,7 @@ import {
   SlidersHorizontal,
   ScrollText,
   TextCursorInput,
+  Gem,
 } from "lucide-react";
 import { useMyPermissions } from "@/queries/useCrm";
 
@@ -85,6 +86,21 @@ function SettingsIndex() {
             onClick={() =>
               navigate({
                 to: "/settings/rules",
+                hash: (prevHash) => prevHash!,
+              })
+            }
+          />
+          {/* [crm] Plan & features (P1-09) */}
+          <SectionItem
+            title={t("Plan y funciones")}
+            aside={
+              <div className="p-[8px]">
+                <Gem className="w-[24px] h-[24px] text-muted-foreground" />
+              </div>
+            }
+            onClick={() =>
+              navigate({
+                to: "/settings/plan",
                 hash: (prevHash) => prevHash!,
               })
             }
