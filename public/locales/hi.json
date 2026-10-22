@@ -696,5 +696,7 @@
   "Modo de prueba: no se abrirá Facebook ni se conectará un número real.": "परीक्षण मोड: इससे फ़ेसबुक नहीं खुलेगा और कोई वास्तविक नंबर कनेक्ट नहीं होगा।",
   "Simular conexión exitosa": "सफल कनेक्शन का अनुकरण करें",
   "Simular error de conexión": "कनेक्शन त्रुटि का अनुकरण करें",
-  "Conexión de prueba: no envía ni recibe mensajes reales. Conectá tu número real de WhatsApp una vez que se apruebe la verificación de Meta Business.": "परीक्षण कनेक्शन: यह वास्तविक मैसेज न तो भेजता है, न प्राप्त करता है। Meta Business सत्यापन स्वीकृत होने के बाद अपना वास्तविक WhatsApp नंबर कनेक्ट करें।"
+  "Conexión de prueba: no envía ni recibe mensajes reales. Conectá tu número real de WhatsApp una vez que se apruebe la verificación de Meta Business.": "परीक्षण कनेक्शन: यह वास्तविक मैसेज न तो भेजता है, न प्राप्त करता है। Meta Business सत्यापन स्वीकृत होने के बाद अपना वास्तविक WhatsApp नंबर कनेक्ट करें।",
+  "Reconectar": "फिर से कनेक्ट करें",
+  "El token de este número venció o ya no es válido. Reconectá el número para seguir enviando y recibiendo mensajes.": "इस नंबर का टोकन समाप्त हो गया है या अब मान्य नहीं है। मैसेज भेजना और प्राप्त करना जारी रखने के लिए नंबर को फिर से कनेक्ट करें।"
 }

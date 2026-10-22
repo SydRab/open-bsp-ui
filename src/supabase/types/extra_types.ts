@@ -57,6 +57,15 @@ export type WhatsAppOrganizationAddressExtra = {
   is_mock?: boolean;
   callback_url?: string | null;
   verify_token?: string | null;
+  // [crm] P2-03: which pipe-separated META_APP_ID entry issued this
+  // connection's token.
+  application_id?: string;
+  // [crm] P2-03: token health, checked daily. No refresh endpoint exists for
+  // this token type -- an invalid/expiring one is flagged, not
+  // auto-refreshed; recovery is re-running Embedded Signup.
+  token_checked_at?: string;
+  token_expires_at?: string | null;
+  needs_reauth?: string | null;
 };
 
 export type InstagramOrganizationAddressExtra = {

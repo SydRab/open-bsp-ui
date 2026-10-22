@@ -93,6 +93,28 @@ function WhatsAppDetails() {
             </p>
           </div>
         )}
+        {/* [crm] Needs-reconnect banner (P2-03): no refresh endpoint exists
+        for this token type, so the only fix is reconnecting. */}
+        {extra?.needs_reauth && (
+          <div className="instructions">
+            <p className="text-destructive font-medium">
+              {t(
+                "El token de este número venció o ya no es válido. Reconectá el número para seguir enviando y recibiendo mensajes.",
+              )}
+            </p>
+            <Button
+              className="secondary"
+              onClick={() =>
+                navigate({
+                  to: "/integrations/whatsapp/new",
+                  hash: (prevHash) => prevHash!,
+                })
+              }
+            >
+              {t("Reconectar")}
+            </Button>
+          </div>
+        )}
         <form>
           <label>
             <div className="label">{t("Nombre verificado")}</div>

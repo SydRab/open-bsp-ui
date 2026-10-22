@@ -89,3 +89,8 @@ Edits inside upstream files are marked with a `[crm]` comment.
 | 2026-10-22 | `public/locales/en.json`                           | 5 new strings appended. | Mock-mode UI text. | P2-02 |
 | 2026-10-22 | `public/locales/hi.json`                           | 5 new strings appended (parity with en.json, machine-translated per the existing P1-11 caveat). | Same. | P2-02 |
 | 2026-10-22 | `src/supabase/db_types.ts`                         | Re-copied from the API (`crm.set_whatsapp_access_token`, `crm.get_whatsapp_access_token`). | Types. | P2-02 |
+| 2026-10-23 | `src/routes/_auth/integrations/whatsapp/index.tsx` | "Reconectar" badge next to the status when `extra.needs_reauth` is set. | Visibility for tokens flagged by the daily health check. | P2-03 |
+| 2026-10-23 | `src/routes/_auth/integrations/whatsapp/$orgAddressId/index.tsx` | Banner + "Reconectar" button when `extra.needs_reauth` is set, linking to `/integrations/whatsapp/new`. | Same, with a direct path to fix it (no refresh endpoint exists, so reconnecting is the only remedy). | P2-03 |
+| 2026-10-23 | `src/supabase/types/extra_types.ts`                | `WhatsAppOrganizationAddressExtra` gains `application_id`, `token_checked_at`, `token_expires_at`, `needs_reauth`. Mirrors the API, no `@ui-divergence`. | Same Vault/health-check work. | P2-03 |
+| 2026-10-23 | `public/locales/en.json`                           | 2 new strings appended. | New UI text. | P2-03 |
+| 2026-10-23 | `public/locales/hi.json`                           | 2 new strings appended (parity). | Same. | P2-03 |

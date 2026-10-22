@@ -696,5 +696,7 @@
   "Modo de prueba: no se abrirá Facebook ni se conectará un número real.": "Test mode: this won't open Facebook or connect a real number.",
   "Simular conexión exitosa": "Simulate successful connection",
   "Simular error de conexión": "Simulate connection error",
-  "Conexión de prueba: no envía ni recibe mensajes reales. Conectá tu número real de WhatsApp una vez que se apruebe la verificación de Meta Business.": "Test connection: doesn't send or receive real messages. Connect your real WhatsApp number once Meta Business Verification is approved."
+  "Conexión de prueba: no envía ni recibe mensajes reales. Conectá tu número real de WhatsApp una vez que se apruebe la verificación de Meta Business.": "Test connection: doesn't send or receive real messages. Connect your real WhatsApp number once Meta Business Verification is approved.",
+  "Reconectar": "Reconnect",
+  "El token de este número venció o ya no es válido. Reconectá el número para seguir enviando y recibiendo mensajes.": "This number's token has expired or is no longer valid. Reconnect the number to keep sending and receiving messages."
 }

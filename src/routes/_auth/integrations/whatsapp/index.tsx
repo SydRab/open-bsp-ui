@@ -90,6 +90,13 @@ function WhatsAppIndex() {
                         {t("Prueba")}
                       </span>
                     )}
+                    {/* [crm] Needs-reconnect badge (P2-03) */}
+                    {extra?.needs_reauth && (
+                      <span className="text-destructive">
+                        {" · "}
+                        {t("Reconectar")}
+                      </span>
+                    )}
                     <ConnectionOwner agentId={integration.agent_id} />
                   </>
                 }
