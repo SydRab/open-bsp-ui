@@ -9,6 +9,7 @@ import { Link, Plus } from "lucide-react";
 import type { JSX } from "react";
 import { formatPhoneNumber } from "@/utils/FormatUtils";
 import ConnectionOwner from "@/components/ConnectionOwner";
+import type { WhatsAppOrganizationAddressExtra } from "@/supabase/client";
 
 export const Route = createFileRoute("/_auth/integrations/whatsapp/")({
   component: WhatsAppIndex,
@@ -62,35 +63,46 @@ function WhatsAppIndex() {
               })
             }
           />
-          {whatsappIntegrations?.map((integration) => (
-            <SectionItem
-              key={integration.address}
-              aside={
-                <div className="p-[8px]">
-                  <WhatsAppOutlined
-                    style={{ fontSize: "24px", color: "#25D366" }}
-                  />
-                </div>
-              }
-              title={formatPhoneNumber(
-                (integration.extra as { phone_number?: string })
-                  ?.phone_number || integration.address,
-              )}
-              description={
-                <>
-                  {statusLabels[integration.status] || integration.status}
-                  <ConnectionOwner agentId={integration.agent_id} />
-                </>
-              }
-              onClick={() =>
-                navigate({
-                  to: "/integrations/whatsapp/$orgAddressId",
-                  params: { orgAddressId: integration.address },
-                  hash: (prevHash) => prevHash!,
-                })
-              }
-            />
-          ))}
+          {whatsappIntegrations?.map((integration) => {
+            const extra =
+              integration.extra as WhatsAppOrganizationAddressExtra | null;
+
+            return (
+              <SectionItem
+                key={integration.address}
+                aside={
+                  <div className="p-[8px]">
+                    <WhatsAppOutlined
+                      style={{ fontSize: "24px", color: "#25D366" }}
+                    />
+                  </div>
+                }
+                title={formatPhoneNumber(
+                  extra?.phone_number || integration.address,
+                )}
+                description={
+                  <>
+                    {statusLabels[integration.status] || integration.status}
+                    {/* [crm] Mock-connection badge (P2-02) */}
+                    {extra?.is_mock && (
+                      <span className="text-muted-foreground">
+                        {" · "}
+                        {t("Prueba")}
+                      </span>
+                    )}
+                    <ConnectionOwner agentId={integration.agent_id} />
+                  </>
+                }
+                onClick={() =>
+                  navigate({
+                    to: "/integrations/whatsapp/$orgAddressId",
+                    params: { orgAddressId: integration.address },
+                    hash: (prevHash) => prevHash!,
+                  })
+                }
+              />
+            );
+          })}
         </div>
       </SectionBody>
     </>

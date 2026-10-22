@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import {
+  isMockWhatsAppSignup,
   WhatsAppIntegrationContext,
   type SignupOptions,
 } from "@/contexts/WhatsAppIntegrationContext";
@@ -35,6 +36,59 @@ export default function WhatsAppIntegration({
   }, []);
 
   if (!context?.launchWhatsAppSignup) return null;
+
+  // [crm] Mock mode (P2-02): VITE_META_APP_ID=mock, before Meta Business
+  // Verification clears, never touches the real Facebook SDK, so the
+  // sdkFailed guard below is irrelevant here -- and there is no single
+  // "connect" outcome to simulate, so this renders two buttons instead of
+  // one.
+  if (isMockWhatsAppSignup) {
+    return (
+      <div className="flex flex-col gap-2">
+        <p className="text-muted-foreground text-sm">
+          {t(
+            "Modo de prueba: no se abrirá Facebook ni se conectará un número real.",
+          )}
+        </p>
+        <Button
+          disabled={!orgId || !allowed}
+          disabledReason={
+            !allowed ? t("Requiere permisos de administrador") : undefined
+          }
+          loading={loading}
+          className="primary w-full"
+          onClick={() =>
+            context.launchWhatsAppSignup(
+              onSuccess || (() => {}),
+              setLoading,
+              signupOptions,
+              "success",
+            )
+          }
+        >
+          {t("Simular conexión exitosa")}
+        </Button>
+        <Button
+          disabled={!orgId || !allowed}
+          disabledReason={
+            !allowed ? t("Requiere permisos de administrador") : undefined
+          }
+          loading={loading}
+          className="secondary w-full"
+          onClick={() =>
+            context.launchWhatsAppSignup(
+              onSuccess || (() => {}),
+              setLoading,
+              signupOptions,
+              "error",
+            )
+          }
+        >
+          {t("Simular error de conexión")}
+        </Button>
+      </div>
+    );
+  }
 
   const sdkErrorMessage = t(
     "No se pudo cargar el SDK de Facebook. Desactivá la protección contra rastreo o el bloqueador de anuncios para este sitio, o probá con otro navegador.",

@@ -83,6 +83,16 @@ function WhatsAppDetails() {
             })
           }
         />
+        {/* [crm] Mock-mode banner (P2-02) */}
+        {extra?.is_mock && (
+          <div className="instructions">
+            <p>
+              {t(
+                "Conexión de prueba: no envía ni recibe mensajes reales. Conectá tu número real de WhatsApp una vez que se apruebe la verificación de Meta Business.",
+              )}
+            </p>
+          </div>
+        )}
         <form>
           <label>
             <div className="label">{t("Nombre verificado")}</div>
@@ -148,17 +158,9 @@ function WhatsAppDetails() {
             />
           </label>
 
-          {extra?.access_token && (
-            <label>
-              <div className="label">{t("Token de acceso de WABA")}</div>
-              <input
-                type="text"
-                className="text font-mono text-xs"
-                value={extra.access_token}
-                readOnly
-              />
-            </label>
-          )}
+          {/* [crm] The WABA access token field that used to render here was
+          removed (P2-02): the token moved to Supabase Vault and is never
+          sent to the browser. */}
 
           <div className="instructions">
             <p>

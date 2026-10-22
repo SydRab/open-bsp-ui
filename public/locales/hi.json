@@ -691,5 +691,10 @@
   "Verificar": "वेरिफ़ाई करें",
   "Esta organización exige verificación en dos pasos para propietarios y administradores, y todavía no la activaste.": "इस ऑर्गनाइज़ेशन को मालिकों और एडमिन के लिए टू-फ़ैक्टर ऑथेंटिकेशन ज़रूरी है, और आपने इसे अभी तक चालू नहीं किया है।",
   "Configurar ahora": "अभी सेट करें",
-  "Esta organización exige verificación en dos pasos para tu rol. Verifícate para ver y usar las funciones de administración.": "इस ऑर्गनाइज़ेशन को आपके रोल के लिए टू-फ़ैक्टर ऑथेंटिकेशन ज़रूरी है। एडमिन सुविधाएँ देखने और इस्तेमाल करने के लिए वेरिफ़ाई करें।"
+  "Esta organización exige verificación en dos pasos para tu rol. Verifícate para ver y usar las funciones de administración.": "इस ऑर्गनाइज़ेशन को आपके रोल के लिए टू-फ़ैक्टर ऑथेंटिकेशन ज़रूरी है। एडमिन सुविधाएँ देखने और इस्तेमाल करने के लिए वेरिफ़ाई करें।",
+  "Prueba": "परीक्षण",
+  "Modo de prueba: no se abrirá Facebook ni se conectará un número real.": "परीक्षण मोड: इससे फ़ेसबुक नहीं खुलेगा और कोई वास्तविक नंबर कनेक्ट नहीं होगा।",
+  "Simular conexión exitosa": "सफल कनेक्शन का अनुकरण करें",
+  "Simular error de conexión": "कनेक्शन त्रुटि का अनुकरण करें",
+  "Conexión de prueba: no envía ni recibe mensajes reales. Conectá tu número real de WhatsApp una vez que se apruebe la verificación de Meta Business.": "परीक्षण कनेक्शन: यह वास्तविक मैसेज न तो भेजता है, न प्राप्त करता है। Meta Business सत्यापन स्वीकृत होने के बाद अपना वास्तविक WhatsApp नंबर कनेक्ट करें।"
 }

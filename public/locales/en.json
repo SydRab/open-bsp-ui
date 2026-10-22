@@ -691,5 +691,10 @@
   "Verificar": "Verify",
   "Esta organización exige verificación en dos pasos para propietarios y administradores, y todavía no la activaste.": "This organization requires two-factor authentication for owners and admins, and you haven't turned it on yet.",
   "Configurar ahora": "Set up now",
-  "Esta organización exige verificación en dos pasos para tu rol. Verifícate para ver y usar las funciones de administración.": "This organization requires two-factor authentication for your role. Verify to see and use admin features."
+  "Esta organización exige verificación en dos pasos para tu rol. Verifícate para ver y usar las funciones de administración.": "This organization requires two-factor authentication for your role. Verify to see and use admin features.",
+  "Prueba": "Test",
+  "Modo de prueba: no se abrirá Facebook ni se conectará un número real.": "Test mode: this won't open Facebook or connect a real number.",
+  "Simular conexión exitosa": "Simulate successful connection",
+  "Simular error de conexión": "Simulate connection error",
+  "Conexión de prueba: no envía ni recibe mensajes reales. Conectá tu número real de WhatsApp una vez que se apruebe la verificación de Meta Business.": "Test connection: doesn't send or receive real messages. Connect your real WhatsApp number once Meta Business Verification is approved."
 }

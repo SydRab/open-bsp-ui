@@ -6,6 +6,16 @@ import {
 
 const FB_API_VERSION = "v24.0";
 
+// [crm] Mock credential exchange (P2-02). Mirrors the backend's sentinel
+// (whatsapp-management/embedded_signup.ts): set VITE_META_APP_ID=mock
+// locally (before Meta Business Verification clears, or any time there's no
+// real Meta app configured yet) to skip the real Facebook SDK/popup
+// entirely and exercise the full signup flow -- and its success/error
+// paths -- against the backend's canned responses.
+const MOCK_APP_ID = "mock";
+export const isMockWhatsAppSignup =
+  import.meta.env.VITE_META_APP_ID === MOCK_APP_ID;
+
 export type SignupPayload = {
   code: string;
   application_id?: string;
@@ -71,6 +81,8 @@ type WhatsAppIntegrationContextType = {
     onSuccess: (phone_number_id: string) => void,
     setLoading: (loading: boolean) => void,
     options?: SignupOptions,
+    // Only consulted in mock mode (isMockWhatsAppSignup); ignored otherwise.
+    mockOutcome?: "success" | "error",
   ) => void;
 };
 
@@ -84,6 +96,10 @@ export function WhatsAppIntegrationProvider({
   children: ReactNode;
 }) {
   useEffect(() => {
+    // Mock mode never opens the real popup, so there's nothing for the SDK
+    // to do -- skip loading it (and the message listener below) entirely.
+    if (isMockWhatsAppSignup) return;
+
     let sessionInfoListener: ((event: MessageEvent) => void) | null = null;
 
     window.fbAsyncInit = function () {
@@ -197,9 +213,52 @@ export function WhatsAppIntegrationProvider({
       onSuccess: (phone_number_id: string) => void,
       setLoading: (loading: boolean) => void,
       options?: SignupOptions,
+      mockOutcome: "success" | "error" = "success",
     ) => {
       window.__waSignupReport = (event, data) =>
         reportSignupEvent({ event, data });
+
+      const finishSignup = (
+        payload: SignupPayload,
+        resultPhoneNumberId: string,
+      ) => {
+        setLoading(true);
+        signup(payload)
+          .then(() => onSuccess(resultPhoneNumberId))
+          .catch((error: Error) => {
+            console.error("Signup failed:", error);
+          })
+          .finally(() => setLoading(false));
+      };
+
+      if (isMockWhatsAppSignup) {
+        // No real popup, no real session info -- synthesize what the real
+        // flow's event listener would have captured, and feed the same
+        // signup() call. phone_number_id is supplied directly (flow_type
+        // "new_phone_number", the common real-world case) rather than left
+        // for the backend to resolve from the WABA: a FINISH_ONLY_WABA-style
+        // payload with no phone_number_id fails performEmbeddedSignup's own
+        // upfront validation, which only exempts flow_type
+        // "existing_phone_number" from requiring one -- a real quirk this
+        // mock path should not trip over.
+        const stamp = Date.now();
+        const phone_number_id = `mock-phone-${stamp}`;
+        const payload: SignupPayload = {
+          code:
+            mockOutcome === "error" ? "mock-error" : `mock-success-${stamp}`,
+          agent_id: options?.agent_id,
+          application_id: MOCK_APP_ID,
+          phone_number_id,
+          waba_id: `mock-waba-${stamp}`,
+          business_id: `mock-business-${stamp}`,
+          flow_type: "new_phone_number",
+          callback_url: options?.callback_url || undefined,
+          verify_token: options?.verify_token || undefined,
+        };
+
+        finishSignup(payload, phone_number_id);
+        return;
+      }
 
       // Launch Facebook login
       window.FB?.login(
@@ -212,8 +271,6 @@ export function WhatsAppIntegrationProvider({
               console.log("User cancelled login or did not fully authorize.");
               return;
             }
-
-            setLoading(true);
 
             // Retrieve session info captured from message events
             const sessionInfo: WASessionInfo = window.__waSessionInfo ?? {};
@@ -231,18 +288,7 @@ export function WhatsAppIntegrationProvider({
               verify_token: options?.verify_token || undefined,
             };
 
-            console.log("Sending signup payload:", payload); // Remove after testing
-
-            signup(payload)
-              .then(() => {
-                onSuccess(sessionInfo.phone_number_id || "");
-              })
-              .catch((error: Error) => {
-                console.error("Signup failed:", error);
-              })
-              .finally(() => {
-                setLoading(false);
-              });
+            finishSignup(payload, sessionInfo.phone_number_id || "");
           } else {
             console.log("User cancelled login or did not fully authorize.");
           }

@@ -47,7 +47,14 @@ export type WhatsAppOrganizationAddressExtra = {
   phone_number?: string;
   verified_name?: string;
   flow_type?: "only_waba" | "new_phone_number" | "existing_phone_number";
-  access_token?: string; // Meta system-user token
+  // [crm] P2-02: the token itself lives in Supabase Vault
+  // (crm.set_whatsapp_access_token) -- this is only the vault secret's id,
+  // never readable from the UI.
+  access_token_secret_id?: string;
+  // [crm] P2-02: set on rows created by the mock credential-exchange path
+  // (no real META_APP_ID/SECRET configured, e.g. Business Verification
+  // pending) -- never sends or receives real messages.
+  is_mock?: boolean;
   callback_url?: string | null;
   verify_token?: string | null;
 };
