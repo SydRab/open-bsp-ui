@@ -730,5 +730,9 @@
   "Todavía no hay respuestas rápidas": "No canned replies yet",
   "Nombre...": "Name...",
   "Contenido de la respuesta...": "Reply content...",
-  "Nueva respuesta rápida": "New canned reply"
+  "Nueva respuesta rápida": "New canned reply",
+  "Nuevo mensaje": "New message",
+  "📎 Archivo multimedia": "📎 Media attachment",
+  "Activar notificaciones de escritorio": "Enable desktop notifications",
+  "Recibe un aviso cuando llegue un mensaje mientras no estás mirando esa conversación.": "Get notified when a message arrives while you're not looking at that conversation."
 }

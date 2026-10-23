@@ -730,5 +730,9 @@
   "Todavía no hay respuestas rápidas": "अभी तक कोई त्वरित उत्तर नहीं है",
   "Nombre...": "नाम...",
   "Contenido de la respuesta...": "उत्तर की सामग्री...",
-  "Nueva respuesta rápida": "नया त्वरित उत्तर"
+  "Nueva respuesta rápida": "नया त्वरित उत्तर",
+  "Nuevo mensaje": "नया संदेश",
+  "📎 Archivo multimedia": "📎 मीडिया अनुलग्नक",
+  "Activar notificaciones de escritorio": "डेस्कटॉप सूचनाएं सक्षम करें",
+  "Recibe un aviso cuando llegue un mensaje mientras no estás mirando esa conversación.": "जब आप उस बातचीत को नहीं देख रहे हों और कोई संदेश आए तो सूचना प्राप्त करें।"
 }

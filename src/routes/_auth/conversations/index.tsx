@@ -10,6 +10,8 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { useInvitations, useAnswerInvitation } from "@/queries/useAgents";
 // [crm] The card names the crm role offered (Sales Rep…), not just the tier.
 import { useMyInvitationRoles } from "@/queries/useCrm";
+// [crm] P2-09f
+import NotificationBanner from "@/components/NotificationBanner";
 
 export const Route = createFileRoute("/_auth/conversations/")({
   component: Conversations,
@@ -39,6 +41,7 @@ function Conversations() {
       <Header /> {/* height: 59 px */}
       <ChatSearch /> {/* height: 49 px */}
       <ChatFilter /> {/* height: 43 px */}
+      <NotificationBanner />
       {invitations && invitations.length > 0 && (
         <div className="pt-[10px] pb-[5px] pl-[10px] pr-[20px] flex flex-col gap-[4px]">
           {invitations.map((invitation) => (
