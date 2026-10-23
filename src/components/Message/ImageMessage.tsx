@@ -57,7 +57,8 @@ export default function ImageMessage(message: MessageRow) {
 
   const media = content.file;
 
-  const { load, startLoad, cancelLoad, handleLoad } = useMedia(message);
+  const { load, startLoad, cancelLoad, handleLoad, thumbnail } =
+    useMedia(message);
   const [width, setWidth] = useState(PORTRAIT_WIDTH);
   const [height, setHeight] = useState(MAX_PORTRAIT_HEIGHT);
   const [showAnnotation, setShowAnnotation] = useState(false);
@@ -79,6 +80,12 @@ export default function ImageMessage(message: MessageRow) {
       startLoad();
     }
   }, [load.blob]);
+
+  // [crm] P2-07: shown only until the full resolution has loaded -- once
+  // load.blob exists it always wins below, thumbnail or not. Holds the blob
+  // itself (not a boolean) so its use below stays narrowed to Blob.
+  const thumbnailBlob =
+    !load.blob && thumbnail.status === "done" ? thumbnail.blob : undefined;
 
   const imageDimensions: ReactEventHandler<HTMLImageElement> = (event) => {
     if (!(event.target instanceof HTMLImageElement)) {
@@ -188,8 +195,32 @@ export default function ImageMessage(message: MessageRow) {
           </>
         )}
 
-        {/* Load button */}
-        {(load.status === "pending" || load.status === "error") &&
+        {/* [crm] P2-07: the preview while the full resolution hasn't loaded
+          yet -- replaces the old blank "tap to load" placeholder below for
+          every image age, not just the last 24h. Same click target (the
+          outer div's onClick already starts the full load on
+          load.status === "pending"); a loading spinner layers on top once
+          that starts. */}
+        {thumbnailBlob && (
+          <img
+            src={URL.createObjectURL(thumbnailBlob)}
+            onLoad={imageDimensions}
+            className="rounded-md object-cover absolute top-0"
+            style={{ height, width }}
+          />
+        )}
+        {thumbnailBlob && load.status === "loading" && (
+          <div className="z-[1] rounded-full text-white bg-[rgba(11,20,26,.35)]">
+            <svg className="w-[44px] h-[44px]">
+              <use href="/icons.svg#image-cancel" />
+              <use className="text-white spin" href="/icons.svg#image-spin" />
+            </svg>
+          </div>
+        )}
+
+        {/* Load button -- only when there is no thumbnail to show instead */}
+        {!thumbnailBlob &&
+          (load.status === "pending" || load.status === "error") &&
           !isNaN(media.size ?? NaN) && (
             <div className="z-[1] rounded-full h-[44px] pl-[13px] pr-[18px] flex items-center text-white bg-[rgba(11,20,26,.35)] text-[13px]">
               <svg
@@ -205,7 +236,8 @@ export default function ImageMessage(message: MessageRow) {
             </div>
           )}
         {/* Alternative load button for when file size is missing, just in case */}
-        {(load.status === "pending" || load.status === "error") &&
+        {!thumbnailBlob &&
+          (load.status === "pending" || load.status === "error") &&
           isNaN(media.size ?? NaN) && (
             <div className="z-[1] rounded-full flex items-center justify-center text-white bg-[rgba(11,20,26,.35)] w-[44px] h-[44px]">
               <svg
@@ -218,7 +250,7 @@ export default function ImageMessage(message: MessageRow) {
               </svg>
             </div>
           )}
-        {load.status === "loading" && (
+        {!thumbnailBlob && load.status === "loading" && (
           <div className="z-[1] rounded-full text-white bg-[rgba(11,20,26,.35)]">
             <svg className="w-[44px] h-[44px]">
               <use href="/icons.svg#image-cancel" />

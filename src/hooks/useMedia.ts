@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { pushMessageToDb } from "@/utils/MessageUtils";
 import useBoundStore from "@/stores/useBoundStore";
 import {
@@ -7,6 +7,15 @@ import {
   supabase,
   messageDirection,
 } from "@/supabase/client";
+import { mediaCategory } from "@/components/Message/media";
+
+// [crm] P2-07: 240px is the chat bubble's own display width
+// (ImageMessage.tsx's PORTRAIT_WIDTH/LANDSCAPE_WIDTH) -- no point asking
+// imgproxy for more pixels than the bubble will ever show. quality 60 is a
+// visibly-fine tradeoff for a preview that gets replaced by the full
+// resolution the moment someone actually looks at it.
+const THUMBNAIL_WIDTH = 240;
+const THUMBNAIL_QUALITY = 60;
 
 export function useMedia(message: MessageRow) {
   if (
@@ -40,6 +49,70 @@ export function useMedia(message: MessageRow) {
   };
   const setLoad = useBoundStore((store) => store.chat.setMediaLoad);
   const [cancel, setCancel] = useState(false);
+
+  // [crm] P2-07: a thumbnail only makes sense for an already-stored file
+  // (load.type === "download") of a kind Storage can actually transform.
+  // Stickers are images for rendering purposes (mediaCategory), but a
+  // sticker is already small (animated 500KB / static 100KB, the WhatsApp
+  // Cloud API limit) and often itself transparent/animated WebP -- not
+  // worth a second network round-trip for.
+  const canHaveThumbnail =
+    load.type === "download" &&
+    content.kind !== "sticker" &&
+    mediaCategory(content.kind, content.file.mime_type || "") === "image";
+
+  const thumbnail = useBoundStore((store) =>
+    store.chat.mediaThumbnails.get(message.id),
+  ) || { status: "pending" as const };
+  const setThumbnail = useBoundStore((store) => store.chat.setMediaThumbnail);
+
+  useEffect(() => {
+    if (!canHaveThumbnail || thumbnail.status !== "pending") {
+      return;
+    }
+
+    let cancelled = false;
+    setThumbnail(message.id, { status: "loading" });
+
+    supabase.storage
+      .from("media")
+      .download(mediaId, {
+        transform: {
+          width: THUMBNAIL_WIDTH,
+          resize: "contain",
+          quality: THUMBNAIL_QUALITY,
+        },
+      })
+      .then(({ data, error }) => {
+        if (cancelled) return;
+        // Any failure -- an unsupported Storage tier, a network blip, a file
+        // Storage cannot transform -- degrades identically: no thumbnail,
+        // fall back to the existing full-load placeholder. No retry.
+        setThumbnail(
+          message.id,
+          data ? { status: "done", blob: data } : { status: "unavailable" },
+        );
+        if (error) {
+          console.warn(
+            `Thumbnail unavailable for message ${message.id}, falling back to full load`,
+            error,
+          );
+        }
+      })
+      .catch((error) => {
+        if (cancelled) return;
+        setThumbnail(message.id, { status: "unavailable" });
+        console.warn(
+          `Thumbnail unavailable for message ${message.id}, falling back to full load`,
+          error,
+        );
+      });
+
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [canHaveThumbnail, mediaId, message.id, thumbnail.status]);
 
   const uploadTask = async () => {
     if (
@@ -128,5 +201,5 @@ export function useMedia(message: MessageRow) {
     // TODO: do not keep in memory files with size bigger than 10 MB, or... any document after being handled? - cabra 02/06/2024
   };
 
-  return { load, startLoad, cancelLoad, handleLoad };
+  return { load, startLoad, cancelLoad, handleLoad, thumbnail };
 }

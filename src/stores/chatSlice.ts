@@ -47,6 +47,18 @@ type MediaLoad = {
   handledOnce?: boolean;
 };
 
+// [crm] P2-07: a small, transformed preview fetched eagerly (any message
+// age), separate from MediaLoad's full-resolution file -- which stays
+// lazy/click-to-load exactly as before. "unavailable" covers every failure
+// case alike (an un-transformable file, a lower Supabase tier with image
+// transformation off, a network error): there is no retry and no special
+// casing per cause, since the UI's fallback (today's existing placeholder/
+// click-to-load behavior) is identical and safe for all of them.
+type MediaThumbnail = {
+  blob?: Blob;
+  status: "pending" | "loading" | "done" | "unavailable";
+};
+
 export type ChatState = {
   conversations: Map<string, ConversationRow>;
   // The caller's own agent id in the active org, and their per-conversation
@@ -57,6 +69,7 @@ export type ChatState = {
   textDrafts: Map<string, string>;
   fileDrafts: Map<string, FileDraft[]>;
   mediaLoads: Map<string, MediaLoad>;
+  mediaThumbnails: Map<string, MediaThumbnail>;
 };
 
 export type ChatActions = {
@@ -71,6 +84,7 @@ export type ChatActions = {
   ) => void;
   pushMessages: (msgs: MessageRow[]) => void;
   setMediaLoad: (messageId: string, mediaLoad: MediaLoad) => void;
+  setMediaThumbnail: (messageId: string, thumbnail: MediaThumbnail) => void;
   setConversationTextDraft: (convId: string, textDraft: string) => void;
   setConversationFileDrafts: (convId: string, drafts: FileDraft[]) => void;
   setConversationFileDraftCaption: (
@@ -99,6 +113,7 @@ export const createChatSlice: StateCreator<Partial<AppState>> = (
   textDrafts: new Map(),
   fileDrafts: new Map(),
   mediaLoads: new Map(),
+  mediaThumbnails: new Map(),
   setOwnAgentId: (agentId: string | null) =>
     set((state) => ({ chat: { ...state.chat, ownAgentId: agentId } })),
   setMembershipExtra: (
@@ -208,6 +223,20 @@ export const createChatSlice: StateCreator<Partial<AppState>> = (
         chat: {
           ...state.chat,
           mediaLoads,
+        },
+      };
+    });
+  },
+  setMediaThumbnail: (messageId: string, thumbnail: MediaThumbnail) => {
+    set((state) => {
+      const mediaThumbnails = new Map(state.chat.mediaThumbnails);
+
+      mediaThumbnails.set(messageId, { ...thumbnail });
+
+      return {
+        chat: {
+          ...state.chat,
+          mediaThumbnails,
         },
       };
     });
