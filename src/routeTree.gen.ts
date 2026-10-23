@@ -76,6 +76,7 @@ import { Route as AuthIntegrationsWhatsappOnboardingTokenIdRouteImport } from '.
 import { Route as AuthIntegrationsInstagramOnboardingNewRouteImport } from './routes/_auth/integrations/instagram/onboarding/new'
 import { Route as AuthIntegrationsInstagramOnboardingTokenIdRouteImport } from './routes/_auth/integrations/instagram/onboarding/$tokenId'
 import { Route as AuthIntegrationsWhatsappOrgAddressIdTemplatesIndexRouteImport } from './routes/_auth/integrations/whatsapp/$orgAddressId/templates/index'
+import { Route as AuthIntegrationsWhatsappOrgAddressIdProfileIndexRouteImport } from './routes/_auth/integrations/whatsapp/$orgAddressId/profile/index'
 import { Route as AuthIntegrationsWhatsappOrgAddressIdTemplatesNewRouteImport } from './routes/_auth/integrations/whatsapp/$orgAddressId/templates/new'
 import { Route as AuthIntegrationsWhatsappOrgAddressIdTemplatesTemplateIdRouteImport } from './routes/_auth/integrations/whatsapp/$orgAddressId/templates/$templateId'
 
@@ -443,6 +444,12 @@ const AuthIntegrationsWhatsappOrgAddressIdTemplatesIndexRoute =
     path: '/integrations/whatsapp/$orgAddressId/templates/',
     getParentRoute: () => AuthRoute,
   } as any)
+const AuthIntegrationsWhatsappOrgAddressIdProfileIndexRoute =
+  AuthIntegrationsWhatsappOrgAddressIdProfileIndexRouteImport.update({
+    id: '/integrations/whatsapp/$orgAddressId/profile/',
+    path: '/integrations/whatsapp/$orgAddressId/profile/',
+    getParentRoute: () => AuthRoute,
+  } as any)
 const AuthIntegrationsWhatsappOrgAddressIdTemplatesNewRoute =
   AuthIntegrationsWhatsappOrgAddressIdTemplatesNewRouteImport.update({
     id: '/integrations/whatsapp/$orgAddressId/templates/new',
@@ -524,6 +531,7 @@ export interface FileRoutesByFullPath {
   '/integrations/whatsapp/onboarding': typeof AuthIntegrationsWhatsappOnboardingIndexRoute
   '/integrations/whatsapp/$orgAddressId/templates/$templateId': typeof AuthIntegrationsWhatsappOrgAddressIdTemplatesTemplateIdRoute
   '/integrations/whatsapp/$orgAddressId/templates/new': typeof AuthIntegrationsWhatsappOrgAddressIdTemplatesNewRoute
+  '/integrations/whatsapp/$orgAddressId/profile': typeof AuthIntegrationsWhatsappOrgAddressIdProfileIndexRoute
   '/integrations/whatsapp/$orgAddressId/templates': typeof AuthIntegrationsWhatsappOrgAddressIdTemplatesIndexRoute
 }
 export interface FileRoutesByTo {
@@ -593,6 +601,7 @@ export interface FileRoutesByTo {
   '/integrations/whatsapp/onboarding': typeof AuthIntegrationsWhatsappOnboardingIndexRoute
   '/integrations/whatsapp/$orgAddressId/templates/$templateId': typeof AuthIntegrationsWhatsappOrgAddressIdTemplatesTemplateIdRoute
   '/integrations/whatsapp/$orgAddressId/templates/new': typeof AuthIntegrationsWhatsappOrgAddressIdTemplatesNewRoute
+  '/integrations/whatsapp/$orgAddressId/profile': typeof AuthIntegrationsWhatsappOrgAddressIdProfileIndexRoute
   '/integrations/whatsapp/$orgAddressId/templates': typeof AuthIntegrationsWhatsappOrgAddressIdTemplatesIndexRoute
 }
 export interface FileRoutesById {
@@ -665,6 +674,7 @@ export interface FileRoutesById {
   '/_auth/integrations/whatsapp/onboarding/': typeof AuthIntegrationsWhatsappOnboardingIndexRoute
   '/_auth/integrations/whatsapp/$orgAddressId/templates/$templateId': typeof AuthIntegrationsWhatsappOrgAddressIdTemplatesTemplateIdRoute
   '/_auth/integrations/whatsapp/$orgAddressId/templates/new': typeof AuthIntegrationsWhatsappOrgAddressIdTemplatesNewRoute
+  '/_auth/integrations/whatsapp/$orgAddressId/profile/': typeof AuthIntegrationsWhatsappOrgAddressIdProfileIndexRoute
   '/_auth/integrations/whatsapp/$orgAddressId/templates/': typeof AuthIntegrationsWhatsappOrgAddressIdTemplatesIndexRoute
 }
 export interface FileRouteTypes {
@@ -737,6 +747,7 @@ export interface FileRouteTypes {
     | '/integrations/whatsapp/onboarding'
     | '/integrations/whatsapp/$orgAddressId/templates/$templateId'
     | '/integrations/whatsapp/$orgAddressId/templates/new'
+    | '/integrations/whatsapp/$orgAddressId/profile'
     | '/integrations/whatsapp/$orgAddressId/templates'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -806,6 +817,7 @@ export interface FileRouteTypes {
     | '/integrations/whatsapp/onboarding'
     | '/integrations/whatsapp/$orgAddressId/templates/$templateId'
     | '/integrations/whatsapp/$orgAddressId/templates/new'
+    | '/integrations/whatsapp/$orgAddressId/profile'
     | '/integrations/whatsapp/$orgAddressId/templates'
   id:
     | '__root__'
@@ -877,6 +889,7 @@ export interface FileRouteTypes {
     | '/_auth/integrations/whatsapp/onboarding/'
     | '/_auth/integrations/whatsapp/$orgAddressId/templates/$templateId'
     | '/_auth/integrations/whatsapp/$orgAddressId/templates/new'
+    | '/_auth/integrations/whatsapp/$orgAddressId/profile/'
     | '/_auth/integrations/whatsapp/$orgAddressId/templates/'
   fileRoutesById: FileRoutesById
 }
@@ -1363,6 +1376,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthIntegrationsWhatsappOrgAddressIdTemplatesIndexRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/integrations/whatsapp/$orgAddressId/profile/': {
+      id: '/_auth/integrations/whatsapp/$orgAddressId/profile/'
+      path: '/integrations/whatsapp/$orgAddressId/profile'
+      fullPath: '/integrations/whatsapp/$orgAddressId/profile'
+      preLoaderRoute: typeof AuthIntegrationsWhatsappOrgAddressIdProfileIndexRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/integrations/whatsapp/$orgAddressId/templates/new': {
       id: '/_auth/integrations/whatsapp/$orgAddressId/templates/new'
       path: '/integrations/whatsapp/$orgAddressId/templates/new'
@@ -1453,6 +1473,7 @@ interface AuthRouteChildren {
   AuthIntegrationsWhatsappOnboardingIndexRoute: typeof AuthIntegrationsWhatsappOnboardingIndexRoute
   AuthIntegrationsWhatsappOrgAddressIdTemplatesTemplateIdRoute: typeof AuthIntegrationsWhatsappOrgAddressIdTemplatesTemplateIdRoute
   AuthIntegrationsWhatsappOrgAddressIdTemplatesNewRoute: typeof AuthIntegrationsWhatsappOrgAddressIdTemplatesNewRoute
+  AuthIntegrationsWhatsappOrgAddressIdProfileIndexRoute: typeof AuthIntegrationsWhatsappOrgAddressIdProfileIndexRoute
   AuthIntegrationsWhatsappOrgAddressIdTemplatesIndexRoute: typeof AuthIntegrationsWhatsappOrgAddressIdTemplatesIndexRoute
 }
 
@@ -1525,6 +1546,8 @@ const AuthRouteChildren: AuthRouteChildren = {
     AuthIntegrationsWhatsappOrgAddressIdTemplatesTemplateIdRoute,
   AuthIntegrationsWhatsappOrgAddressIdTemplatesNewRoute:
     AuthIntegrationsWhatsappOrgAddressIdTemplatesNewRoute,
+  AuthIntegrationsWhatsappOrgAddressIdProfileIndexRoute:
+    AuthIntegrationsWhatsappOrgAddressIdProfileIndexRoute,
   AuthIntegrationsWhatsappOrgAddressIdTemplatesIndexRoute:
     AuthIntegrationsWhatsappOrgAddressIdTemplatesIndexRoute,
 }

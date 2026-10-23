@@ -738,5 +738,17 @@
   "Calidad baja": "कम गुणवत्ता",
   "Calidad media": "मध्यम गुणवत्ता",
   "La calidad de este número es baja. Meta puede limitar o restringir el envío de mensajes si no mejora.": "इस नंबर की गुणवत्ता कम है। सुधार न होने पर Meta संदेश भेजने को सीमित या प्रतिबंधित कर सकता है।",
-  "La calidad de este número es media. Revisá el contenido y la frecuencia de tus mensajes.": "इस नंबर की गुणवत्ता मध्यम है। अपने संदेशों की सामग्री और आवृत्ति की जाँच करें।"
+  "La calidad de este número es media. Revisá el contenido y la frecuencia de tus mensajes.": "इस नंबर की गुणवत्ता मध्यम है। अपने संदेशों की सामग्री और आवृत्ति की जाँच करें।",
+  "Perfil de negocio": "व्यवसाय प्रोफ़ाइल",
+  "Acerca de": "परिचय",
+  "Descripción": "विवरण",
+  "Sin especificar": "निर्दिष्ट नहीं",
+  "Enviar": "भेजें",
+  "Nuevo nombre": "नया नाम",
+  "Solicitar cambio de nombre": "नाम बदलने का अनुरोध करें",
+  "Cambio de nombre en revisión": "नाम परिवर्तन की समीक्षा जारी है",
+  "Se rechazó el cambio de nombre a": "नाम बदलने का अनुरोध अस्वीकृत:",
+  "Se aprobó el nuevo nombre. Volvé a registrar el número para aplicarlo.": "नया नाम स्वीकृत हो गया। इसे लागू करने के लिए नंबर को फिर से रजिस्टर करें।",
+  "Volver a registrar": "फिर से रजिस्टर करें",
+  "PIN de verificación en dos pasos": "दो-चरणीय सत्यापन पिन"
 }

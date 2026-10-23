@@ -73,6 +73,13 @@ export type WhatsAppOrganizationAddressExtra = {
   // updated from the phone_number_quality_update webhook, no polling.
   messaging_limit_tier?: string | null;
   messaging_limit_checked_at?: string | null;
+  // [crm] P2-11: display-name change status, from the phone_number_name_update
+  // webhook. Cleared once verified_name (refreshed by the daily quality poll)
+  // catches up to the requested name.
+  name_status?: "APPROVED" | "REJECTED" | "PENDING" | "DEFERRED" | null;
+  requested_verified_name?: string | null;
+  name_rejection_reason?: string | null;
+  name_checked_at?: string | null;
 };
 
 export type InstagramOrganizationAddressExtra = {

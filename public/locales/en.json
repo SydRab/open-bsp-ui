@@ -738,5 +738,17 @@
   "Calidad baja": "Poor quality",
   "Calidad media": "Medium quality",
   "La calidad de este número es baja. Meta puede limitar o restringir el envío de mensajes si no mejora.": "This number's quality is poor. Meta may limit or restrict sending if it doesn't improve.",
-  "La calidad de este número es media. Revisá el contenido y la frecuencia de tus mensajes.": "This number's quality is medium. Review your message content and frequency."
+  "La calidad de este número es media. Revisá el contenido y la frecuencia de tus mensajes.": "This number's quality is medium. Review your message content and frequency.",
+  "Perfil de negocio": "Business profile",
+  "Acerca de": "About",
+  "Descripción": "Description",
+  "Sin especificar": "Not specified",
+  "Enviar": "Submit",
+  "Nuevo nombre": "New name",
+  "Solicitar cambio de nombre": "Request a name change",
+  "Cambio de nombre en revisión": "Name change under review",
+  "Se rechazó el cambio de nombre a": "Rejected name change to",
+  "Se aprobó el nuevo nombre. Volvé a registrar el número para aplicarlo.": "The new name was approved. Re-register the number to apply it.",
+  "Volver a registrar": "Re-register",
+  "PIN de verificación en dos pasos": "Two-step verification PIN"
 }

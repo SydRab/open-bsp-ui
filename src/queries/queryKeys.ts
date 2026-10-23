@@ -43,6 +43,11 @@ export const queryKeys = {
     addressDetail: (orgId: NullableId, address: NullableId) =>
       [orgId, "organizations_addresses", address] as const,
   },
+  // [crm] P2-11
+  whatsapp: {
+    businessProfile: (orgId: NullableId, address: NullableId) =>
+      [orgId, "whatsapp_business_profile", address] as const,
+  },
   webhooks: {
     all: (orgId: NullableId) => [orgId, "webhooks"] as const,
     detail: (orgId: NullableId, id: NullableId) =>

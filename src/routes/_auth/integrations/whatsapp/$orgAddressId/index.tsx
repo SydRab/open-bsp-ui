@@ -10,7 +10,8 @@ import type { WhatsAppOrganizationAddressExtra } from "@/supabase/client";
 import { useState } from "react";
 import Button from "@/components/Button";
 import SectionItem from "@/components/SectionItem";
-import { LayoutTemplate } from "lucide-react";
+import { LayoutTemplate, UserRound } from "lucide-react";
+import DisplayNameSection from "@/components/DisplayNameSection";
 
 export const Route = createFileRoute(
   "/_auth/integrations/whatsapp/$orgAddressId/",
@@ -83,6 +84,22 @@ function WhatsAppDetails() {
             })
           }
         />
+        {/* [crm] Business profile (P2-11) */}
+        <SectionItem
+          title={t("Perfil de negocio")}
+          aside={
+            <div className="p-[8px]">
+              <UserRound className="w-[24px] h-[24px] text-muted-foreground" />
+            </div>
+          }
+          onClick={() =>
+            navigate({
+              to: "/integrations/whatsapp/$orgAddressId/profile",
+              params: { orgAddressId },
+              hash: (prevHash) => prevHash!,
+            })
+          }
+        />
         {/* [crm] Mock-mode banner (P2-02) */}
         {extra?.is_mock && (
           <div className="instructions">
@@ -140,15 +157,8 @@ function WhatsAppDetails() {
           </div>
         )}
         <form>
-          <label>
-            <div className="label">{t("Nombre verificado")}</div>
-            <input
-              type="text"
-              className="text"
-              value={extra?.verified_name || t("Sin nombre")}
-              readOnly
-            />
-          </label>
+          {/* [crm] P2-11 */}
+          <DisplayNameSection address={integration.address} extra={extra} />
 
           <label>
             <div className="label">{t("Número de teléfono")}</div>
