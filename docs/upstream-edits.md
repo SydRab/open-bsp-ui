@@ -103,3 +103,4 @@ Edits inside upstream files are marked with a `[crm]` comment.
 | 2026-10-23 | `src/supabase/db_types.ts`                          | Re-copied from the API (`crm.templates`). | Types. | P2-04 |
 | 2026-10-23 | `public/locales/en.json`                           | 11 new strings appended. | New UI text. | P2-04 |
 | 2026-10-23 | `public/locales/hi.json`                           | 11 new strings appended (parity). | Same. | P2-04 |
+| 2026-10-23 | `src/supabase/db_types.ts`                          | Re-copied from the API (`crm.contacts_consent`, `crm.send_rate_buckets`, `conversations.last_inbound_at`, and the P2-05 policy functions). `billing` schema confirmed still present. | Types. P2-05 is backend-only (the single send choke point, in the dispatcher) -- no UI screen for it yet; see the API blueprint's known gaps. | P2-05 |
