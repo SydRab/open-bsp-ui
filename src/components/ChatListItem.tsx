@@ -33,6 +33,7 @@ import { formatPhoneNumber, nameInitials } from "@/utils/FormatUtils";
 import { useNavigate } from "@tanstack/react-router";
 import { type TagColor, useConversationTags } from "@/queries/useTags";
 import { TagDots } from "./ConversationTags";
+import { useConversationAssignment } from "@/queries/useAssignment";
 
 function mediaPreview(t: (content: string) => ReactNode, message?: MessageRow) {
   let mediaIcon = null;
@@ -187,6 +188,10 @@ export default function ChatListItem({ itemId }: { itemId: string }) {
 
   // [crm] P2-09b
   const { data: tags } = useConversationTags(itemId);
+
+  // [crm] P2-09c
+  const { data: assignedAgentId } = useConversationAssignment(itemId);
+  const assignee = agents?.find((a) => a.id === assignedAgentId);
 
   const messages: MessageRow[] | undefined = Array.from(
     useBoundStore((state) => state.chat.messages.get(itemId || ""))?.values() ||
@@ -441,6 +446,17 @@ export default function ChatListItem({ itemId }: { itemId: string }) {
               </div>
 
               <div className="flex flex-row items-center">
+                {/* [crm] P2-09c */}
+                {assignee && (
+                  <div className="ml-[6px]" title={assignee.name}>
+                    <Avatar
+                      src={assignee.picture}
+                      fallback={nameInitials(assignee.name)}
+                      size={16}
+                      className="bg-primary/10 text-primary text-[8px]"
+                    />
+                  </div>
+                )}
                 {/* [crm] P2-09b */}
                 {!!tags?.length && (
                   <div className="ml-[6px]">

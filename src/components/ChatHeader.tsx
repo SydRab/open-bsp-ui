@@ -11,6 +11,7 @@ import {
   peerAddress,
 } from "@/supabase/client";
 import ConversationTags from "./ConversationTags";
+import ConversationAssignee from "./ConversationAssignee";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -101,6 +102,10 @@ export default function Header() {
         {/* [crm] P2-09b */}
         <div className="mt-[2px]">
           <ConversationTags conversationId={activeConvId} />
+        </div>
+        {/* [crm] P2-09c */}
+        <div className="mt-[4px]">
+          <ConversationAssignee conversationId={activeConvId} />
         </div>
       </div>
 

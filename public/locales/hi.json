@@ -718,5 +718,8 @@
   "Agregar etiqueta": "टैग जोड़ें",
   "Todavía no hay etiquetas": "अभी तक कोई टैग नहीं है",
   "Nueva etiqueta...": "नया टैग...",
-  "Crear etiqueta": "टैग बनाएं"
+  "Crear etiqueta": "टैग बनाएं",
+  "Sin asignar": "असाइन नहीं किया गया",
+  "Quitar asignación": "असाइनमेंट हटाएं",
+  "No hay miembros": "कोई सदस्य नहीं"
 }

@@ -718,5 +718,8 @@
   "Agregar etiqueta": "Add tag",
   "Todavía no hay etiquetas": "No tags yet",
   "Nueva etiqueta...": "New tag...",
-  "Crear etiqueta": "Create tag"
+  "Crear etiqueta": "Create tag",
+  "Sin asignar": "Unassigned",
+  "Quitar asignación": "Remove assignment",
+  "No hay miembros": "No members"
 }
