@@ -78,6 +78,9 @@ export const queryKeys = {
     roles: (orgId: NullableId) => ["crm", orgId, "roles"] as const,
     catalog: () => ["crm", "permissions"] as const,
     memberRoles: (orgId: NullableId) => ["crm", orgId, "member_roles"] as const,
+    // [crm] P2-12
+    memberAddressAccess: (agentId: NullableId) =>
+      ["crm", "member_address_access", agentId] as const,
     invitationRoles: (orgId: NullableId) =>
       ["crm", orgId, "invitation_roles"] as const,
     settings: (orgId: NullableId) => ["crm", orgId, "settings"] as const,

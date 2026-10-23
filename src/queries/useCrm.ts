@@ -370,6 +370,52 @@ export function useSetMemberRole() {
   });
 }
 
+// [crm] P2-12: the numbers a member is restricted to -- an allowlist. No
+// rows means unrestricted (sees every shared number); this is the UI for
+// crm.member_address_access, which has existed since Phase 1 but never had
+// one until now.
+export function useMemberAddressAccess(agentId: string | undefined) {
+  return useQuery({
+    queryKey: queryKeys.crm.memberAddressAccess(agentId),
+    queryFn: async () =>
+      await crm()
+        .from("member_address_access")
+        .select("service, address")
+        .eq("agent_id", agentId!)
+        .throwOnError(),
+    enabled: !!agentId,
+    select: (data) =>
+      new Set(data.data.map((r) => `${r.service}:${r.address}`)),
+  });
+}
+
+export function useSetMemberAddressAccess() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (args: {
+      agentId: string;
+      service: "whatsapp";
+      address: string;
+      allowed: boolean;
+    }) => {
+      await crm()
+        .rpc("set_member_address_access", {
+          p_agent_id: args.agentId,
+          p_service: args.service,
+          p_address: args.address,
+          p_allowed: args.allowed,
+        })
+        .throwOnError();
+    },
+    onSuccess: (_data, { agentId }) => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.memberAddressAccess(agentId),
+      });
+    },
+  });
+}
+
 export function useDeactivateMember() {
   const queryClient = useQueryClient();
   const orgId = useBoundStore((state) => state.ui.activeOrgId);

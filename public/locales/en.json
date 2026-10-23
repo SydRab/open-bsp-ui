@@ -750,5 +750,7 @@
   "Se rechazó el cambio de nombre a": "Rejected name change to",
   "Se aprobó el nuevo nombre. Volvé a registrar el número para aplicarlo.": "The new name was approved. Re-register the number to apply it.",
   "Volver a registrar": "Re-register",
-  "PIN de verificación en dos pasos": "Two-step verification PIN"
+  "PIN de verificación en dos pasos": "Two-step verification PIN",
+  "Restringir acceso a números": "Restrict access to numbers",
+  "Este miembro tiene un rol de administración. Restringir su acceso aplica igual -- no hay excepción para administradores.": "This member has an admin-level role. Restricting their access applies just the same -- there's no exception for admins."
 }

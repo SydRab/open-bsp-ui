@@ -750,5 +750,7 @@
   "Se rechazó el cambio de nombre a": "नाम बदलने का अनुरोध अस्वीकृत:",
   "Se aprobó el nuevo nombre. Volvé a registrar el número para aplicarlo.": "नया नाम स्वीकृत हो गया। इसे लागू करने के लिए नंबर को फिर से रजिस्टर करें।",
   "Volver a registrar": "फिर से रजिस्टर करें",
-  "PIN de verificación en dos pasos": "दो-चरणीय सत्यापन पिन"
+  "PIN de verificación en dos pasos": "दो-चरणीय सत्यापन पिन",
+  "Restringir acceso a números": "नंबरों तक पहुंच सीमित करें",
+  "Este miembro tiene un rol de administración. Restringir su acceso aplica igual -- no hay excepción para administradores.": "इस सदस्य की भूमिका प्रशासनिक स्तर की है। उनकी पहुंच सीमित करना भी उतना ही लागू होता है -- प्रशासकों के लिए कोई छूट नहीं है।"
 }

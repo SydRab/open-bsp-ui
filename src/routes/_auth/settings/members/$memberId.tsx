@@ -27,6 +27,7 @@ import {
   useSetMemberRole,
 } from "@/queries/useCrm";
 import { assignableRoles, tierRank } from "@/utils/crmRoles";
+import MemberAddressAccess from "@/components/MemberAddressAccess";
 
 export const Route = createFileRoute("/_auth/settings/members/$memberId")({
   component: EditMember,
@@ -134,6 +135,13 @@ function EditMember() {
             label: t(r.name),
           }))}
           disabled={!canManage || setRole.isPending}
+        />
+
+        {/* [crm] P2-12 */}
+        <MemberAddressAccess
+          agentId={agent.id}
+          disabled={!canManage}
+          warnSelfLockout={tierRank(agent?.role) >= tierRank("admin")}
         />
 
         {(setRole.error || deactivate.error) && (
