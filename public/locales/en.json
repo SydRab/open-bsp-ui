@@ -721,5 +721,8 @@
   "Crear etiqueta": "Create tag",
   "Sin asignar": "Unassigned",
   "Quitar asignación": "Remove assignment",
-  "No hay miembros": "No members"
+  "No hay miembros": "No members",
+  "Contacto": "Contact",
+  "Información del contacto": "Contact info",
+  "Ver contacto completo": "View full contact"
 }

@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 import { useLocation } from "@tanstack/react-router";
 import FilePicker from "@/components/FileUploader/FilePicker";
 import FilePreviewer from "@/components/FilePreviewer";
+// [crm] Contact side panel (P2-09d).
+import ContactPanel from "@/components/ContactPanel";
 import ActionCard from "@/components/ActionCard";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Bot, Building2, MessageSquarePlus, Settings } from "lucide-react";
@@ -135,6 +137,8 @@ function AppLayout() {
             <ChatHeader />
             <Chat />
             <ChatFooter />
+            {/* [crm] P2-09d */}
+            <ContactPanel />
           </>
         ) : (
           <div className="flex gap-[32px] items-center justify-center h-full">

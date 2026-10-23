@@ -2,7 +2,7 @@ import { formatPhoneNumber, nameInitials } from "@/utils/FormatUtils";
 import Avatar from "./Avatar";
 import useBoundStore from "@/stores/useBoundStore";
 import { useTranslation } from "@/hooks/useTranslation";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Info } from "lucide-react";
 import { useNavigate } from "@tanstack/react-router";
 import { useContactAddress } from "@/queries/useContactsAddresses";
 import {
@@ -15,6 +15,7 @@ import ConversationAssignee from "./ConversationAssignee";
 
 export default function Header() {
   const navigate = useNavigate();
+  const toggle = useBoundStore((state) => state.ui.toggle);
 
   const activeConvId = useBoundStore((state) => state.ui.activeConvId);
 
@@ -109,14 +110,19 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Options button - Hidden, does nothing yet. */}
-      <div className="options flex justify-end w-full hidden">
-        <button className="p-[8px] ml-[10px] rounded-full active:bg-gray-icon-bg">
-          <svg className="w-[24px] h-[24px] text-foreground">
-            <use href="/icons.svg#options" />
-          </svg>
-        </button>
-      </div>
+      {/* [crm] P2-09d: contact side panel -- only where there's a single
+          peer contact to show (groups/channels/local rooms have none). */}
+      {peer && (
+        <div className="options flex justify-end w-full">
+          <button
+            className="p-[8px] ml-[10px] rounded-full active:bg-gray-icon-bg hover:bg-muted"
+            title={t("Información del contacto")}
+            onClick={() => toggle("contactPanel")}
+          >
+            <Info className="w-[22px] h-[22px] text-foreground" />
+          </button>
+        </div>
+      )}
     </div>
   );
 }
