@@ -97,6 +97,19 @@ function WhatsAppIndex() {
                         {t("Reconectar")}
                       </span>
                     )}
+                    {/* [crm] Quality-rating badge (P2-10) */}
+                    {extra?.quality_rating === "RED" && (
+                      <span className="text-destructive">
+                        {" · "}
+                        {t("Calidad baja")}
+                      </span>
+                    )}
+                    {extra?.quality_rating === "YELLOW" && (
+                      <span className="text-yellow-700 dark:text-yellow-400">
+                        {" · "}
+                        {t("Calidad media")}
+                      </span>
+                    )}
                     <ConnectionOwner agentId={integration.agent_id} />
                   </>
                 }

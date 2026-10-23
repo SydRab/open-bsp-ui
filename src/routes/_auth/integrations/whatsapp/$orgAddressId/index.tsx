@@ -115,6 +115,30 @@ function WhatsAppDetails() {
             </Button>
           </div>
         )}
+        {/* [crm] Quality/limit banner (P2-10): quality has no fix button --
+        unlike a reconnect, it's not something to click your way out of,
+        only something to watch and improve response rates/content over
+        time. */}
+        {(extra?.quality_rating === "RED" ||
+          extra?.quality_rating === "YELLOW") && (
+          <div className="instructions">
+            <p
+              className={
+                extra.quality_rating === "RED"
+                  ? "text-destructive font-medium"
+                  : "text-yellow-700 dark:text-yellow-400 font-medium"
+              }
+            >
+              {extra.quality_rating === "RED"
+                ? t(
+                    "La calidad de este número es baja. Meta puede limitar o restringir el envío de mensajes si no mejora.",
+                  )
+                : t(
+                    "La calidad de este número es media. Revisá el contenido y la frecuencia de tus mensajes.",
+                  )}
+            </p>
+          </div>
+        )}
         <form>
           <label>
             <div className="label">{t("Nombre verificado")}</div>

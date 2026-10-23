@@ -66,6 +66,13 @@ export type WhatsAppOrganizationAddressExtra = {
   token_checked_at?: string;
   token_expires_at?: string | null;
   needs_reauth?: string | null;
+  // [crm] P2-10: quality rating, polled daily (no webhook exists for this).
+  quality_rating?: string | null;
+  quality_checked_at?: string | null;
+  // [crm] P2-10: messaging limit tier -- the opposite shape, only ever
+  // updated from the phone_number_quality_update webhook, no polling.
+  messaging_limit_tier?: string | null;
+  messaging_limit_checked_at?: string | null;
 };
 
 export type InstagramOrganizationAddressExtra = {

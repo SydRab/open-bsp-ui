@@ -734,5 +734,9 @@
   "Nuevo mensaje": "नया संदेश",
   "📎 Archivo multimedia": "📎 मीडिया अनुलग्नक",
   "Activar notificaciones de escritorio": "डेस्कटॉप सूचनाएं सक्षम करें",
-  "Recibe un aviso cuando llegue un mensaje mientras no estás mirando esa conversación.": "जब आप उस बातचीत को नहीं देख रहे हों और कोई संदेश आए तो सूचना प्राप्त करें।"
+  "Recibe un aviso cuando llegue un mensaje mientras no estás mirando esa conversación.": "जब आप उस बातचीत को नहीं देख रहे हों और कोई संदेश आए तो सूचना प्राप्त करें।",
+  "Calidad baja": "कम गुणवत्ता",
+  "Calidad media": "मध्यम गुणवत्ता",
+  "La calidad de este número es baja. Meta puede limitar o restringir el envío de mensajes si no mejora.": "इस नंबर की गुणवत्ता कम है। सुधार न होने पर Meta संदेश भेजने को सीमित या प्रतिबंधित कर सकता है।",
+  "La calidad de este número es media. Revisá el contenido y la frecuencia de tus mensajes.": "इस नंबर की गुणवत्ता मध्यम है। अपने संदेशों की सामग्री और आवृत्ति की जाँच करें।"
 }

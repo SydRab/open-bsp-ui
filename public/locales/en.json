@@ -734,5 +734,9 @@
   "Nuevo mensaje": "New message",
   "📎 Archivo multimedia": "📎 Media attachment",
   "Activar notificaciones de escritorio": "Enable desktop notifications",
-  "Recibe un aviso cuando llegue un mensaje mientras no estás mirando esa conversación.": "Get notified when a message arrives while you're not looking at that conversation."
+  "Recibe un aviso cuando llegue un mensaje mientras no estás mirando esa conversación.": "Get notified when a message arrives while you're not looking at that conversation.",
+  "Calidad baja": "Poor quality",
+  "Calidad media": "Medium quality",
+  "La calidad de este número es baja. Meta puede limitar o restringir el envío de mensajes si no mejora.": "This number's quality is poor. Meta may limit or restrict sending if it doesn't improve.",
+  "La calidad de este número es media. Revisá el contenido y la frecuencia de tus mensajes.": "This number's quality is medium. Review your message content and frequency."
 }
