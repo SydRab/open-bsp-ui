@@ -709,5 +709,9 @@
   "Sincronizar con Meta": "Sync with Meta",
   "Promoción: ofertas, anuncios de nuevos lotes o cursos, contenido para reenganchar leads inactivos. Requiere opt-in y permite darse de baja.": "Marketing: offers, new-batch or course announcements, content to re-engage inactive leads. Requires opt-in and must allow unsubscribing.",
   "Utilidad: confirmaciones, recordatorios y avisos sobre algo que la persona ya solicitó (clase, pago, trámite). Elegir mal la categoría puede hacer que Meta la rechace.": "Utility: confirmations, reminders and notices about something the person already requested (a class, a payment, a procedure). Picking the wrong category can get it rejected by Meta.",
-  "Enviando en segundo plano. Las plantillas van a aparecer en la lista a medida que se creen.": "Sending in the background. Templates will appear in the list as they're created."
+  "Enviando en segundo plano. Las plantillas van a aparecer en la lista a medida que se creen.": "Sending in the background. Templates will appear in the list as they're created.",
+  "Escribir una nota interna": "Write an internal note",
+  "Nota interna activada (clic para enviar un mensaje normal)": "Internal note mode on (click to send a normal message)",
+  "Escribe una nota interna": "Write an internal note",
+  "Guardar nota": "Save note"
 }

@@ -709,5 +709,9 @@
   "Sincronizar con Meta": "Meta के साथ सिंक करें",
   "Promoción: ofertas, anuncios de nuevos lotes o cursos, contenido para reenganchar leads inactivos. Requiere opt-in y permite darse de baja.": "प्रमोशन: ऑफ़र, नए बैच या कोर्स की घोषणाएं, निष्क्रिय लीड्स को फिर से जोड़ने के लिए कॉन्टेंट। इसके लिए ऑप्ट-इन ज़रूरी है और अनसब्सक्राइब करने की सुविधा होनी चाहिए।",
   "Utilidad: confirmaciones, recordatorios y avisos sobre algo que la persona ya solicitó (clase, pago, trámite). Elegir mal la categoría puede hacer que Meta la rechace.": "यूटिलिटी: पुष्टि, रिमाइंडर और उस चीज़ के बारे में सूचनाएं जो व्यक्ति ने पहले ही मांगी है (क्लास, पेमेंट, प्रक्रिया)। गलत कैटेगरी चुनने पर Meta इसे अस्वीकार कर सकता है।",
-  "Enviando en segundo plano. Las plantillas van a aparecer en la lista a medida que se creen.": "बैकग्राउंड में भेजा जा रहा है। टेम्पलेट बनते ही सूची में दिखाई देंगी।"
+  "Enviando en segundo plano. Las plantillas van a aparecer en la lista a medida que se creen.": "बैकग्राउंड में भेजा जा रहा है। टेम्पलेट बनते ही सूची में दिखाई देंगी।",
+  "Escribir una nota interna": "एक आंतरिक नोट लिखें",
+  "Nota interna activada (clic para enviar un mensaje normal)": "आंतरिक नोट मोड चालू है (सामान्य संदेश भेजने के लिए क्लिक करें)",
+  "Escribe una nota interna": "एक आंतरिक नोट लिखें",
+  "Guardar nota": "नोट सहेजें"
 }

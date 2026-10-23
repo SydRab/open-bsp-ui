@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { Plus, X } from "lucide-react";
+import { Plus, StickyNote, X } from "lucide-react";
 import {
   newMessage,
   pushMessageToDb,
@@ -111,6 +111,14 @@ export default function ChatFooter() {
   const agentId = agent?.id;
 
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
+  // [crm] P2-09a: a private, staff-only note on this conversation -- never
+  // dispatched to the contact (content.internal, the same mechanism already
+  // used for tool traces/team chat; messageDirection already renders it
+  // distinctly with zero changes needed there). Deliberately available even
+  // when the 24h window is closed: a note doesn't go to the contact, so the
+  // window is irrelevant to it. Text-only this phase -- attachments are a
+  // deliberate scope cut, not an oversight.
+  const [noteMode, setNoteMode] = useState(false);
 
   const editableDiv = useRef<HTMLDivElement>(null);
   const fileInput = useRef<HTMLInputElement>(null);
@@ -189,12 +197,18 @@ export default function ChatFooter() {
     });
   }
 
+  // [crm] P2-09a: note mode is per-compose-session UI state, not something
+  // that should follow the agent from one conversation to the next.
+  useEffect(() => {
+    setNoteMode(false);
+  }, [activeConvId]);
+
   useEffect(() => {
     if (!editableDiv.current) {
       return;
     }
 
-    if (!inCSWindow) {
+    if (!inCSWindow && !noteMode) {
       editableDiv.current.textContent = "";
       return;
     }
@@ -264,6 +278,46 @@ export default function ChatFooter() {
     setMessage("");
     // TODO: optimization: combine with the updateConvExtra call - cabra 2025-01-16
     draft && saveDraft(conv, "").catch(console.error);
+
+    if (editableDiv.current) {
+      editableDiv.current.textContent = "";
+    }
+  };
+
+  // [crm] P2-09a: no saveDraft call -- drafts are for the real outbound
+  // message, not a note; status: {} (not the column default
+  // {pending: now()}) matches the established convention for an internal
+  // row that no dispatcher will ever touch (message_types.ts's own
+  // comment: "writers insert them with status {}").
+  const sendInternalNote = async () => {
+    if (!activeConvId || !conv || !message) {
+      return;
+    }
+
+    clearTimeout(timer);
+
+    // If the conv has the `updated_at` unset, it means it has not been pushed to the DB yet.
+    !conv.updated_at && (await pushConversationToDb(conv));
+
+    const record = {
+      ...newMessage(
+        conv,
+        {
+          version: "1",
+          type: "text",
+          kind: "text",
+          text: message,
+          internal: true,
+        },
+        agentId,
+      ),
+      status: {},
+    };
+
+    pushMessageToStore({ ...record, conversation_id: conv.id });
+    await pushMessageToDb(record);
+
+    setMessage("");
 
     if (editableDiv.current) {
       editableDiv.current.textContent = "";
@@ -470,12 +524,32 @@ export default function ChatFooter() {
             "flex items-end text-foreground p-[5px] rounded-[24px] shadow-[0_0_4px_0px_rgba(0,0,0,0.1)]" +
             (templateDraft
               ? " bg-incoming-chat-bubble"
-              : !inCSWindow
-                ? " bg-background"
-                : " bg-incoming-chat-bubble")
+              : noteMode
+                ? " bg-amber-50 dark:bg-amber-950/30"
+                : !inCSWindow
+                  ? " bg-background"
+                  : " bg-incoming-chat-bubble")
           }
         >
-          <div className="shrink-0">
+          <div className="shrink-0 flex items-center">
+            {!templateDraft && (
+              <button
+                className={
+                  "p-[8px] rounded-full cursor-pointer hover:bg-accent" +
+                  (noteMode ? " text-amber-600 dark:text-amber-400" : "")
+                }
+                onClick={() => setNoteMode((v) => !v)}
+                title={
+                  noteMode
+                    ? t(
+                        "Nota interna activada (clic para enviar un mensaje normal)",
+                      )
+                    : t("Escribir una nota interna")
+                }
+              >
+                <StickyNote className="w-[20px] h-[20px]" />
+              </button>
+            )}
             {templateDraft ? (
               <button
                 className="p-[8px] rounded-full cursor-pointer hover:bg-accent"
@@ -486,10 +560,12 @@ export default function ChatFooter() {
               </button>
             ) : (
               <button
-                disabled={!inCSWindow}
+                disabled={!inCSWindow || noteMode}
                 className={
                   "p-[8px] rounded-full" +
-                  (!inCSWindow ? "" : " cursor-pointer hover:bg-accent")
+                  (!inCSWindow || noteMode
+                    ? ""
+                    : " cursor-pointer hover:bg-accent")
                 }
                 onClick={() => fileInput.current?.click()}
                 title={t("Adjuntar")}
@@ -500,7 +576,7 @@ export default function ChatFooter() {
           </div>
 
           <input
-            disabled={!inCSWindow}
+            disabled={!inCSWindow || noteMode}
             ref={fileInput}
             type="file"
             multiple={true}
@@ -531,9 +607,9 @@ export default function ChatFooter() {
               <>
                 <div
                   ref={editableDiv}
-                  contentEditable={inCSWindow}
+                  contentEditable={inCSWindow || noteMode}
                   className={`${
-                    !inCSWindow ? "cursor-pointer" : ""
+                    !inCSWindow && !noteMode ? "cursor-pointer" : ""
                   } outline-none mx-[5px] py-[10px] min-h-[40px] max-h-40 overflow-y-auto text-[15px] leading-[20px] break-words`}
                   onInput={(event) => {
                     if (!(event.target instanceof Element)) {
@@ -547,8 +623,9 @@ export default function ChatFooter() {
 
                     setMessage(message);
 
-                    if (conv.created_at !== conv.updated_at) {
-                      // no drafts for new convs, sorry!
+                    if (!noteMode && conv.created_at !== conv.updated_at) {
+                      // no drafts for new convs, sorry! -- and none for
+                      // notes either, those aren't the outbound draft.
                       debounce(() => saveDraft(conv, message), 3000); // milliseconds
                     }
                   }}
@@ -559,16 +636,21 @@ export default function ChatFooter() {
                       window.matchMedia("(min-width: 768px)").matches
                     ) {
                       event.preventDefault();
-                      sendTextMessage().catch(console.error);
+                      if (noteMode) {
+                        sendInternalNote().catch(console.error);
+                      } else {
+                        sendTextMessage().catch(console.error);
+                      }
                     }
                   }}
                   onClick={() =>
                     !inCSWindow &&
+                    !noteMode &&
                     conv.service === "whatsapp" &&
                     toggle("templatePicker")
                   }
                   title={
-                    inCSWindow
+                    inCSWindow || noteMode
                       ? undefined
                       : conv.service === "whatsapp"
                         ? t(
@@ -583,17 +665,19 @@ export default function ChatFooter() {
                   <div
                     className={
                       "absolute bottom-[1px] py-[10px] mx-[5px] max-h-[40px] text-[15px] text-muted-foreground" +
-                      (inCSWindow ? "" : " cursor-pointer")
+                      (inCSWindow || noteMode ? "" : " cursor-pointer")
                     }
                     onClick={() =>
-                      inCSWindow
+                      inCSWindow || noteMode
                         ? editableDiv.current?.focus()
                         : conv.service === "whatsapp"
                           ? toggle("templatePicker")
                           : undefined
                     }
                   >
-                    {!inCSWindow ? (
+                    {noteMode ? (
+                      <span>{t("Escribe una nota interna")}</span>
+                    ) : !inCSWindow ? (
                       conv.service === "whatsapp" ? (
                         <>
                           <span className="lg:hidden">
@@ -628,25 +712,39 @@ export default function ChatFooter() {
 
           {/* Send button */}
           <button
-            disabled={templateDraft ? !allVarsFilled : !inCSWindow}
+            disabled={
+              templateDraft ? !allVarsFilled : noteMode ? !message : !inCSWindow
+            }
             className={
               "p-[8px] rounded-full bg-primary disabled:opacity-50" +
               (templateDraft
                 ? allVarsFilled
                   ? " cursor-pointer"
                   : ""
-                : !inCSWindow
-                  ? ""
-                  : " cursor-pointer")
+                : noteMode
+                  ? message
+                    ? " cursor-pointer"
+                    : ""
+                  : !inCSWindow
+                    ? ""
+                    : " cursor-pointer")
             }
             onClick={() => {
               if (templateDraft) {
                 allVarsFilled && sendTemplateMessage().catch(console.error);
+              } else if (noteMode) {
+                message && sendInternalNote().catch(console.error);
               } else if (message) {
                 sendTextMessage().catch(console.error);
               }
             }}
-            title={templateDraft ? t("Enviar plantilla") : t("Enviar mensaje")}
+            title={
+              templateDraft
+                ? t("Enviar plantilla")
+                : noteMode
+                  ? t("Guardar nota")
+                  : t("Enviar mensaje")
+            }
           >
             <svg className="w-[24px] h-[24px] transition text-primary-foreground">
               <use href="/icons.svg#send" />
