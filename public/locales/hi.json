@@ -713,5 +713,10 @@
   "Escribir una nota interna": "एक आंतरिक नोट लिखें",
   "Nota interna activada (clic para enviar un mensaje normal)": "आंतरिक नोट मोड चालू है (सामान्य संदेश भेजने के लिए क्लिक करें)",
   "Escribe una nota interna": "एक आंतरिक नोट लिखें",
-  "Guardar nota": "नोट सहेजें"
+  "Guardar nota": "नोट सहेजें",
+  "Quitar etiqueta": "टैग हटाएं",
+  "Agregar etiqueta": "टैग जोड़ें",
+  "Todavía no hay etiquetas": "अभी तक कोई टैग नहीं है",
+  "Nueva etiqueta...": "नया टैग...",
+  "Crear etiqueta": "टैग बनाएं"
 }

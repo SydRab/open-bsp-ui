@@ -10,6 +10,7 @@ import {
   type InstagramContactAddressExtra,
   peerAddress,
 } from "@/supabase/client";
+import ConversationTags from "./ConversationTags";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -84,7 +85,7 @@ export default function Header() {
           className="bg-accent text-accent-foreground border border-border text-[16px]"
         />
       </div>
-      <div className="info flex flex-col justify-center mr-[12px] truncate">
+      <div className="info flex flex-col justify-center mr-[12px] min-w-0 grow">
         <div className="text-[16px] text-foreground truncate">
           {displayName}
         </div>
@@ -96,6 +97,10 @@ export default function Header() {
           {service === "instagram" &&
             igExtra?.username &&
             `@${igExtra.username}`}
+        </div>
+        {/* [crm] P2-09b */}
+        <div className="mt-[2px]">
+          <ConversationTags conversationId={activeConvId} />
         </div>
       </div>
 

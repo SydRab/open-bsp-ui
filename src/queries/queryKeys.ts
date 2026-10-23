@@ -94,6 +94,10 @@ export const queryKeys = {
       ] as const,
     customFields: (orgId: NullableId) =>
       ["crm", orgId, "custom_fields"] as const,
+    // [crm] P2-09b
+    tags: (orgId: NullableId) => ["crm", orgId, "tags"] as const,
+    conversationTags: (conversationId: NullableId) =>
+      ["crm", "conversation_tags", conversationId] as const,
     contactByAddress: (orgId: NullableId, service: string, address: string) =>
       ["crm", orgId, "contact", service, address] as const,
     disclaimerTemplates: (orgId: NullableId) =>

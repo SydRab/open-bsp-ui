@@ -713,5 +713,10 @@
   "Escribir una nota interna": "Write an internal note",
   "Nota interna activada (clic para enviar un mensaje normal)": "Internal note mode on (click to send a normal message)",
   "Escribe una nota interna": "Write an internal note",
-  "Guardar nota": "Save note"
+  "Guardar nota": "Save note",
+  "Quitar etiqueta": "Remove tag",
+  "Agregar etiqueta": "Add tag",
+  "Todavía no hay etiquetas": "No tags yet",
+  "Nueva etiqueta...": "New tag...",
+  "Crear etiqueta": "Create tag"
 }

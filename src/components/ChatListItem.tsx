@@ -31,6 +31,8 @@ import { useCurrentAgent, useCurrentAgents } from "@/queries/useAgents";
 import { useContactAddress } from "@/queries/useContactsAddresses";
 import { formatPhoneNumber, nameInitials } from "@/utils/FormatUtils";
 import { useNavigate } from "@tanstack/react-router";
+import { type TagColor, useConversationTags } from "@/queries/useTags";
+import { TagDots } from "./ConversationTags";
 
 function mediaPreview(t: (content: string) => ReactNode, message?: MessageRow) {
   let mediaIcon = null;
@@ -182,6 +184,9 @@ export default function ChatListItem({ itemId }: { itemId: string }) {
   const { data: agent } = useCurrentAgent();
   const { data: agents } = useCurrentAgents();
   const isAdmin = ["admin", "owner"].includes(agent?.role || "");
+
+  // [crm] P2-09b
+  const { data: tags } = useConversationTags(itemId);
 
   const messages: MessageRow[] | undefined = Array.from(
     useBoundStore((state) => state.chat.messages.get(itemId || ""))?.values() ||
@@ -436,6 +441,14 @@ export default function ChatListItem({ itemId }: { itemId: string }) {
               </div>
 
               <div className="flex flex-row items-center">
+                {/* [crm] P2-09b */}
+                {!!tags?.length && (
+                  <div className="ml-[6px]">
+                    <TagDots
+                      colors={tags.map((tag) => tag.color as TagColor)}
+                    />
+                  </div>
+                )}
                 {/* Pin - For now just conversations can be fixed */}
                 {isPinned && (
                   <svg className="h-[18px] w-[12px] ml-[6px] text-muted-foreground">
