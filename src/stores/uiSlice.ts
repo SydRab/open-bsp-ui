@@ -79,6 +79,7 @@ export type UIState = {
   tagPicker: boolean; // [crm] P2-09b
   assigneePicker: boolean; // [crm] P2-09c
   contactPanel: boolean; // [crm] P2-09d
+  cannedReplyPicker: boolean; // [crm] P2-09e
   templateDrafts: Map<string, TemplateDraft>;
   activeOrgId: string | null;
   activeConvId: string | null;
@@ -116,6 +117,7 @@ export const createUISlice: StateCreator<Partial<AppState>> = (
   tagPicker: false,
   assigneePicker: false,
   contactPanel: false,
+  cannedReplyPicker: false,
   templateDrafts: new Map(),
   activeOrgId: null,
   activeConvId: null,

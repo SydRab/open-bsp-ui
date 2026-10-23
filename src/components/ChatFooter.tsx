@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { Plus, StickyNote, X } from "lucide-react";
+import { MessageSquareText, Plus, StickyNote, X } from "lucide-react";
 import {
   newMessage,
   pushMessageToDb,
@@ -24,6 +24,7 @@ import { useCurrentAgent } from "@/queries/useAgents";
 import { moveCursorToEnd } from "@/utils/UtilityFunctions";
 import { htmlToMarkdown } from "@/utils/htmlToMarkdown";
 import TemplatePicker from "./TemplatePicker";
+import CannedReplyPicker from "./CannedReplyPicker";
 
 function TemplateVarInput({
   placeholder,
@@ -85,6 +86,10 @@ export default function ChatFooter() {
   )?.draft;
   const toggle = useBoundStore((store) => store.ui.toggle);
   const templatePicker = useBoundStore((store) => store.ui.templatePicker);
+  // [crm] P2-09e
+  const cannedReplyPicker = useBoundStore(
+    (store) => store.ui.cannedReplyPicker,
+  );
   const templateDraftEntry = useBoundStore((store) =>
     store.ui.templateDrafts.get(store.ui.activeConvId || ""),
   );
@@ -202,6 +207,12 @@ export default function ChatFooter() {
   useEffect(() => {
     setNoteMode(false);
   }, [activeConvId]);
+
+  // [crm] P2-09e: same reasoning -- don't carry a stale open picker across
+  // a conversation switch.
+  useEffect(() => {
+    toggle("cannedReplyPicker", false);
+  }, [activeConvId, toggle]);
 
   useEffect(() => {
     if (!editableDiv.current) {
@@ -321,6 +332,26 @@ export default function ChatFooter() {
 
     if (editableDiv.current) {
       editableDiv.current.textContent = "";
+    }
+  };
+
+  // [crm] P2-09e: replaces the current draft rather than inserting at the
+  // cursor or appending -- simplest behavior, and the common case (picking
+  // a reply to start or fully answer a message) is served either way. Saves
+  // the draft under the same condition onInput does (skipped in note mode,
+  // same as there), since this bypasses onInput -- it sets textContent
+  // directly rather than simulating a DOM input event.
+  const insertCannedReply = (content: string) => {
+    setMessage(content);
+
+    if (editableDiv.current) {
+      editableDiv.current.textContent = content;
+      moveCursorToEnd(editableDiv.current);
+      editableDiv.current.focus();
+    }
+
+    if (!noteMode && conv && conv.created_at !== conv.updated_at) {
+      debounce(() => saveDraft(conv, content), 3000);
     }
   };
 
@@ -549,6 +580,30 @@ export default function ChatFooter() {
               >
                 <StickyNote className="w-[20px] h-[20px]" />
               </button>
+            )}
+            {/* [crm] P2-09e */}
+            {!templateDraft && (
+              <div className="relative">
+                <button
+                  disabled={!inCSWindow && !noteMode}
+                  className={
+                    "p-[8px] rounded-full" +
+                    (!inCSWindow && !noteMode
+                      ? ""
+                      : " cursor-pointer hover:bg-accent")
+                  }
+                  onClick={() => toggle("cannedReplyPicker")}
+                  title={t("Respuestas rápidas")}
+                >
+                  <MessageSquareText className="w-[20px] h-[20px]" />
+                </button>
+                {cannedReplyPicker && (
+                  <CannedReplyPicker
+                    onSelect={insertCannedReply}
+                    onClose={() => toggle("cannedReplyPicker", false)}
+                  />
+                )}
+              </div>
             )}
             {templateDraft ? (
               <button

@@ -724,5 +724,11 @@
   "No hay miembros": "No members",
   "Contacto": "Contact",
   "Información del contacto": "Contact info",
-  "Ver contacto completo": "View full contact"
+  "Ver contacto completo": "View full contact",
+  "Respuestas rápidas": "Canned replies",
+  "Editar": "Edit",
+  "Todavía no hay respuestas rápidas": "No canned replies yet",
+  "Nombre...": "Name...",
+  "Contenido de la respuesta...": "Reply content...",
+  "Nueva respuesta rápida": "New canned reply"
 }
