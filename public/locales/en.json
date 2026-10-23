@@ -698,5 +698,16 @@
   "Simular error de conexión": "Simulate connection error",
   "Conexión de prueba: no envía ni recibe mensajes reales. Conectá tu número real de WhatsApp una vez que se apruebe la verificación de Meta Business.": "Test connection: doesn't send or receive real messages. Connect your real WhatsApp number once Meta Business Verification is approved.",
   "Reconectar": "Reconnect",
-  "El token de este número venció o ya no es válido. Reconectá el número para seguir enviando y recibiendo mensajes.": "This number's token has expired or is no longer valid. Reconnect the number to keep sending and receiving messages."
+  "El token de este número venció o ya no es válido. Reconectá el número para seguir enviando y recibiendo mensajes.": "This number's token has expired or is no longer valid. Reconnect the number to keep sending and receiving messages.",
+  "Agregar idioma": "Add language",
+  "Calidad": "Quality",
+  "Crea las plantillas sugeridas para tu rubro": "Create the templates suggested for your field",
+  "Crear esta plantilla en otro idioma": "Create this template in another language",
+  "Enviar plantillas del paquete": "Submit pack templates",
+  "Rechazada por Meta": "Rejected by Meta",
+  "Sincronizando...": "Syncing...",
+  "Sincronizar con Meta": "Sync with Meta",
+  "Promoción: ofertas, anuncios de nuevos lotes o cursos, contenido para reenganchar leads inactivos. Requiere opt-in y permite darse de baja.": "Marketing: offers, new-batch or course announcements, content to re-engage inactive leads. Requires opt-in and must allow unsubscribing.",
+  "Utilidad: confirmaciones, recordatorios y avisos sobre algo que la persona ya solicitó (clase, pago, trámite). Elegir mal la categoría puede hacer que Meta la rechace.": "Utility: confirmations, reminders and notices about something the person already requested (a class, a payment, a procedure). Picking the wrong category can get it rejected by Meta.",
+  "Enviando en segundo plano. Las plantillas van a aparecer en la lista a medida que se creen.": "Sending in the background. Templates will appear in the list as they're created."
 }

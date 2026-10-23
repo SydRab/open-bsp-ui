@@ -26,8 +26,7 @@ export type TemplateData = {
     | "DISABLED"
     | "PAUSED"
     | "LIMIT_EXCEEDED";
-  // @ui-divergence: category includes "UTILITY" (API: only "MARKETING").
-  category: "MARKETING" | "UTILITY"; // TODO: service and auth categories - cabra 2024/09/12
+  category: "MARKETING" | "UTILITY";
   language: string;
   components: (
     | BodyComponent

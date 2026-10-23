@@ -23,6 +23,7 @@ export type ConversationAgentExtra = {
 import { isInternal } from "./message_types";
 import type { ConversationRow, MessageRow } from "./database_types";
 import type { ConversationExtra } from "./extra_types";
+import type { TemplateData } from "./whatsapp_template_types";
 
 export type Direction = "incoming" | "outgoing" | "internal";
 
@@ -149,3 +150,14 @@ export function isMultiParty(
 
   return false;
 }
+
+// P2-04: crm.templates row, shaped as TemplateData (id = Meta's template id,
+// not the table's own uuid PK) plus the local-only fields the API type has
+// no equivalent for -- quality and rejection reason come from the status/
+// quality webhooks, pack_item_key names which pack template (if any) this
+// was submitted from.
+export type TemplateRow = TemplateData & {
+  quality_score: string | null;
+  rejection_reason: string | null;
+  pack_item_key: string | null;
+};

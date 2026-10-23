@@ -3,7 +3,8 @@ import SectionHeader from "@/components/SectionHeader";
 import { useTranslation } from "@/hooks/useTranslation";
 import TemplateEditor from "@/components/TemplateEditor";
 import { useTemplates, useDeleteTemplate } from "@/queries/useTemplates";
-import { LoaderCircle } from "lucide-react";
+import { LoaderCircle, Languages } from "lucide-react";
+import SectionItem from "@/components/SectionItem";
 
 export const Route = createFileRoute(
   "/_auth/integrations/whatsapp/$orgAddressId/templates/$templateId",
@@ -51,6 +52,26 @@ function EditTemplate() {
           );
         }}
         deleteLoading={deleteTemplate.isPending}
+      />
+      {/* [crm] P2-04: Meta templates with the same name in a different
+      language are separate objects -- this starts a new one pre-filled
+      with this template's name/category. */}
+      <SectionItem
+        title={t("Agregar idioma")}
+        description={t("Crear esta plantilla en otro idioma")}
+        aside={
+          <div className="p-[8px]">
+            <Languages className="w-[24px] h-[24px] text-muted-foreground" />
+          </div>
+        }
+        onClick={() =>
+          navigate({
+            to: "/integrations/whatsapp/$orgAddressId/templates/new",
+            params: { orgAddressId },
+            search: { name: template.name, category: template.category },
+            hash: (prevHash) => prevHash!,
+          })
+        }
       />
       <TemplateEditor
         existingTemplate={template}

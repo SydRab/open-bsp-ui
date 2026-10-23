@@ -1,17 +1,52 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { invokeFunction, type TemplateData } from "@/supabase/client";
+import { invokeFunction, supabase, type TemplateData } from "@/supabase/client";
+import type { TemplateRow } from "@/supabase/types/ui_types";
 import useBoundStore from "@/stores/useBoundStore";
 
+const crm = () => supabase.schema("crm");
+
+// [crm] P2-04: reads crm.templates (the local cache), not a live Meta call --
+// kept current by list/create/edit/delete and the status/quality webhooks.
+// Use useSyncTemplates to pull fresh state from Meta on demand.
 export function useTemplates(organizationAddress?: string) {
   const activeOrgId = useBoundStore((state) => state.ui.activeOrgId);
 
   return useQuery({
     queryKey: ["templates", activeOrgId, organizationAddress],
-    queryFn: async () => {
-      if (!organizationAddress) return [];
+    queryFn: async () =>
+      await crm()
+        .from("templates")
+        .select(
+          "meta_id, name, category, language, status, components, quality_score, rejection_reason, pack_item_key",
+        )
+        .eq("organization_id", activeOrgId!)
+        .eq("organization_address", organizationAddress!)
+        .order("name")
+        .throwOnError(),
+    enabled: !!activeOrgId && !!organizationAddress,
+    select: (data): TemplateRow[] =>
+      data.data.map((row) => ({
+        id: row.meta_id ?? "",
+        name: row.name,
+        category: row.category as TemplateData["category"],
+        language: row.language,
+        status: row.status as TemplateData["status"],
+        components: row.components as unknown as TemplateData["components"],
+        sub_category: "CUSTOM",
+        quality_score: row.quality_score,
+        rejection_reason: row.rejection_reason,
+        pack_item_key: row.pack_item_key,
+      })),
+  });
+}
 
-      // Meta wraps the list in `{ data: [...] }`.
-      const body = await invokeFunction<{ data?: TemplateData[] }>(
+export function useSyncTemplates() {
+  const queryClient = useQueryClient();
+  const activeOrgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useMutation({
+    mutationFn: async (organizationAddress: string) =>
+      await invokeFunction<{ synced: number }>(
         "whatsapp-management/templates",
         {
           method: "PUT",
@@ -20,11 +55,40 @@ export function useTemplates(organizationAddress?: string) {
             organization_address: organizationAddress,
           },
         },
-      );
-
-      return body?.data || [];
+      ),
+    onSuccess: (_, organizationAddress) => {
+      void queryClient.invalidateQueries({
+        queryKey: ["templates", activeOrgId, organizationAddress],
+      });
     },
-    enabled: !!activeOrgId && !!organizationAddress,
+  });
+}
+
+// [crm] P2-04: submission runs in the background (several sequential Meta
+// calls can exceed one request's budget) -- this only confirms it started.
+// Results show up by reloading the templates list later, not from this
+// mutation's own response.
+export function useSubmitPackTemplates() {
+  const queryClient = useQueryClient();
+  const activeOrgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useMutation({
+    mutationFn: async (organizationAddress: string) =>
+      await invokeFunction<{ status: "queued" }>(
+        "whatsapp-management/templates/submit-pack",
+        {
+          method: "POST",
+          body: {
+            organization_id: activeOrgId,
+            organization_address: organizationAddress,
+          },
+        },
+      ),
+    onSuccess: (_, organizationAddress) => {
+      void queryClient.invalidateQueries({
+        queryKey: ["templates", activeOrgId, organizationAddress],
+      });
+    },
   });
 }
 

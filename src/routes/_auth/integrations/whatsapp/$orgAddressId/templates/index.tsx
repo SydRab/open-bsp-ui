@@ -3,8 +3,18 @@ import SectionHeader from "@/components/SectionHeader";
 import SectionBody from "@/components/SectionBody";
 import SectionItem from "@/components/SectionItem";
 import { useTranslation } from "@/hooks/useTranslation";
-import { Plus, LayoutTemplate, LoaderCircle } from "lucide-react";
-import { useTemplates } from "@/queries/useTemplates";
+import {
+  Plus,
+  LayoutTemplate,
+  LoaderCircle,
+  RefreshCw,
+  PackageCheck,
+} from "lucide-react";
+import {
+  useSubmitPackTemplates,
+  useSyncTemplates,
+  useTemplates,
+} from "@/queries/useTemplates";
 
 export const Route = createFileRoute(
   "/_auth/integrations/whatsapp/$orgAddressId/templates/",
@@ -18,6 +28,8 @@ function TemplatesIndex() {
   const { orgAddressId } = Route.useParams();
 
   const { data: templates, isLoading } = useTemplates(orgAddressId);
+  const syncTemplates = useSyncTemplates();
+  const submitPackTemplates = useSubmitPackTemplates();
 
   return (
     <>
@@ -37,6 +49,44 @@ function TemplatesIndex() {
               hash: (prevHash) => prevHash!,
             })
           }
+        />
+
+        <SectionItem
+          title={t("Sincronizar con Meta")}
+          description={
+            syncTemplates.isPending ? t("Sincronizando...") : undefined
+          }
+          aside={
+            <div className="p-[8px]">
+              {syncTemplates.isPending ? (
+                <LoaderCircle className="w-[24px] h-[24px] text-muted-foreground animate-spin" />
+              ) : (
+                <RefreshCw className="w-[24px] h-[24px] text-muted-foreground" />
+              )}
+            </div>
+          }
+          onClick={() => syncTemplates.mutate(orgAddressId)}
+        />
+
+        <SectionItem
+          title={t("Enviar plantillas del paquete")}
+          description={
+            submitPackTemplates.isSuccess
+              ? t(
+                  "Enviando en segundo plano. Las plantillas van a aparecer en la lista a medida que se creen.",
+                )
+              : t("Crea las plantillas sugeridas para tu rubro")
+          }
+          aside={
+            <div className="p-[8px]">
+              {submitPackTemplates.isPending ? (
+                <LoaderCircle className="w-[24px] h-[24px] text-muted-foreground animate-spin" />
+              ) : (
+                <PackageCheck className="w-[24px] h-[24px] text-muted-foreground" />
+              )}
+            </div>
+          }
+          onClick={() => submitPackTemplates.mutate(orgAddressId)}
         />
 
         {isLoading && (
@@ -59,6 +109,12 @@ function TemplatesIndex() {
                     {template.status.toLowerCase()}
                   </span>
                 )}
+                {template.quality_score &&
+                  template.quality_score !== "UNKNOWN" && (
+                    <span className="text-xs text-muted-foreground capitalize">
+                      {t("Calidad")}: {template.quality_score.toLowerCase()}
+                    </span>
+                  )}
               </div>
             }
             aside={

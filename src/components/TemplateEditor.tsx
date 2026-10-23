@@ -1,5 +1,6 @@
 import { type ChangeEvent, useEffect, useRef } from "react";
 import { type TemplateData } from "@/supabase/client";
+import type { TemplateRow } from "@/supabase/types/ui_types";
 import { useTranslation } from "@/hooks/useTranslation";
 import { PlusIcon } from "lucide-react";
 import { useForm, useFieldArray } from "react-hook-form";
@@ -26,9 +27,17 @@ interface TemplateFormData {
 export default function TemplateEditor({
   existingTemplate,
   organizationAddress,
+  // [crm] P2-04: "Add language" starts a new (not edit) template pre-filled
+  // with an existing one's name/category -- Meta templates with the same
+  // name in different languages are separate objects, there's no dedicated
+  // API for it. Ignored when existingTemplate is set.
+  prefillName,
+  prefillCategory,
 }: {
-  existingTemplate?: TemplateData;
+  existingTemplate?: TemplateRow;
   organizationAddress: string;
+  prefillName?: string;
+  prefillCategory?: "MARKETING" | "UTILITY";
 }) {
   "use no memo";
   const { translate: t, currentLanguage } = useTranslation();
@@ -55,9 +64,9 @@ export default function TemplateEditor({
   } = useForm<TemplateFormData>({
     mode: "onTouched",
     defaultValues: {
-      name: existingTemplate?.name || "",
+      name: existingTemplate?.name || prefillName || "",
       language: existingTemplate?.language || currentLanguage || "es",
-      category: existingTemplate?.category || "MARKETING",
+      category: existingTemplate?.category || prefillCategory || "MARKETING",
       header: existingHeader?.text || "",
       headerVariable: existingHeader?.example?.header_text?.[0] || "",
       body: existingBody?.text || "",
@@ -264,6 +273,15 @@ export default function TemplateEditor({
   return (
     <>
       <SectionBody>
+        {existingTemplate?.status === "REJECTED" &&
+          existingTemplate.rejection_reason && (
+            <div className="instructions">
+              <p className="text-destructive font-medium">
+                {t("Rechazada por Meta")}: {existingTemplate.rejection_reason}
+              </p>
+            </div>
+          )}
+
         <form id="template-form" onSubmit={handleSubmit(onSubmit)}>
           {/* Category */}
           <SelectField<TemplateFormData>
@@ -276,6 +294,15 @@ export default function TemplateEditor({
               { value: "UTILITY", label: t("Utilidad") },
             ]}
           />
+          <p className="text-xs text-muted-foreground -mt-[8px]">
+            {categoryValue === "MARKETING"
+              ? t(
+                  "Promoción: ofertas, anuncios de nuevos lotes o cursos, contenido para reenganchar leads inactivos. Requiere opt-in y permite darse de baja.",
+                )
+              : t(
+                  "Utilidad: confirmaciones, recordatorios y avisos sobre algo que la persona ya solicitó (clase, pago, trámite). Elegir mal la categoría puede hacer que Meta la rechace.",
+                )}
+          </p>
 
           {/* Language */}
           <SelectField<TemplateFormData>
