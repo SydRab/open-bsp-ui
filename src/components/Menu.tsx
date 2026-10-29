@@ -100,13 +100,14 @@ export default function Menu() {
           </LinkButton>
         )}
 
-        {/* [crm] P3-06: speed-to-lead's own triage list, not the pipeline
-            board (/leads, P3-07) -- deals.edit is the same bar every
-            lead-working action has used since P3-02. */}
+        {/* [crm] P3-07a: the pipeline kanban board, the primary surface now
+            that it exists -- the unanswered-leads triage list (P3-06) is
+            reachable from inside it, same deals.edit bar every lead-working
+            action has used since P3-02. */}
         {can("deals.edit") && (
           <LinkButton
-            to="/leads/unanswered"
-            title={t("Leads sin respuesta")}
+            to="/leads"
+            title={t("Pipeline")}
             isActive={pathname.startsWith("/leads")}
             className="mt-[10px]"
           >

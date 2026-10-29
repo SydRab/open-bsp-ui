@@ -14,6 +14,8 @@
     "types:sync-check": "bash scripts/check-type-sync.sh"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/utilities": "^3.2.2",
     "@supabase/supabase-js": "^2.81.1",
     "@tailwindcss/vite": "^4.1.17",
     "@tanstack/react-query": "^5.90.8",

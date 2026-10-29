@@ -1186,3 +1186,148 @@ export function useUnansweredLeads() {
     refetchInterval: 30_000,
   });
 }
+
+// [crm] P3-07a: Pipeline UI (kanban board). Board read-visibility is
+// governed entirely by crm.leads' own RLS (lead_scope) -- a sales_rep's
+// 'own' scope simply returns fewer rows at the database level, no extra
+// client-side filtering needed for that.
+export type LeadStage = Database["crm"]["Tables"]["lead_stages"]["Row"];
+export type LeadQuality = Database["crm"]["Tables"]["lead_qualities"]["Row"];
+
+export function useLeadStages() {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useQuery({
+    queryKey: queryKeys.crm.leadStages(orgId),
+    queryFn: async () =>
+      await crm()
+        .from("lead_stages")
+        .select()
+        .eq("organization_id", orgId!)
+        .order("sort_order", { ascending: true })
+        .throwOnError(),
+    select: (data) => data.data as LeadStage[],
+    enabled: !!orgId,
+  });
+}
+
+export function useLeadQualities() {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useQuery({
+    queryKey: queryKeys.crm.leadQualities(orgId),
+    queryFn: async () =>
+      await crm()
+        .from("lead_qualities")
+        .select()
+        .eq("organization_id", orgId!)
+        .order("sort_order", { ascending: true })
+        .throwOnError(),
+    select: (data) => data.data as LeadQuality[],
+    enabled: !!orgId,
+  });
+}
+
+export type PipelineLead = Database["crm"]["Tables"]["leads"]["Row"] & {
+  contactName: string | null;
+  assigneeName: string | null;
+};
+
+export function usePipelineLeads() {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useQuery({
+    queryKey: queryKeys.crm.pipelineLeads(orgId),
+    queryFn: async () => {
+      const { data: leads } = await crm()
+        .from("leads")
+        .select()
+        .eq("organization_id", orgId!)
+        .order("created_at", { ascending: false })
+        .throwOnError();
+
+      const contactIds = [...new Set(leads.map((l) => l.contact_id))];
+      const agentIds = [
+        ...new Set(leads.map((l) => l.assigned_to).filter(Boolean)),
+      ] as string[];
+
+      const [{ data: contacts }, { data: agents }] = await Promise.all([
+        contactIds.length
+          ? crm()
+              .from("contacts")
+              .select("id, display_name")
+              .in("id", contactIds)
+              .throwOnError()
+          : Promise.resolve({ data: [] }),
+        agentIds.length
+          ? supabase
+              .from("agents")
+              .select("id, name")
+              .in("id", agentIds)
+              .throwOnError()
+          : Promise.resolve({ data: [] }),
+      ]);
+
+      const contactName = new Map(contacts?.map((c) => [c.id, c.display_name]));
+      const agentName = new Map(agents?.map((a) => [a.id, a.name]));
+
+      return leads.map((lead) => ({
+        ...lead,
+        contactName: contactName.get(lead.contact_id) ?? null,
+        assigneeName: lead.assigned_to
+          ? (agentName.get(lead.assigned_to) ?? null)
+          : null,
+      })) as PipelineLead[];
+    },
+    enabled: !!orgId,
+    refetchInterval: 30_000,
+  });
+}
+
+export function useSetLeadStage() {
+  const queryClient = useQueryClient();
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useMutation({
+    mutationFn: async (args: { leadId: string; stageId: string | null }) => {
+      await crm()
+        .rpc("set_lead_stage", {
+          p_lead_id: args.leadId,
+          // Codegen types a uuid arg with no SQL default as non-nullable
+          // even though the function body explicitly allows null (moving
+          // a lead back to "no stage").
+          p_stage_id: args.stageId as unknown as string,
+        })
+        .throwOnError();
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.pipelineLeads(orgId),
+      });
+    },
+  });
+}
+
+export function useSetLeadDealValue() {
+  const queryClient = useQueryClient();
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useMutation({
+    mutationFn: async (args: { leadId: string; value: number | null }) => {
+      await crm()
+        .rpc("set_lead_deal_value", {
+          p_lead_id: args.leadId,
+          // Same codegen limitation as set_lead_stage's p_stage_id above --
+          // numeric with no SQL default types as non-nullable even though
+          // null ("clear the value") is valid.
+          p_value: args.value as unknown as number,
+        })
+        .throwOnError();
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.pipelineLeads(orgId),
+      });
+    },
+  });
+}

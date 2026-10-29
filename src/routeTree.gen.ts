@@ -19,6 +19,7 @@ import { Route as AuthConfirmRouteImport } from './routes/auth.confirm'
 import { Route as AuthStatsRouteImport } from './routes/_auth/stats'
 import { Route as AuthStatsIndexRouteImport } from './routes/_auth/stats/index'
 import { Route as AuthSettingsIndexRouteImport } from './routes/_auth/settings/index'
+import { Route as AuthLeadsIndexRouteImport } from './routes/_auth/leads/index'
 import { Route as AuthIntegrationsIndexRouteImport } from './routes/_auth/integrations/index'
 import { Route as AuthConversationsIndexRouteImport } from './routes/_auth/conversations/index'
 import { Route as AuthContactsIndexRouteImport } from './routes/_auth/contacts/index'
@@ -128,6 +129,11 @@ const AuthStatsIndexRoute = AuthStatsIndexRouteImport.update({
 const AuthSettingsIndexRoute = AuthSettingsIndexRouteImport.update({
   id: '/settings/',
   path: '/settings/',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthLeadsIndexRoute = AuthLeadsIndexRouteImport.update({
+  id: '/leads/',
+  path: '/leads/',
   getParentRoute: () => AuthRoute,
 } as any)
 const AuthIntegrationsIndexRoute = AuthIntegrationsIndexRouteImport.update({
@@ -498,6 +504,7 @@ export interface FileRoutesByFullPath {
   '/contacts': typeof AuthContactsIndexRoute
   '/conversations': typeof AuthConversationsIndexRoute
   '/integrations': typeof AuthIntegrationsIndexRoute
+  '/leads': typeof AuthLeadsIndexRoute
   '/settings': typeof AuthSettingsIndexRoute
   '/stats/': typeof AuthStatsIndexRoute
   '/integrations/instagram/new': typeof AuthIntegrationsInstagramNewRoute
@@ -569,6 +576,7 @@ export interface FileRoutesByTo {
   '/contacts': typeof AuthContactsIndexRoute
   '/conversations': typeof AuthConversationsIndexRoute
   '/integrations': typeof AuthIntegrationsIndexRoute
+  '/leads': typeof AuthLeadsIndexRoute
   '/settings': typeof AuthSettingsIndexRoute
   '/stats': typeof AuthStatsIndexRoute
   '/integrations/instagram/new': typeof AuthIntegrationsInstagramNewRoute
@@ -643,6 +651,7 @@ export interface FileRoutesById {
   '/_auth/contacts/': typeof AuthContactsIndexRoute
   '/_auth/conversations/': typeof AuthConversationsIndexRoute
   '/_auth/integrations/': typeof AuthIntegrationsIndexRoute
+  '/_auth/leads/': typeof AuthLeadsIndexRoute
   '/_auth/settings/': typeof AuthSettingsIndexRoute
   '/_auth/stats/': typeof AuthStatsIndexRoute
   '/_auth/integrations/instagram/new': typeof AuthIntegrationsInstagramNewRoute
@@ -717,6 +726,7 @@ export interface FileRouteTypes {
     | '/contacts'
     | '/conversations'
     | '/integrations'
+    | '/leads'
     | '/settings'
     | '/stats/'
     | '/integrations/instagram/new'
@@ -788,6 +798,7 @@ export interface FileRouteTypes {
     | '/contacts'
     | '/conversations'
     | '/integrations'
+    | '/leads'
     | '/settings'
     | '/stats'
     | '/integrations/instagram/new'
@@ -861,6 +872,7 @@ export interface FileRouteTypes {
     | '/_auth/contacts/'
     | '/_auth/conversations/'
     | '/_auth/integrations/'
+    | '/_auth/leads/'
     | '/_auth/settings/'
     | '/_auth/stats/'
     | '/_auth/integrations/instagram/new'
@@ -987,6 +999,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof AuthSettingsIndexRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/leads/': {
+      id: '/_auth/leads/'
+      path: '/leads'
+      fullPath: '/leads'
+      preLoaderRoute: typeof AuthLeadsIndexRouteImport
       parentRoute: typeof AuthRoute
     }
     '/_auth/integrations/': {
@@ -1454,6 +1473,7 @@ interface AuthRouteChildren {
   AuthContactsIndexRoute: typeof AuthContactsIndexRoute
   AuthConversationsIndexRoute: typeof AuthConversationsIndexRoute
   AuthIntegrationsIndexRoute: typeof AuthIntegrationsIndexRoute
+  AuthLeadsIndexRoute: typeof AuthLeadsIndexRoute
   AuthSettingsIndexRoute: typeof AuthSettingsIndexRoute
   AuthIntegrationsInstagramNewRoute: typeof AuthIntegrationsInstagramNewRoute
   AuthIntegrationsWhatsappWebNewRoute: typeof AuthIntegrationsWhatsappWebNewRoute
@@ -1517,6 +1537,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthContactsIndexRoute: AuthContactsIndexRoute,
   AuthConversationsIndexRoute: AuthConversationsIndexRoute,
   AuthIntegrationsIndexRoute: AuthIntegrationsIndexRoute,
+  AuthLeadsIndexRoute: AuthLeadsIndexRoute,
   AuthSettingsIndexRoute: AuthSettingsIndexRoute,
   AuthIntegrationsInstagramNewRoute: AuthIntegrationsInstagramNewRoute,
   AuthIntegrationsWhatsappWebNewRoute: AuthIntegrationsWhatsappWebNewRoute,

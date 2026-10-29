@@ -761,5 +761,9 @@
   "Vencido hace": "विलंबित",
   "Leads sin respuesta": "अनुत्तरित लीड",
   "No hay leads sin respuesta": "कोई अनुत्तरित लीड नहीं",
-  "Asignado a": "को सौंपा गया"
+  "Asignado a": "को सौंपा गया",
+  "Pipeline": "पाइपलाइन",
+  "Sin etapa": "कोई चरण नहीं",
+  "Todos los asignados": "सभी असाइनी",
+  "Toda calidad": "सभी गुणवत्ता"
 }

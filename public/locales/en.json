@@ -761,5 +761,9 @@
   "Vencido hace": "Overdue by",
   "Leads sin respuesta": "Unanswered leads",
   "No hay leads sin respuesta": "No unanswered leads",
-  "Asignado a": "Assigned to"
+  "Asignado a": "Assigned to",
+  "Pipeline": "Pipeline",
+  "Sin etapa": "No stage",
+  "Todos los asignados": "All assignees",
+  "Toda calidad": "All quality"
 }
