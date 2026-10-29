@@ -21,6 +21,7 @@ import SectionHeader from "@/components/SectionHeader";
 import Avatar from "@/components/Avatar";
 import Button from "@/components/Button";
 import { LinkButton } from "@/components/LinkButton";
+import LeadHistoryModal from "@/components/LeadHistoryModal";
 import LeadRequiredFieldsModal from "@/components/LeadRequiredFieldsModal";
 import { useTranslation } from "@/hooks/useTranslation";
 import {
@@ -35,7 +36,7 @@ import {
   useSetLeadStage,
   useStageRequiredFields,
 } from "@/queries/useCrm";
-import { AlarmClockCheck } from "lucide-react";
+import { AlarmClockCheck, History } from "lucide-react";
 
 export const Route = createFileRoute("/_auth/leads/")({
   component: PipelineBoard,
@@ -82,11 +83,13 @@ function LeadCard({
   qualityName,
   selected,
   onToggleSelect,
+  onShowHistory,
 }: {
   lead: PipelineLead;
   qualityName: string | null;
   selected: boolean;
   onToggleSelect: () => void;
+  onShowHistory: () => void;
 }) {
   const { translate: t } = useTranslation();
   const { attributes, listeners, setNodeRef, transform, isDragging } =
@@ -139,6 +142,17 @@ function LeadCard({
             {qualityName}
           </span>
         )}
+        <button
+          type="button"
+          className="shrink-0 text-muted-foreground hover:text-primary"
+          onClick={(e) => {
+            e.stopPropagation();
+            onShowHistory();
+          }}
+          onPointerDown={(e) => e.stopPropagation()}
+        >
+          <History className="w-[14px] h-[14px]" />
+        </button>
       </div>
     </div>
   );
@@ -150,12 +164,14 @@ function Column({
   qualityName,
   selected,
   onToggleSelect,
+  onShowHistory,
 }: {
   stage: LeadStage | null;
   leads: PipelineLead[];
   qualityName: (id: string | null) => string | null;
   selected: Set<string>;
   onToggleSelect: (leadId: string) => void;
+  onShowHistory: (leadId: string) => void;
 }) {
   const { translate: t } = useTranslation();
   const { setNodeRef, isOver } = useDroppable({ id: stage?.id ?? UNSTAGED });
@@ -182,6 +198,7 @@ function Column({
             qualityName={qualityName(lead.quality_id)}
             selected={selected.has(lead.id)}
             onToggleSelect={() => onToggleSelect(lead.id)}
+            onShowHistory={() => onShowHistory(lead.id)}
           />
         ))}
       </div>
@@ -230,6 +247,7 @@ function PipelineBoard() {
     stageId: string | null;
     missingFieldIds: string[];
   } | null>(null);
+  const [historyLeadId, setHistoryLeadId] = useState<string | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
@@ -253,6 +271,17 @@ function PipelineBoard() {
     }
     return [...seen.entries()];
   }, [leads]);
+
+  // [crm] P3-07c: id -> name lookups for the history modal's describeAction.
+  const stageNames = useMemo(
+    () => new Map((stages ?? []).map((s) => [s.id, s.name])),
+    [stages],
+  );
+  const qualityNames = useMemo(
+    () => new Map((qualities ?? []).map((q) => [q.id, q.name])),
+    [qualities],
+  );
+  const agentNames = useMemo(() => new Map(assignees), [assignees]);
 
   const filteredLeads = useMemo(() => {
     return (leads ?? []).filter(
@@ -373,6 +402,7 @@ function PipelineBoard() {
               qualityName={qualityName}
               selected={selected}
               onToggleSelect={toggleSelect}
+              onShowHistory={setHistoryLeadId}
             />
             {(stages ?? []).map((stage) => (
               <Column
@@ -382,6 +412,7 @@ function PipelineBoard() {
                 qualityName={qualityName}
                 selected={selected}
                 onToggleSelect={toggleSelect}
+                onShowHistory={setHistoryLeadId}
               />
             ))}
           </div>
@@ -441,6 +472,16 @@ function PipelineBoard() {
           }
           onClose={() => setPendingMove(null)}
           onDone={() => setPendingMove(null)}
+        />
+      )}
+
+      {historyLeadId && (
+        <LeadHistoryModal
+          leadId={historyLeadId}
+          stageNames={stageNames}
+          qualityNames={qualityNames}
+          agentNames={agentNames}
+          onClose={() => setHistoryLeadId(null)}
         />
       )}
     </>

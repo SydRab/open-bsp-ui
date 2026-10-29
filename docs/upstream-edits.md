@@ -151,3 +151,5 @@ Edits inside upstream files are marked with a `[crm]` comment.
 | 2026-10-29 | `src/routes/_auth/settings/index.tsx` | New "Pipeline" entry (gated `organization.manage`), linking to `/settings/pipeline`. Marked `[crm]`. | Entry point for the new stage/quality/drop-reason catalog admin UI. | P3-07b |
 | 2026-10-29 | `src/queries/queryKeys.ts` | New `crm.leadDropReasons`/`crm.stageRequiredFields` key builders. Marked `[crm]`. | Cache keys. | P3-07b |
 | 2026-10-29 | `public/locales/en.json` / `hi.json` | 15 new string pairs (both now 782 keys, parity maintained). | New UI text for bulk move, the required-fields modals, the entity picker on the new-field form, and the Pipeline settings page. | P3-07b |
+| 2026-10-30 | `src/queries/queryKeys.ts` | New `crm.leadHistory` key builder. Marked `[crm]`. | Cache keys. | P3-07c |
+| 2026-10-30 | `public/locales/en.json` / `hi.json` | 25 new string pairs (both now 807 keys, parity maintained). | New UI text for the history modal and the `lead.*` audit-action sentences (also improves the org-wide Activity page, which fell back to the raw action string before). | P3-07c |

@@ -15,6 +15,14 @@ export type AuditLookups = {
   settingNames: Map<string, string>;
   /** Feature key → label. */
   featureNames: Map<string, string>;
+  // [crm] P3-07c: only the lead-history modal passes these (the org-wide
+  // Activity page has no stage/quality data loaded) -- default to "—".
+  /** Lead stage id → name. */
+  stageNames?: Map<string, string>;
+  /** Lead quality id → name. */
+  qualityNames?: Map<string, string>;
+  /** Agent id → name (for lead assignment entries). */
+  agentNames?: Map<string, string>;
 };
 
 /** The filter options of the Activity page: the part of the action before the dot. */
@@ -118,6 +126,21 @@ export function describeAction(
   const member = entry.target_name ?? t("un miembro");
   const values = (template: string, extra: Record<string, string> = {}) =>
     fill(t(template), { member, ...extra });
+  // [crm] P3-07c
+  const stageName = (id: unknown) => {
+    const k = text(id);
+    return k ? (lookups.stageNames?.get(k) ?? t("una etapa")) : t("sin etapa");
+  };
+  const qualityName = (id: unknown) => {
+    const k = text(id);
+    return k
+      ? (lookups.qualityNames?.get(k) ?? t("una calidad"))
+      : t("sin calificar");
+  };
+  const agentName = (id: unknown) => {
+    const k = text(id);
+    return k ? (lookups.agentNames?.get(k) ?? t("alguien")) : t("nadie");
+  };
 
   switch (entry.action) {
     case "organization.created":
@@ -320,6 +343,61 @@ export function describeAction(
     case "team.member_removed":
       return values("Quitó a {member} del equipo {team}", {
         team: text(d.team),
+      });
+
+    // [crm] P3-07c: lead actions have existed since P3-02 but were never
+    // rendered meaningfully anywhere until the per-lead history modal --
+    // the general Activity page also benefits (it fell back to the raw
+    // action string before).
+    case "lead.created":
+      return values("Se creó el lead ({source})", { source: text(d.source) });
+    case "lead.reopened":
+      return t("Se reabrió el lead");
+    case "lead.stage_changed":
+      return values("Cambió de etapa: {stage}", {
+        stage: t(stageName(d.stage_id)),
+      });
+    case "lead.quality_changed":
+      return values("Cambió la calidad: {quality}", {
+        quality: t(qualityName(d.quality_id)),
+      });
+    case "lead.status_changed":
+      return values("Cambió el estado: {before} → {after}", {
+        before: text(d.from_status),
+        after: text(d.to_status),
+      });
+    case "lead.deal_value_changed":
+      return d.deal_value
+        ? values("Puso el valor en {value}", { value: text(d.deal_value) })
+        : t("Quitó el valor del lead");
+    case "lead.assigned":
+      return values("Se asignó a {agent}", { agent: agentName(d.agent_id) });
+    case "lead.reassigned":
+      return values("Se reasignó: {before} → {after}", {
+        before: agentName(d.from_agent_id),
+        after: agentName(d.agent_id),
+      });
+    case "lead.unassigned":
+      return t("Se quitó la asignación");
+    case "lead.first_responded":
+      return values("Primera respuesta en {minutes} min", {
+        minutes: text(d.minutes_to_respond),
+      });
+    case "lead.sla_breached":
+      return t("Venció el plazo de primera respuesta");
+    case "lead.escalated_to_manager":
+      return t("Se avisó a los gerentes por falta de respuesta");
+    case "lead.auto_reassigned_sla":
+      return values("Reasignado automáticamente (estaba con {agent})", {
+        agent: agentName(d.from_agent_id),
+      });
+    case "lead.qualification_started":
+      return t("Empezó la calificación");
+    case "lead.answer_recorded":
+      return values("Respondió: {field}", { field: text(d.field) });
+    case "lead.qualification_completed":
+      return values("Terminó la calificación (puntaje {score})", {
+        score: text(d.score),
       });
 
     default:

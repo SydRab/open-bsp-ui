@@ -140,6 +140,9 @@ export const queryKeys = {
       ["crm", orgId, "lead_drop_reasons"] as const,
     stageRequiredFields: (orgId: NullableId) =>
       ["crm", orgId, "lead_stage_required_fields"] as const,
+    // [crm] P3-07c
+    leadHistory: (leadId: NullableId) =>
+      ["crm", "lead_history", leadId] as const,
   },
   // [crm] Super-admin console (P1-10) — platform-wide, not scoped to the
   // active org, so no orgId prefix (except tenant-specific lookups).

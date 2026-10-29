@@ -1481,6 +1481,30 @@ export function useSaveLeadFields() {
   });
 }
 
+// [crm] P3-07c: a lead's own history. Gated on deals.edit server-side
+// (crm.get_lead_history), not audit.view like the org-wide Activity log --
+// reuses describeAction/AuditEntry (src/utils/auditLog.ts) by shaping rows
+// the same way, since the data is the same crm.audit_log table.
+export function useLeadHistory(leadId: string | null) {
+  return useQuery({
+    queryKey: queryKeys.crm.leadHistory(leadId),
+    queryFn: async () => {
+      const { data } = await crm()
+        .rpc("get_lead_history", { p_lead_id: leadId! })
+        .throwOnError();
+      // Same "generated type marks every column non-null" cast useAuditLog
+      // uses -- shaped to match AuditEntry since it's the same audit_log table.
+      return data.map((row) => ({
+        ...row,
+        target_type: "lead",
+        target_id: leadId,
+        target_name: null,
+      })) as unknown as AuditEntry[];
+    },
+    enabled: !!leadId,
+  });
+}
+
 export function useBulkSetLeadStage() {
   const queryClient = useQueryClient();
   const orgId = useBoundStore((state) => state.ui.activeOrgId);
