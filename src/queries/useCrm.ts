@@ -1676,3 +1676,74 @@ export function useTaskReminderTemplateApproved() {
     enabled: !!orgId,
   });
 }
+
+// [crm] P3-07e: lead notes -- a new entity (not conversation-level
+// internal notes, P2-09a), since a note belongs to the lead/pursuit
+// itself. Not author-locked: any member with deals.edit on a visible
+// lead can edit/delete any note on it, same team-editable model
+// conversation-level notes already use.
+export type LeadNote = Database["crm"]["Tables"]["lead_notes"]["Row"];
+
+export function useLeadNotes(leadId: string | null) {
+  return useQuery({
+    queryKey: queryKeys.crm.leadNotes(leadId),
+    queryFn: async () =>
+      await crm()
+        .from("lead_notes")
+        .select()
+        .eq("lead_id", leadId!)
+        .order("created_at", { ascending: false })
+        .throwOnError(),
+    select: (data) => data.data as LeadNote[],
+    enabled: !!leadId,
+  });
+}
+
+export function useCreateLeadNote() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (args: { leadId: string; body: string }) => {
+      await crm()
+        .rpc("create_lead_note", { p_lead_id: args.leadId, p_body: args.body })
+        .throwOnError();
+    },
+    onSuccess: (_data, { leadId }) => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.leadNotes(leadId),
+      });
+    },
+  });
+}
+
+export function useUpdateLeadNote() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (args: { id: string; leadId: string; body: string }) => {
+      await crm()
+        .rpc("update_lead_note", { p_id: args.id, p_body: args.body })
+        .throwOnError();
+    },
+    onSuccess: (_data, { leadId }) => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.leadNotes(leadId),
+      });
+    },
+  });
+}
+
+export function useDeleteLeadNote() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (args: { id: string; leadId: string }) => {
+      await crm().rpc("delete_lead_note", { p_id: args.id }).throwOnError();
+    },
+    onSuccess: (_data, { leadId }) => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.leadNotes(leadId),
+      });
+    },
+  });
+}

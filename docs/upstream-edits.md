@@ -156,3 +156,5 @@ Edits inside upstream files are marked with a `[crm]` comment.
 | 2026-10-30 | `src/routes/_auth/settings/members/$memberId.tsx` | New self-service `MyWhatsappAddress` field (shown only when editing one's own member row), below `MemberAddressAccess`. Marked `[crm]`. | Where WhatsApp-delivered task reminders (and future retrofitted alerts) reach this member -- self-service, not admin-set. | P3-07d |
 | 2026-10-30 | `src/queries/queryKeys.ts` | New `crm.tasks`/`crm.myWhatsappAddress`/`crm.taskReminderTemplateApproved` key builders. Marked `[crm]`. | Cache keys. | P3-07d |
 | 2026-10-30 | `public/locales/en.json` / `hi.json` | 6 new string pairs (both now 813 keys, parity maintained). | New UI text for the tasks modal and the WhatsApp-number field. | P3-07d |
+| 2026-10-30 | `src/queries/queryKeys.ts` | New `crm.leadNotes` key builder. Marked `[crm]`. | Cache keys. | P3-07e |
+| 2026-10-30 | `public/locales/en.json` / `hi.json` | 4 new string pairs (both now 817 keys, parity maintained). | New UI text for the notes modal. | P3-07e |

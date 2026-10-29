@@ -149,6 +149,8 @@ export const queryKeys = {
       ["crm", orgId, "my_whatsapp_address", agentId] as const,
     taskReminderTemplateApproved: (orgId: NullableId) =>
       ["crm", orgId, "task_reminder_template_approved"] as const,
+    // [crm] P3-07e
+    leadNotes: (leadId: NullableId) => ["crm", "lead_notes", leadId] as const,
   },
   // [crm] Super-admin console (P1-10) — platform-wide, not scoped to the
   // active org, so no orgId prefix (except tenant-specific lookups).
