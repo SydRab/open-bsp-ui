@@ -752,5 +752,14 @@
   "Volver a registrar": "फिर से रजिस्टर करें",
   "PIN de verificación en dos pasos": "दो-चरणीय सत्यापन पिन",
   "Restringir acceso a números": "नंबरों तक पहुंच सीमित करें",
-  "Este miembro tiene un rol de administración. Restringir su acceso aplica igual -- no hay excepción para administradores.": "इस सदस्य की भूमिका प्रशासनिक स्तर की है। उनकी पहुंच सीमित करना भी उतना ही लागू होता है -- प्रशासकों के लिए कोई छूट नहीं है।"
+  "Este miembro tiene un rol de administración. Restringir su acceso aplica igual -- no hay excepción para administradores.": "इस सदस्य की भूमिका प्रशासनिक स्तर की है। उनकी पहुंच सीमित करना भी उतना ही लागू होता है -- प्रशासकों के लिए कोई छूट नहीं है।",
+  "ahora": "अभी",
+  "Notificaciones": "सूचनाएं",
+  "Marcar todo como leído": "सभी को पढ़ा हुआ चिह्नित करें",
+  "Sin notificaciones": "कोई सूचना नहीं",
+  "Vence en": "में देय",
+  "Vencido hace": "विलंबित",
+  "Leads sin respuesta": "अनुत्तरित लीड",
+  "No hay leads sin respuesta": "कोई अनुत्तरित लीड नहीं",
+  "Asignado a": "को सौंपा गया"
 }

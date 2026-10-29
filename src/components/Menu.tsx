@@ -13,6 +13,7 @@ import {
   Plus,
   NotebookTabs,
   ShieldUser,
+  AlarmClockCheck,
 } from "lucide-react";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { LinkButton } from "./LinkButton";
@@ -96,6 +97,20 @@ export default function Menu() {
             className="mt-[10px]"
           >
             <Bot className="w-[24px] h-[24px] stroke-[2]" />
+          </LinkButton>
+        )}
+
+        {/* [crm] P3-06: speed-to-lead's own triage list, not the pipeline
+            board (/leads, P3-07) -- deals.edit is the same bar every
+            lead-working action has used since P3-02. */}
+        {can("deals.edit") && (
+          <LinkButton
+            to="/leads/unanswered"
+            title={t("Leads sin respuesta")}
+            isActive={pathname.startsWith("/leads")}
+            className="mt-[10px]"
+          >
+            <AlarmClockCheck className="w-[24px] h-[24px] stroke-[2]" />
           </LinkButton>
         )}
 

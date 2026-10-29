@@ -12,6 +12,7 @@ import { invokeFunction, supabase } from "@/supabase/client";
 import useBoundStore from "@/stores/useBoundStore";
 import type { Database, Json } from "@/supabase/db_types";
 import { queryKeys } from "./queryKeys";
+import { useCurrentAgent } from "./useAgents";
 
 const crm = () => supabase.schema("crm");
 
@@ -1057,5 +1058,131 @@ export function useFeatureCatalog() {
         .throwOnError(),
     select: (data) => data.data,
     staleTime: Infinity,
+  });
+}
+
+// [crm] P3-06: speed-to-lead. In-app notifications are durable (unlike
+// P2-09f's browser-popup-only mechanism), so polling is enough for v1 --
+// no new Realtime channel/publication wiring needed.
+export type NotificationRow = Database["crm"]["Tables"]["notifications"]["Row"];
+
+export function useNotifications() {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+  const { data: agent } = useCurrentAgent();
+
+  return useQuery({
+    queryKey: queryKeys.crm.notifications(orgId, agent?.id),
+    queryFn: async () =>
+      await crm()
+        .from("notifications")
+        .select()
+        .eq("organization_id", orgId!)
+        .eq("agent_id", agent!.id)
+        .order("created_at", { ascending: false })
+        .limit(50)
+        .throwOnError(),
+    select: (data) => data.data as NotificationRow[],
+    enabled: !!orgId && !!agent?.id,
+    refetchInterval: 30_000,
+  });
+}
+
+export function useMarkNotificationRead() {
+  const queryClient = useQueryClient();
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+  const { data: agent } = useCurrentAgent();
+
+  return useMutation({
+    mutationFn: async (notificationId: string) =>
+      await crm()
+        .rpc("mark_notification_read", { p_id: notificationId })
+        .throwOnError(),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.notifications(orgId, agent?.id),
+      });
+    },
+  });
+}
+
+export function useMarkAllNotificationsRead() {
+  const queryClient = useQueryClient();
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+  const { data: agent } = useCurrentAgent();
+
+  return useMutation({
+    mutationFn: async () =>
+      await crm()
+        .rpc("mark_all_notifications_read", { p_organization_id: orgId! })
+        .throwOnError(),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.notifications(orgId, agent?.id),
+      });
+    },
+  });
+}
+
+// [crm] P3-06: the "unanswered leads" triage view -- every lead that has an
+// assignee but hasn't gotten its first human reply yet, most overdue
+// first. Org-wide (not filtered by crm.roles.lead_scope): that filtering
+// is explicitly deferred to the Pipeline UI (P3-07), same as crm.leads'
+// own RLS policy today.
+export type UnansweredLead = Database["crm"]["Tables"]["leads"]["Row"] & {
+  contactName: string | null;
+  assigneeName: string | null;
+};
+
+export function useUnansweredLeads() {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useQuery({
+    queryKey: queryKeys.crm.unansweredLeads(orgId),
+    queryFn: async () => {
+      const { data: leads } = await crm()
+        .from("leads")
+        .select()
+        .eq("organization_id", orgId!)
+        .not("assigned_to", "is", null)
+        .is("first_responded_at", null)
+        .in("status", ["open", "qualified"])
+        .order("first_response_due_at", { ascending: true })
+        .throwOnError();
+
+      const contactIds = [...new Set(leads.map((l) => l.contact_id))];
+      const agentIds = [
+        ...new Set(leads.map((l) => l.assigned_to).filter(Boolean)),
+      ] as string[];
+
+      const [{ data: contacts }, { data: agents }] = await Promise.all([
+        contactIds.length
+          ? crm()
+              .from("contacts")
+              .select("id, display_name")
+              .in("id", contactIds)
+              .throwOnError()
+          : Promise.resolve({ data: [] }),
+        agentIds.length
+          ? supabase
+              .from("agents")
+              .select("id, name")
+              .in("id", agentIds)
+              .throwOnError()
+          : Promise.resolve({ data: [] }),
+      ]);
+
+      const contactName = new Map(contacts?.map((c) => [c.id, c.display_name]));
+      const agentName = new Map(agents?.map((a) => [a.id, a.name]));
+
+      return leads.map((lead) => ({
+        ...lead,
+        contactName: contactName.get(lead.contact_id) ?? null,
+        assigneeName: lead.assigned_to
+          ? (agentName.get(lead.assigned_to) ?? null)
+          : null,
+      })) as UnansweredLead[];
+    },
+    enabled: !!orgId,
+    refetchInterval: 30_000,
   });
 }

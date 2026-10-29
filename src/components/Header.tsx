@@ -2,6 +2,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { LinkButton } from "@/components/LinkButton";
 import { useCurrentOrganization } from "@/queries/useOrganizations";
 import { MessageSquarePlus } from "lucide-react";
+import NotificationBell from "@/components/NotificationBell";
 
 export default function Header() {
   const { data: org } = useCurrentOrganization();
@@ -15,7 +16,9 @@ export default function Header() {
           {org?.name || "OpenBSP"}
         </div>
       </div>
-      <div className="flex justify-end">
+      <div className="flex items-center justify-end">
+        {/* [crm] P3-06 */}
+        <NotificationBell />
         <LinkButton
           to="/conversations/new"
           className="ml-[10px]"

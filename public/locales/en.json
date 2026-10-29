@@ -752,5 +752,14 @@
   "Volver a registrar": "Re-register",
   "PIN de verificación en dos pasos": "Two-step verification PIN",
   "Restringir acceso a números": "Restrict access to numbers",
-  "Este miembro tiene un rol de administración. Restringir su acceso aplica igual -- no hay excepción para administradores.": "This member has an admin-level role. Restricting their access applies just the same -- there's no exception for admins."
+  "Este miembro tiene un rol de administración. Restringir su acceso aplica igual -- no hay excepción para administradores.": "This member has an admin-level role. Restricting their access applies just the same -- there's no exception for admins.",
+  "ahora": "now",
+  "Notificaciones": "Notifications",
+  "Marcar todo como leído": "Mark all as read",
+  "Sin notificaciones": "No notifications",
+  "Vence en": "Due in",
+  "Vencido hace": "Overdue by",
+  "Leads sin respuesta": "Unanswered leads",
+  "No hay leads sin respuesta": "No unanswered leads",
+  "Asignado a": "Assigned to"
 }
