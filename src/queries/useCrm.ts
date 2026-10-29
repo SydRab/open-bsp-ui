@@ -1525,3 +1525,154 @@ export function useBulkSetLeadStage() {
     },
   });
 }
+
+// [crm] P3-07d: tasks and follow-up reminders, WhatsApp-delivered per the
+// WhatsApp-first notification policy (through the tenant's own connected
+// number -- crm.sweep_task_reminders resolves it server-side, never a
+// global credential).
+export type CrmTask = Database["crm"]["Tables"]["tasks"]["Row"];
+
+export function useTasks(leadId: string | null) {
+  return useQuery({
+    queryKey: queryKeys.crm.tasks(leadId),
+    queryFn: async () =>
+      await crm()
+        .from("tasks")
+        .select()
+        .eq("lead_id", leadId!)
+        .order("due_at", { ascending: true })
+        .throwOnError(),
+    select: (data) => data.data as CrmTask[],
+    enabled: !!leadId,
+  });
+}
+
+export function useCreateTask() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (args: {
+      leadId: string;
+      title: string;
+      dueAt: string;
+      assignedTo: string | null;
+    }) => {
+      await crm()
+        .rpc("create_task", {
+          p_lead_id: args.leadId,
+          p_title: args.title,
+          p_due_at: args.dueAt,
+          // Codegen types a uuid arg with no SQL default as non-nullable
+          // even though null (unassigned) is valid.
+          p_assigned_to: args.assignedTo as unknown as string,
+        })
+        .throwOnError();
+    },
+    onSuccess: (_data, { leadId }) => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.tasks(leadId),
+      });
+    },
+  });
+}
+
+export function useCompleteTask() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (args: {
+      id: string;
+      leadId: string;
+      completed?: boolean;
+    }) => {
+      await crm()
+        .rpc("complete_task", {
+          p_id: args.id,
+          ...(args.completed !== undefined && { p_completed: args.completed }),
+        })
+        .throwOnError();
+    },
+    onSuccess: (_data, { leadId }) => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.tasks(leadId),
+      });
+    },
+  });
+}
+
+export function useDeleteTask() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (args: { id: string; leadId: string }) => {
+      await crm().rpc("delete_task", { p_id: args.id }).throwOnError();
+    },
+    onSuccess: (_data, { leadId }) => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.tasks(leadId),
+      });
+    },
+  });
+}
+
+/** The signed-in member's own WhatsApp number for alerts, or null if unset. */
+export function useMyWhatsappAddress() {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+  const { data: agent } = useCurrentAgent();
+
+  return useQuery({
+    queryKey: queryKeys.crm.myWhatsappAddress(orgId, agent?.id),
+    queryFn: async () =>
+      await crm()
+        .from("member_roles")
+        .select("whatsapp_address")
+        .eq("agent_id", agent!.id)
+        .maybeSingle()
+        .throwOnError(),
+    select: (data) => data.data?.whatsapp_address ?? null,
+    enabled: !!orgId && !!agent?.id,
+  });
+}
+
+/** Self-service: the signed-in member's own WhatsApp number for alerts. */
+export function useSetMyWhatsappAddress() {
+  const queryClient = useQueryClient();
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+  const { data: agent } = useCurrentAgent();
+
+  return useMutation({
+    mutationFn: async (address: string | null) => {
+      await crm()
+        .rpc("set_my_whatsapp_address", {
+          p_organization_id: orgId!,
+          p_address: address as unknown as string,
+        })
+        .throwOnError();
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.myWhatsappAddress(orgId, agent?.id),
+      });
+    },
+  });
+}
+
+/** Whether an approved WhatsApp template exists yet for internal task reminders. */
+export function useTaskReminderTemplateApproved() {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useQuery({
+    queryKey: queryKeys.crm.taskReminderTemplateApproved(orgId),
+    queryFn: async () =>
+      await crm()
+        .from("templates")
+        .select("id")
+        .eq("organization_id", orgId!)
+        .eq("name", "internal_task_reminder")
+        .eq("status", "APPROVED")
+        .limit(1)
+        .throwOnError(),
+    select: (data) => data.data.length > 0,
+    enabled: !!orgId,
+  });
+}

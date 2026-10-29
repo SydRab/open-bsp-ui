@@ -805,5 +805,11 @@
   "Reasignado automáticamente (estaba con {agent})": "स्वचालित रूप से फिर से सौंपा गया (पहले {agent} के पास था)",
   "Empezó la calificación": "योग्यता जांच शुरू हुई",
   "Respondió: {field}": "जवाब दिया: {field}",
-  "Terminó la calificación (puntaje {score})": "योग्यता जांच पूरी हुई (स्कोर {score})"
+  "Terminó la calificación (puntaje {score})": "योग्यता जांच पूरी हुई (स्कोर {score})",
+  "Tareas": "कार्य",
+  "Los recordatorios por WhatsApp necesitan una plantilla aprobada -- revisa Plantillas de mensajes.": "WhatsApp रिमाइंडर के लिए एक स्वीकृत टेम्पलेट चाहिए -- संदेश टेम्पलेट देखें।",
+  "Sin tareas todavía.": "अभी तक कोई कार्य नहीं।",
+  "Nueva tarea": "नया कार्य",
+  "Añadir tarea": "कार्य जोड़ें",
+  "Tu número de WhatsApp para alertas": "अलर्ट के लिए आपका WhatsApp नंबर"
 }

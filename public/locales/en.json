@@ -805,5 +805,11 @@
   "Reasignado automáticamente (estaba con {agent})": "Auto-reassigned (was with {agent})",
   "Empezó la calificación": "Qualification started",
   "Respondió: {field}": "Answered: {field}",
-  "Terminó la calificación (puntaje {score})": "Qualification finished (score {score})"
+  "Terminó la calificación (puntaje {score})": "Qualification finished (score {score})",
+  "Tareas": "Tasks",
+  "Los recordatorios por WhatsApp necesitan una plantilla aprobada -- revisa Plantillas de mensajes.": "WhatsApp reminders need an approved template -- check Message templates.",
+  "Sin tareas todavía.": "No tasks yet.",
+  "Nueva tarea": "New task",
+  "Añadir tarea": "Add task",
+  "Tu número de WhatsApp para alertas": "Your WhatsApp number for alerts"
 }

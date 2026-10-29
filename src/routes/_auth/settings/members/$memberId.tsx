@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import SectionHeader from "@/components/SectionHeader";
 import SectionBody from "@/components/SectionBody";
@@ -23,8 +24,10 @@ import {
   useDeactivateMember,
   useMemberRoles,
   useMyPermissions,
+  useMyWhatsappAddress,
   useRoles,
   useSetMemberRole,
+  useSetMyWhatsappAddress,
 } from "@/queries/useCrm";
 import { assignableRoles, tierRank } from "@/utils/crmRoles";
 import MemberAddressAccess from "@/components/MemberAddressAccess";
@@ -144,6 +147,11 @@ function EditMember() {
           warnSelfLockout={tierRank(agent?.role) >= tierRank("admin")}
         />
 
+        {/* [crm] P3-07d: self-service only -- not something an admin sets
+            on someone else's behalf, same as any other personal contact
+            info. */}
+        {isMe && <MyWhatsappAddress />}
+
         {(setRole.error || deactivate.error) && (
           <div className="text-destructive text-[13px]">
             {(setRole.error ?? deactivate.error)!.message.includes("last owner")
@@ -167,5 +175,48 @@ function EditMember() {
         </Button>
       </SectionFooter>
     </>
+  );
+}
+
+// [crm] P3-07d: where WhatsApp-delivered internal alerts (task reminders
+// today, speed-to-lead's own alerts once P3-06 is retrofitted) reach this
+// member. Self-service -- digits-only with country code, same as any
+// other stored address, validated again server-side.
+function MyWhatsappAddress() {
+  const { translate: t } = useTranslation();
+  const { data: address } = useMyWhatsappAddress();
+  const save = useSetMyWhatsappAddress();
+  const [draft, setDraft] = useState<string | null>(null);
+  const value = draft ?? address ?? "";
+
+  return (
+    <label>
+      <div className="label">{t("Tu número de WhatsApp para alertas")}</div>
+      <div className="flex gap-[8px]">
+        <input
+          className="text grow"
+          placeholder="919000000000"
+          value={value}
+          onChange={(e) => setDraft(e.target.value)}
+        />
+        <Button
+          type="button"
+          loading={save.isPending}
+          disabled={draft === null || draft === (address ?? "")}
+          onClick={() =>
+            save.mutate(draft!.trim() === "" ? null : draft, {
+              onSuccess: () => setDraft(null),
+            })
+          }
+        >
+          {t("Guardar")}
+        </Button>
+      </div>
+      {save.error && (
+        <div className="text-destructive text-[13px] mt-[4px]">
+          {save.error.message}
+        </div>
+      )}
+    </label>
   );
 }

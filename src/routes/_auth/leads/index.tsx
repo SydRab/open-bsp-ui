@@ -23,6 +23,7 @@ import Button from "@/components/Button";
 import { LinkButton } from "@/components/LinkButton";
 import LeadHistoryModal from "@/components/LeadHistoryModal";
 import LeadRequiredFieldsModal from "@/components/LeadRequiredFieldsModal";
+import LeadTasksModal from "@/components/LeadTasksModal";
 import { useTranslation } from "@/hooks/useTranslation";
 import {
   type LeadStage,
@@ -36,7 +37,7 @@ import {
   useSetLeadStage,
   useStageRequiredFields,
 } from "@/queries/useCrm";
-import { AlarmClockCheck, History } from "lucide-react";
+import { AlarmClockCheck, History, ListTodo } from "lucide-react";
 
 export const Route = createFileRoute("/_auth/leads/")({
   component: PipelineBoard,
@@ -84,12 +85,14 @@ function LeadCard({
   selected,
   onToggleSelect,
   onShowHistory,
+  onShowTasks,
 }: {
   lead: PipelineLead;
   qualityName: string | null;
   selected: boolean;
   onToggleSelect: () => void;
   onShowHistory: () => void;
+  onShowTasks: () => void;
 }) {
   const { translate: t } = useTranslation();
   const { attributes, listeners, setNodeRef, transform, isDragging } =
@@ -147,6 +150,17 @@ function LeadCard({
           className="shrink-0 text-muted-foreground hover:text-primary"
           onClick={(e) => {
             e.stopPropagation();
+            onShowTasks();
+          }}
+          onPointerDown={(e) => e.stopPropagation()}
+        >
+          <ListTodo className="w-[14px] h-[14px]" />
+        </button>
+        <button
+          type="button"
+          className="shrink-0 text-muted-foreground hover:text-primary"
+          onClick={(e) => {
+            e.stopPropagation();
             onShowHistory();
           }}
           onPointerDown={(e) => e.stopPropagation()}
@@ -165,6 +179,7 @@ function Column({
   selected,
   onToggleSelect,
   onShowHistory,
+  onShowTasks,
 }: {
   stage: LeadStage | null;
   leads: PipelineLead[];
@@ -172,6 +187,7 @@ function Column({
   selected: Set<string>;
   onToggleSelect: (leadId: string) => void;
   onShowHistory: (leadId: string) => void;
+  onShowTasks: (leadId: string) => void;
 }) {
   const { translate: t } = useTranslation();
   const { setNodeRef, isOver } = useDroppable({ id: stage?.id ?? UNSTAGED });
@@ -199,6 +215,7 @@ function Column({
             selected={selected.has(lead.id)}
             onToggleSelect={() => onToggleSelect(lead.id)}
             onShowHistory={() => onShowHistory(lead.id)}
+            onShowTasks={() => onShowTasks(lead.id)}
           />
         ))}
       </div>
@@ -248,6 +265,7 @@ function PipelineBoard() {
     missingFieldIds: string[];
   } | null>(null);
   const [historyLeadId, setHistoryLeadId] = useState<string | null>(null);
+  const [tasksLeadId, setTasksLeadId] = useState<string | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
@@ -403,6 +421,7 @@ function PipelineBoard() {
               selected={selected}
               onToggleSelect={toggleSelect}
               onShowHistory={setHistoryLeadId}
+              onShowTasks={setTasksLeadId}
             />
             {(stages ?? []).map((stage) => (
               <Column
@@ -413,6 +432,7 @@ function PipelineBoard() {
                 selected={selected}
                 onToggleSelect={toggleSelect}
                 onShowHistory={setHistoryLeadId}
+                onShowTasks={setTasksLeadId}
               />
             ))}
           </div>
@@ -482,6 +502,13 @@ function PipelineBoard() {
           qualityNames={qualityNames}
           agentNames={agentNames}
           onClose={() => setHistoryLeadId(null)}
+        />
+      )}
+
+      {tasksLeadId && (
+        <LeadTasksModal
+          leadId={tasksLeadId}
+          onClose={() => setTasksLeadId(null)}
         />
       )}
     </>
