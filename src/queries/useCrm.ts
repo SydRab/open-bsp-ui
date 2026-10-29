@@ -1331,3 +1331,173 @@ export function useSetLeadDealValue() {
     },
   });
 }
+
+// [crm] P3-07b: bulk moves, required-field-per-stage rules, lost-reasons/
+// quality catalog admin. Lead stage/quality catalog reads reuse
+// useLeadStages/useLeadQualities (P3-07a); drop reasons needed its own.
+export type LeadDropReason =
+  Database["crm"]["Tables"]["lead_drop_reasons"]["Row"];
+
+export function useLeadDropReasons() {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useQuery({
+    queryKey: queryKeys.crm.leadDropReasons(orgId),
+    queryFn: async () =>
+      await crm()
+        .from("lead_drop_reasons")
+        .select()
+        .eq("organization_id", orgId!)
+        .order("sort_order", { ascending: true })
+        .throwOnError(),
+    select: (data) => data.data as LeadDropReason[],
+    enabled: !!orgId,
+  });
+}
+
+function useLeadCatalogMutations(kind: "stage" | "quality" | "drop_reason") {
+  const queryClient = useQueryClient();
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+  const queryKey: readonly unknown[] =
+    kind === "stage"
+      ? queryKeys.crm.leadStages(orgId)
+      : kind === "quality"
+        ? queryKeys.crm.leadQualities(orgId)
+        : queryKeys.crm.leadDropReasons(orgId);
+  const invalidate = () => void queryClient.invalidateQueries({ queryKey });
+
+  const create = useMutation({
+    mutationFn: async (name: string) => {
+      if (!orgId) throw new Error("No active organization");
+      const { data } = await crm()
+        .rpc(`create_lead_${kind}`, { p_organization_id: orgId, p_name: name })
+        .throwOnError();
+      return data as string;
+    },
+    onSuccess: invalidate,
+  });
+
+  const update = useMutation({
+    mutationFn: async (args: {
+      id: string;
+      name: string;
+      sortOrder: number;
+    }) => {
+      await crm()
+        .rpc(`update_lead_${kind}`, {
+          p_id: args.id,
+          p_name: args.name,
+          p_sort_order: args.sortOrder,
+        })
+        .throwOnError();
+    },
+    onSuccess: invalidate,
+  });
+
+  const remove = useMutation({
+    mutationFn: async (id: string) => {
+      await crm().rpc(`delete_lead_${kind}`, { p_id: id }).throwOnError();
+    },
+    onSuccess: invalidate,
+  });
+
+  return { create, update, remove };
+}
+
+export const useLeadStageMutations = () => useLeadCatalogMutations("stage");
+export const useLeadQualityMutations = () => useLeadCatalogMutations("quality");
+export const useLeadDropReasonMutations = () =>
+  useLeadCatalogMutations("drop_reason");
+
+/** stage_id -> the set of deal-entity field ids required before a lead can move there. */
+export function useStageRequiredFields() {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useQuery({
+    queryKey: queryKeys.crm.stageRequiredFields(orgId),
+    queryFn: async () =>
+      await crm()
+        .from("lead_stage_required_fields")
+        .select("stage_id, field_id")
+        .eq("organization_id", orgId!)
+        .throwOnError(),
+    enabled: !!orgId,
+    select: (data) => {
+      const byStage = new Map<string, string[]>();
+      for (const row of data.data) {
+        byStage.set(row.stage_id, [
+          ...(byStage.get(row.stage_id) ?? []),
+          row.field_id,
+        ]);
+      }
+      return byStage;
+    },
+  });
+}
+
+export function useSetStageRequiredFields() {
+  const queryClient = useQueryClient();
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useMutation({
+    mutationFn: async (args: { stageId: string; fieldIds: string[] }) => {
+      await crm()
+        .rpc("set_stage_required_fields", {
+          p_stage_id: args.stageId,
+          p_field_ids: args.fieldIds,
+        })
+        .throwOnError();
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.stageRequiredFields(orgId),
+      });
+    },
+  });
+}
+
+/** Saves a lead's deal-entity custom field values (crm.set_lead_fields). */
+export function useSaveLeadFields() {
+  const queryClient = useQueryClient();
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useMutation({
+    mutationFn: async (args: {
+      leadId: string;
+      values: Record<string, unknown>;
+    }) => {
+      await crm()
+        .rpc("set_lead_fields", {
+          p_lead_id: args.leadId,
+          p_values: args.values as Json,
+        })
+        .throwOnError();
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.pipelineLeads(orgId),
+      });
+    },
+  });
+}
+
+export function useBulkSetLeadStage() {
+  const queryClient = useQueryClient();
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useMutation({
+    mutationFn: async (args: { leadIds: string[]; stageId: string | null }) => {
+      await crm()
+        .rpc("bulk_set_lead_stage", {
+          p_lead_ids: args.leadIds,
+          p_stage_id: args.stageId as unknown as string,
+        })
+        .throwOnError();
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.pipelineLeads(orgId),
+      });
+    },
+  });
+}

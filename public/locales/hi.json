@@ -765,5 +765,20 @@
   "Pipeline": "पाइपलाइन",
   "Sin etapa": "कोई चरण नहीं",
   "Todos los asignados": "सभी असाइनी",
-  "Toda calidad": "सभी गुणवत्ता"
+  "Toda calidad": "सभी गुणवत्ता",
+  "seleccionados": "चयनित",
+  "Mover": "स्थानांतरित करें",
+  "Limpiar": "साफ़ करें",
+  "Uno o más leads seleccionados les falta un campo obligatorio para esa etapa -- muévelos uno por uno para completarlos.": "चयनित एक या अधिक लीड में इस चरण के लिए आवश्यक फ़ील्ड नहीं है -- उन्हें भरने के लिए एक-एक करके स्थानांतरित करें।",
+  "Faltan campos obligatorios": "आवश्यक फ़ील्ड गायब हैं",
+  "Esta etapa exige completar estos campos antes de mover el lead.": "लीड को स्थानांतरित करने से पहले इस चरण के लिए ये फ़ील्ड भरना आवश्यक है।",
+  "Guardar y mover": "सहेजें और स्थानांतरित करें",
+  "Se aplica a": "यह इस पर लागू होता है",
+  "Campos requeridos": "आवश्यक फ़ील्ड",
+  "Todavía no hay campos de oportunidades para elegir -- créalos en Campos personalizados.": "चुनने के लिए अभी तक कोई अवसर फ़ील्ड नहीं है -- इन्हें कस्टम फ़ील्ड में बनाएं।",
+  "Etapas": "चरण",
+  "Calidad del lead": "लीड की गुणवत्ता",
+  "Motivos de pérdida": "हानि के कारण",
+  "Orden": "क्रम",
+  "Nuevo elemento": "नया आइटम"
 }

@@ -1,15 +1,15 @@
 // [crm] A contact's custom fields (P1-06), on the contact page. One input per
-// field type; Save sends only what changed through crm.set_contact_fields,
-// which enforces required fields. Archived fields show their stored value
+// field type (CustomFieldInput, shared with the lead-fields form, P3-07b);
+// Save sends only what changed through crm.set_contact_fields, which
+// enforces required fields. Archived fields show their stored value
 // read-only; archived options stay selectable only where already chosen.
 import { useState } from "react";
 import Button from "@/components/Button";
-import Switch from "@/components/Switch";
+import CustomFieldInput from "@/components/CustomFieldInput";
 import { useTranslation } from "@/hooks/useTranslation";
 import {
   type CrmContact,
   type CustomField,
-  type FieldDefinition,
   useContactByAddress,
   useCustomFields,
   useMyPermissions,
@@ -77,7 +77,7 @@ function FieldsEditor({
   return (
     <div className="flex flex-col gap-[14px]" data-contact-fields>
       {fields.map((f) => (
-        <FieldInput
+        <CustomFieldInput
           key={f.key}
           definition={f.definition}
           value={draft[f.key]}
@@ -105,147 +105,4 @@ function FieldsEditor({
       )}
     </div>
   );
-}
-
-function FieldInput({
-  definition: d,
-  value,
-  stored,
-  disabled,
-  onChange,
-}: {
-  definition: FieldDefinition;
-  value: unknown;
-  stored: unknown;
-  disabled: boolean;
-  onChange: (value: unknown) => void;
-}) {
-  const { translate: t } = useTranslation();
-  const label = (
-    <div className="label">
-      {d.label.en}
-      {d.required ? " *" : ""}
-      {d.archived ? ` (${t("archivado")})` : ""}
-    </div>
-  );
-  // Archived options only where already stored.
-  const options = (d.options ?? []).filter(
-    (o) =>
-      !o.archived ||
-      stored === o.value ||
-      (Array.isArray(stored) && stored.includes(o.value)),
-  );
-  const text =
-    typeof value === "string" || typeof value === "number" ? value : "";
-
-  switch (d.type) {
-    case "boolean":
-      return (
-        <label className="flex items-center justify-between gap-[16px]">
-          {label}
-          <Switch
-            checked={value === true}
-            disabled={disabled}
-            onCheckedChange={(checked) => onChange(checked)}
-          />
-        </label>
-      );
-    case "select":
-      return (
-        <label>
-          {label}
-          <select
-            className="text"
-            disabled={disabled}
-            value={typeof value === "string" ? value : ""}
-            onChange={(e) => onChange(e.target.value || null)}
-          >
-            <option value="">—</option>
-            {options.map((o) => (
-              <option key={o.value} value={o.value}>
-                {o.label.en}
-              </option>
-            ))}
-          </select>
-        </label>
-      );
-    case "multi_select": {
-      const chosen = Array.isArray(value) ? (value as string[]) : [];
-      return (
-        <div className="flex flex-col gap-[4px]">
-          {label}
-          {options.map((o) => (
-            <label
-              key={o.value}
-              className="flex items-center gap-[8px] text-[14px]"
-            >
-              <input
-                type="checkbox"
-                disabled={disabled}
-                checked={chosen.includes(o.value)}
-                onChange={(e) =>
-                  onChange(
-                    e.target.checked
-                      ? [...chosen, o.value]
-                      : chosen.filter((c) => c !== o.value),
-                  )
-                }
-              />
-              {o.label.en}
-            </label>
-          ))}
-        </div>
-      );
-    }
-    case "long_text":
-      return (
-        <label>
-          {label}
-          <textarea
-            className="text min-h-[80px]"
-            disabled={disabled}
-            value={text}
-            onChange={(e) => onChange(e.target.value)}
-          />
-        </label>
-      );
-    case "number":
-      return (
-        <label>
-          {label}
-          <input
-            className="text"
-            type="number"
-            disabled={disabled}
-            value={text}
-            onChange={(e) =>
-              onChange(e.target.value === "" ? null : Number(e.target.value))
-            }
-          />
-        </label>
-      );
-    default:
-      return (
-        <label>
-          {label}
-          <input
-            className="text"
-            type={
-              d.type === "date"
-                ? "date"
-                : d.type === "email"
-                  ? "email"
-                  : d.type === "phone"
-                    ? "tel"
-                    : d.type === "url"
-                      ? "url"
-                      : "text"
-            }
-            disabled={disabled}
-            value={text}
-            onChange={(e) => onChange(e.target.value)}
-          />
-        </label>
-      );
-  }
 }

@@ -46,6 +46,7 @@ import { Route as AuthSettingsSecurityIndexRouteImport } from './routes/_auth/se
 import { Route as AuthSettingsRulesIndexRouteImport } from './routes/_auth/settings/rules/index'
 import { Route as AuthSettingsRolesIndexRouteImport } from './routes/_auth/settings/roles/index'
 import { Route as AuthSettingsPlanIndexRouteImport } from './routes/_auth/settings/plan/index'
+import { Route as AuthSettingsPipelineIndexRouteImport } from './routes/_auth/settings/pipeline/index'
 import { Route as AuthSettingsOrganizationIndexRouteImport } from './routes/_auth/settings/organization/index'
 import { Route as AuthSettingsMembersIndexRouteImport } from './routes/_auth/settings/members/index'
 import { Route as AuthSettingsFieldsIndexRouteImport } from './routes/_auth/settings/fields/index'
@@ -270,6 +271,12 @@ const AuthSettingsPlanIndexRoute = AuthSettingsPlanIndexRouteImport.update({
   path: '/settings/plan/',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthSettingsPipelineIndexRoute =
+  AuthSettingsPipelineIndexRouteImport.update({
+    id: '/settings/pipeline/',
+    path: '/settings/pipeline/',
+    getParentRoute: () => AuthRoute,
+  } as any)
 const AuthSettingsOrganizationIndexRoute =
   AuthSettingsOrganizationIndexRouteImport.update({
     id: '/settings/organization/',
@@ -529,6 +536,7 @@ export interface FileRoutesByFullPath {
   '/settings/fields': typeof AuthSettingsFieldsIndexRoute
   '/settings/members': typeof AuthSettingsMembersIndexRoute
   '/settings/organization': typeof AuthSettingsOrganizationIndexRoute
+  '/settings/pipeline': typeof AuthSettingsPipelineIndexRoute
   '/settings/plan': typeof AuthSettingsPlanIndexRoute
   '/settings/roles': typeof AuthSettingsRolesIndexRoute
   '/settings/rules': typeof AuthSettingsRulesIndexRoute
@@ -601,6 +609,7 @@ export interface FileRoutesByTo {
   '/settings/fields': typeof AuthSettingsFieldsIndexRoute
   '/settings/members': typeof AuthSettingsMembersIndexRoute
   '/settings/organization': typeof AuthSettingsOrganizationIndexRoute
+  '/settings/pipeline': typeof AuthSettingsPipelineIndexRoute
   '/settings/plan': typeof AuthSettingsPlanIndexRoute
   '/settings/roles': typeof AuthSettingsRolesIndexRoute
   '/settings/rules': typeof AuthSettingsRulesIndexRoute
@@ -676,6 +685,7 @@ export interface FileRoutesById {
   '/_auth/settings/fields/': typeof AuthSettingsFieldsIndexRoute
   '/_auth/settings/members/': typeof AuthSettingsMembersIndexRoute
   '/_auth/settings/organization/': typeof AuthSettingsOrganizationIndexRoute
+  '/_auth/settings/pipeline/': typeof AuthSettingsPipelineIndexRoute
   '/_auth/settings/plan/': typeof AuthSettingsPlanIndexRoute
   '/_auth/settings/roles/': typeof AuthSettingsRolesIndexRoute
   '/_auth/settings/rules/': typeof AuthSettingsRulesIndexRoute
@@ -751,6 +761,7 @@ export interface FileRouteTypes {
     | '/settings/fields'
     | '/settings/members'
     | '/settings/organization'
+    | '/settings/pipeline'
     | '/settings/plan'
     | '/settings/roles'
     | '/settings/rules'
@@ -823,6 +834,7 @@ export interface FileRouteTypes {
     | '/settings/fields'
     | '/settings/members'
     | '/settings/organization'
+    | '/settings/pipeline'
     | '/settings/plan'
     | '/settings/roles'
     | '/settings/rules'
@@ -897,6 +909,7 @@ export interface FileRouteTypes {
     | '/_auth/settings/fields/'
     | '/_auth/settings/members/'
     | '/_auth/settings/organization/'
+    | '/_auth/settings/pipeline/'
     | '/_auth/settings/plan/'
     | '/_auth/settings/roles/'
     | '/_auth/settings/rules/'
@@ -1188,6 +1201,13 @@ declare module '@tanstack/react-router' {
       path: '/settings/plan'
       fullPath: '/settings/plan'
       preLoaderRoute: typeof AuthSettingsPlanIndexRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/settings/pipeline/': {
+      id: '/_auth/settings/pipeline/'
+      path: '/settings/pipeline'
+      fullPath: '/settings/pipeline'
+      preLoaderRoute: typeof AuthSettingsPipelineIndexRouteImport
       parentRoute: typeof AuthRoute
     }
     '/_auth/settings/organization/': {
@@ -1497,6 +1517,7 @@ interface AuthRouteChildren {
   AuthSettingsFieldsIndexRoute: typeof AuthSettingsFieldsIndexRoute
   AuthSettingsMembersIndexRoute: typeof AuthSettingsMembersIndexRoute
   AuthSettingsOrganizationIndexRoute: typeof AuthSettingsOrganizationIndexRoute
+  AuthSettingsPipelineIndexRoute: typeof AuthSettingsPipelineIndexRoute
   AuthSettingsPlanIndexRoute: typeof AuthSettingsPlanIndexRoute
   AuthSettingsRolesIndexRoute: typeof AuthSettingsRolesIndexRoute
   AuthSettingsRulesIndexRoute: typeof AuthSettingsRulesIndexRoute
@@ -1561,6 +1582,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthSettingsFieldsIndexRoute: AuthSettingsFieldsIndexRoute,
   AuthSettingsMembersIndexRoute: AuthSettingsMembersIndexRoute,
   AuthSettingsOrganizationIndexRoute: AuthSettingsOrganizationIndexRoute,
+  AuthSettingsPipelineIndexRoute: AuthSettingsPipelineIndexRoute,
   AuthSettingsPlanIndexRoute: AuthSettingsPlanIndexRoute,
   AuthSettingsRolesIndexRoute: AuthSettingsRolesIndexRoute,
   AuthSettingsRulesIndexRoute: AuthSettingsRulesIndexRoute,

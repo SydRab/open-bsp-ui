@@ -765,5 +765,20 @@
   "Pipeline": "Pipeline",
   "Sin etapa": "No stage",
   "Todos los asignados": "All assignees",
-  "Toda calidad": "All quality"
+  "Toda calidad": "All quality",
+  "seleccionados": "selected",
+  "Mover": "Move",
+  "Limpiar": "Clear",
+  "Uno o más leads seleccionados les falta un campo obligatorio para esa etapa -- muévelos uno por uno para completarlos.": "One or more selected leads are missing a required field for that stage -- move them one at a time to fill it in.",
+  "Faltan campos obligatorios": "Missing required fields",
+  "Esta etapa exige completar estos campos antes de mover el lead.": "This stage requires these fields to be filled in before moving the lead.",
+  "Guardar y mover": "Save and move",
+  "Se aplica a": "Applies to",
+  "Campos requeridos": "Required fields",
+  "Todavía no hay campos de oportunidades para elegir -- créalos en Campos personalizados.": "There are no deal fields to choose from yet -- create them in Custom fields.",
+  "Etapas": "Stages",
+  "Calidad del lead": "Lead quality",
+  "Motivos de pérdida": "Lost reasons",
+  "Orden": "Order",
+  "Nuevo elemento": "New item"
 }

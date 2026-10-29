@@ -15,6 +15,7 @@ import {
   TextCursorInput,
   Gem,
   Fingerprint,
+  Workflow,
 } from "lucide-react";
 import { useMyPermissions } from "@/queries/useCrm";
 
@@ -136,6 +137,23 @@ function SettingsIndex() {
               })
             }
           />
+          {/* [crm] Pipeline catalogs: stages, qualities, drop reasons (P3-07b) */}
+          {can("organization.manage") && (
+            <SectionItem
+              title={t("Pipeline")}
+              aside={
+                <div className="p-[8px]">
+                  <Workflow className="w-[24px] h-[24px] text-muted-foreground" />
+                </div>
+              }
+              onClick={() =>
+                navigate({
+                  to: "/settings/pipeline",
+                  hash: (prevHash) => prevHash!,
+                })
+              }
+            />
+          )}
           {/* [crm] Disclaimer (P1-07) */}
           <SectionItem
             title={t("Aviso legal")}
