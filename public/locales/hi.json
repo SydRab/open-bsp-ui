@@ -881,5 +881,9 @@
   "Tiempo de respuesta promedio": "औसत प्रतिक्रिया समय",
   "Respondidos": "जवाब दिया गया",
   "Fuera de plazo": "समय सीमा से बाहर",
-  "Tabla de clasificación": "लीडरबोर्ड"
+  "Tabla de clasificación": "लीडरबोर्ड",
+  "Actividad": "गतिविधि",
+  "Llegó desde": "यहाँ से आया",
+  "No tienes permiso para ver el historial de este lead.": "आपको इस लीड का इतिहास देखने की अनुमति नहीं है।",
+  "Sin lead todavía -- no hay más actividad que mostrar.": "अभी तक कोई लीड नहीं -- दिखाने के लिए और कुछ नहीं।"
 }

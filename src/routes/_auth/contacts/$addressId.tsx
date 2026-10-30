@@ -18,6 +18,7 @@ import {
 import { formatPhoneNumber } from "@/utils/FormatUtils";
 import type { Database } from "@/supabase/db_types";
 import ContactFieldsForm from "@/components/ContactFieldsForm";
+import ContactActivity from "@/components/ContactActivity";
 
 type Service = Database["public"]["Enums"]["service"];
 
@@ -142,6 +143,9 @@ function ContactDetail() {
 
           {/* [crm] Custom fields (P1-06) */}
           <ContactFieldsForm service={entry.service} address={entry.address} />
+
+          {/* [crm] P3-11a */}
+          <ContactActivity service={entry.service} address={entry.address} />
         </SectionBody>
 
         {!synced && (

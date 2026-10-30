@@ -955,6 +955,9 @@ export type CrmContact = {
   id: string;
   display_name: string | null;
   custom_fields: Record<string, unknown>;
+  // [crm] P3-11a: the contact activity section's referral-touch summary.
+  first_touch_referral: Json;
+  first_touch_at: string | null;
 };
 
 /** The person behind one address (null when not visible or not linked). */
@@ -975,13 +978,37 @@ export function useContactByAddress(service: string, address: string) {
       if (!data) return null;
       const { data: contact } = await crm()
         .from("contacts")
-        .select("id, display_name, custom_fields")
+        .select(
+          "id, display_name, custom_fields, first_touch_referral, first_touch_at",
+        )
         .eq("id", data.contact_id)
         .maybeSingle()
         .throwOnError();
       return contact as CrmContact | null;
     },
     enabled: !!orgId && !!address,
+  });
+}
+
+/** The (at most one) lead for this contact, if any -- P3-11a's activity
+ * section uses this to decide whether to delegate to the lead's own
+ * history (crm.get_lead_history, P3-07c) or show a referral-only
+ * summary. */
+export function useLeadIdForContact(contactId: string | null) {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useQuery({
+    queryKey: queryKeys.crm.leadIdForContact(orgId, contactId),
+    queryFn: async () =>
+      await crm()
+        .from("leads")
+        .select("id")
+        .eq("organization_id", orgId!)
+        .eq("contact_id", contactId!)
+        .maybeSingle()
+        .throwOnError(),
+    select: (data) => data.data?.id ?? null,
+    enabled: !!orgId && !!contactId,
   });
 }
 

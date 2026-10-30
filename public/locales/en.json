@@ -881,5 +881,9 @@
   "Tiempo de respuesta promedio": "Avg response time",
   "Respondidos": "Responded",
   "Fuera de plazo": "Overdue",
-  "Tabla de clasificación": "Leaderboard"
+  "Tabla de clasificación": "Leaderboard",
+  "Actividad": "Activity",
+  "Llegó desde": "Came from",
+  "No tienes permiso para ver el historial de este lead.": "You don't have permission to see this lead's history.",
+  "Sin lead todavía -- no hay más actividad que mostrar.": "No lead yet -- nothing more to show."
 }

@@ -170,3 +170,6 @@ Edits inside upstream files are marked with a `[crm]` comment.
 | 2026-10-30 | `src/routes/_auth/stats.tsx` | New "Equipo" tab (`Users` icon), linking to `/stats/team`. Marked `[crm]`. | Entry point for the new response-times/leaderboard page. | P3-10b |
 | 2026-10-30 | `src/queries/queryKeys.ts` | New `crm.responseTimesReport`/`crm.repLeaderboardReport` key builders. Marked `[crm]`. | Cache keys. | P3-10b |
 | 2026-10-30 | `public/locales/en.json` / `hi.json` | 7 new string pairs (both now 883 keys, parity maintained). | New UI text for the `/stats/team` page. | P3-10b |
+| 2026-10-30 | `src/routes/_auth/contacts/$addressId.tsx` | New `ContactActivity` section rendered below `ContactFieldsForm`. Marked `[crm]`. | Entry point for the new per-contact activity timeline (P3-11, sub-phase 1). | P3-11a |
+| 2026-10-30 | `src/queries/queryKeys.ts` | New `crm.leadIdForContact` key builder. Marked `[crm]`. | Cache keys. | P3-11a |
+| 2026-10-30 | `public/locales/en.json` / `hi.json` | 4 new string pairs (both now 887 keys, parity maintained). | New UI text for the contact activity section. | P3-11a |
