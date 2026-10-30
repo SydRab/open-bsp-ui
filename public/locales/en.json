@@ -874,5 +874,12 @@
   "Leads perdidos": "Dropped leads",
   "Valor ganado": "Value won",
   "Origen de los leads": "Lead sources",
-  "Rendimiento por anuncio": "Ad performance"
+  "Rendimiento por anuncio": "Ad performance",
+  "min": "min",
+  "h": "h",
+  "Leads asignados": "Leads assigned",
+  "Tiempo de respuesta promedio": "Avg response time",
+  "Respondidos": "Responded",
+  "Fuera de plazo": "Overdue",
+  "Tabla de clasificación": "Leaderboard"
 }

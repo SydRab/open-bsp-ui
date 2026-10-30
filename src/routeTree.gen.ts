@@ -29,6 +29,7 @@ import { Route as OnboardWhatsappTokenRouteImport } from './routes/onboard.whats
 import { Route as OnboardInstagramCallbackRouteImport } from './routes/onboard.instagram.callback'
 import { Route as OnboardInstagramTokenRouteImport } from './routes/onboard.instagram.$token'
 import { Route as AuthStatsUsageRouteImport } from './routes/_auth/stats/usage'
+import { Route as AuthStatsTeamRouteImport } from './routes/_auth/stats/team'
 import { Route as AuthStatsQuotasRouteImport } from './routes/_auth/stats/quotas'
 import { Route as AuthStatsPipelineRouteImport } from './routes/_auth/stats/pipeline'
 import { Route as AuthLeadsUnansweredRouteImport } from './routes/_auth/leads/unanswered'
@@ -183,6 +184,11 @@ const OnboardInstagramTokenRoute = OnboardInstagramTokenRouteImport.update({
 const AuthStatsUsageRoute = AuthStatsUsageRouteImport.update({
   id: '/usage',
   path: '/usage',
+  getParentRoute: () => AuthStatsRoute,
+} as any)
+const AuthStatsTeamRoute = AuthStatsTeamRouteImport.update({
+  id: '/team',
+  path: '/team',
   getParentRoute: () => AuthStatsRoute,
 } as any)
 const AuthStatsQuotasRoute = AuthStatsQuotasRouteImport.update({
@@ -516,6 +522,7 @@ export interface FileRoutesByFullPath {
   '/leads/unanswered': typeof AuthLeadsUnansweredRoute
   '/stats/pipeline': typeof AuthStatsPipelineRoute
   '/stats/quotas': typeof AuthStatsQuotasRoute
+  '/stats/team': typeof AuthStatsTeamRoute
   '/stats/usage': typeof AuthStatsUsageRoute
   '/onboard/instagram/$token': typeof OnboardInstagramTokenRoute
   '/onboard/instagram/callback': typeof OnboardInstagramCallbackRoute
@@ -591,6 +598,7 @@ export interface FileRoutesByTo {
   '/leads/unanswered': typeof AuthLeadsUnansweredRoute
   '/stats/pipeline': typeof AuthStatsPipelineRoute
   '/stats/quotas': typeof AuthStatsQuotasRoute
+  '/stats/team': typeof AuthStatsTeamRoute
   '/stats/usage': typeof AuthStatsUsageRoute
   '/onboard/instagram/$token': typeof OnboardInstagramTokenRoute
   '/onboard/instagram/callback': typeof OnboardInstagramCallbackRoute
@@ -669,6 +677,7 @@ export interface FileRoutesById {
   '/_auth/leads/unanswered': typeof AuthLeadsUnansweredRoute
   '/_auth/stats/pipeline': typeof AuthStatsPipelineRoute
   '/_auth/stats/quotas': typeof AuthStatsQuotasRoute
+  '/_auth/stats/team': typeof AuthStatsTeamRoute
   '/_auth/stats/usage': typeof AuthStatsUsageRoute
   '/onboard/instagram/$token': typeof OnboardInstagramTokenRoute
   '/onboard/instagram/callback': typeof OnboardInstagramCallbackRoute
@@ -747,6 +756,7 @@ export interface FileRouteTypes {
     | '/leads/unanswered'
     | '/stats/pipeline'
     | '/stats/quotas'
+    | '/stats/team'
     | '/stats/usage'
     | '/onboard/instagram/$token'
     | '/onboard/instagram/callback'
@@ -822,6 +832,7 @@ export interface FileRouteTypes {
     | '/leads/unanswered'
     | '/stats/pipeline'
     | '/stats/quotas'
+    | '/stats/team'
     | '/stats/usage'
     | '/onboard/instagram/$token'
     | '/onboard/instagram/callback'
@@ -899,6 +910,7 @@ export interface FileRouteTypes {
     | '/_auth/leads/unanswered'
     | '/_auth/stats/pipeline'
     | '/_auth/stats/quotas'
+    | '/_auth/stats/team'
     | '/_auth/stats/usage'
     | '/onboard/instagram/$token'
     | '/onboard/instagram/callback'
@@ -1107,6 +1119,13 @@ declare module '@tanstack/react-router' {
       path: '/usage'
       fullPath: '/stats/usage'
       preLoaderRoute: typeof AuthStatsUsageRouteImport
+      parentRoute: typeof AuthStatsRoute
+    }
+    '/_auth/stats/team': {
+      id: '/_auth/stats/team'
+      path: '/team'
+      fullPath: '/stats/team'
+      preLoaderRoute: typeof AuthStatsTeamRouteImport
       parentRoute: typeof AuthStatsRoute
     }
     '/_auth/stats/quotas': {
@@ -1500,6 +1519,7 @@ declare module '@tanstack/react-router' {
 interface AuthStatsRouteChildren {
   AuthStatsPipelineRoute: typeof AuthStatsPipelineRoute
   AuthStatsQuotasRoute: typeof AuthStatsQuotasRoute
+  AuthStatsTeamRoute: typeof AuthStatsTeamRoute
   AuthStatsUsageRoute: typeof AuthStatsUsageRoute
   AuthStatsIndexRoute: typeof AuthStatsIndexRoute
 }
@@ -1507,6 +1527,7 @@ interface AuthStatsRouteChildren {
 const AuthStatsRouteChildren: AuthStatsRouteChildren = {
   AuthStatsPipelineRoute: AuthStatsPipelineRoute,
   AuthStatsQuotasRoute: AuthStatsQuotasRoute,
+  AuthStatsTeamRoute: AuthStatsTeamRoute,
   AuthStatsUsageRoute: AuthStatsUsageRoute,
   AuthStatsIndexRoute: AuthStatsIndexRoute,
 }

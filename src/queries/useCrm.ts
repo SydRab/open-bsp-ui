@@ -1991,3 +1991,52 @@ export function useSourcePerformanceReport(
     enabled: !!orgId,
   });
 }
+
+// [crm] P3-10b: response times + rep leaderboard. Both read crm.leads'
+// own assigned_at/first_responded_at/first_response_due_at directly, not
+// crm.audit_log -- agent names are resolved here from useCurrentAgents(),
+// same "resolve ids to names client-side" convention every other
+// lead-working modal already uses.
+export type ResponseTimesRow =
+  Database["crm"]["Functions"]["report_response_times"]["Returns"][number];
+export type RepLeaderboardRow =
+  Database["crm"]["Functions"]["report_rep_leaderboard"]["Returns"][number];
+
+export function useResponseTimesReport(from: string | null, to: string | null) {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useQuery({
+    queryKey: queryKeys.crm.responseTimesReport(orgId, from, to),
+    queryFn: async () =>
+      await crm()
+        .rpc("report_response_times", {
+          p_organization_id: orgId!,
+          p_from: from ?? undefined,
+          p_to: to ?? undefined,
+        })
+        .throwOnError(),
+    select: (data) => data.data,
+    enabled: !!orgId,
+  });
+}
+
+export function useRepLeaderboardReport(
+  from: string | null,
+  to: string | null,
+) {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useQuery({
+    queryKey: queryKeys.crm.repLeaderboardReport(orgId, from, to),
+    queryFn: async () =>
+      await crm()
+        .rpc("report_rep_leaderboard", {
+          p_organization_id: orgId!,
+          p_from: from ?? undefined,
+          p_to: to ?? undefined,
+        })
+        .throwOnError(),
+    select: (data) => data.data,
+    enabled: !!orgId,
+  });
+}

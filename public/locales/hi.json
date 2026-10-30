@@ -874,5 +874,12 @@
   "Leads perdidos": "खोई गई लीड",
   "Valor ganado": "अर्जित मूल्य",
   "Origen de los leads": "लीड के स्रोत",
-  "Rendimiento por anuncio": "विज्ञापन प्रदर्शन"
+  "Rendimiento por anuncio": "विज्ञापन प्रदर्शन",
+  "min": "मिनट",
+  "h": "घं",
+  "Leads asignados": "सौंपी गई लीड",
+  "Tiempo de respuesta promedio": "औसत प्रतिक्रिया समय",
+  "Respondidos": "जवाब दिया गया",
+  "Fuera de plazo": "समय सीमा से बाहर",
+  "Tabla de clasificación": "लीडरबोर्ड"
 }

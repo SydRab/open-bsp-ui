@@ -5,7 +5,7 @@
 // consumed until now. Conversion rates are computed here from the raw
 // counts crm.report_status_funnel/report_source_performance return, not
 // pre-divided in SQL.
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   Bar,
@@ -17,7 +17,9 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import ReportDateRangeButtons from "@/components/ReportDateRangeButtons";
 import SectionBody from "@/components/SectionBody";
+import { useReportDateRange } from "@/hooks/useReportDateRange";
 import { useTranslation } from "@/hooks/useTranslation";
 import {
   type SourcePerformanceRow,
@@ -67,28 +69,13 @@ const SOURCE_COLOR_VAR: Record<string, string> = {
   manual: "--color-cat-4",
 };
 
-const RANGES = [
-  { key: "all", label: "Todo", days: null },
-  { key: "7", label: "7 días", days: 7 },
-  { key: "30", label: "30 días", days: 30 },
-  { key: "90", label: "90 días", days: 90 },
-] as const;
-
 function formatCurrency(value: number) {
   return value.toLocaleString(undefined, { maximumFractionDigits: 0 });
 }
 
 function PipelineReports() {
   const { translate: t } = useTranslation();
-  const [range, setRange] = useState<(typeof RANGES)[number]["key"]>("all");
-
-  const from = useMemo(() => {
-    const preset = RANGES.find((r) => r.key === range);
-    if (!preset?.days) return null;
-    return new Date(
-      Date.now() - preset.days * 24 * 60 * 60 * 1000,
-    ).toISOString();
-  }, [range]);
+  const { range, setRange, from } = useReportDateRange();
 
   const { data: funnel } = useStatusFunnelReport(from, null);
   const { data: sourceRows } = useSourcePerformanceReport(from, null);
@@ -135,22 +122,7 @@ function PipelineReports() {
 
   return (
     <SectionBody className="gap-[24px]">
-      <div className="flex gap-[6px]">
-        {RANGES.map((r) => (
-          <button
-            key={r.key}
-            type="button"
-            className={`text-[13px] px-[10px] py-[4px] rounded-full border ${
-              range === r.key
-                ? "border-primary bg-primary/10 text-primary"
-                : "border-border text-muted-foreground"
-            }`}
-            onClick={() => setRange(r.key)}
-          >
-            {t(r.label)}
-          </button>
-        ))}
-      </div>
+      <ReportDateRangeButtons range={range} onChange={setRange} />
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-[12px]">
         <div className="rounded-xl border border-border p-[12px]">
