@@ -5,7 +5,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { useContactsAddresses } from "@/queries/useContactsAddresses";
 import SectionItem from "@/components/SectionItem";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Download, Plus } from "lucide-react";
+import { Download, Plus, Upload } from "lucide-react";
 import Avatar from "@/components/Avatar";
 import { formatPhoneNumber } from "@/utils/FormatUtils";
 import SearchBar from "@/components/SearchBar";
@@ -103,6 +103,23 @@ function ListContacts() {
             })
           }
         />
+        {/* [crm] P3-11c */}
+        {can("contacts.edit") && (
+          <SectionItem
+            title={t("Importar CSV")}
+            aside={
+              <div className="p-[8px] bg-muted rounded-full">
+                <Upload className="w-[24px] h-[24px] text-muted-foreground" />
+              </div>
+            }
+            onClick={() =>
+              navigate({
+                to: "/contacts/import",
+                hash: (prevHash) => prevHash!,
+              })
+            }
+          />
+        )}
         {can("contacts.export") && (
           <SectionItem
             title={

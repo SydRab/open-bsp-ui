@@ -37,3 +37,60 @@ export function downloadTextFile(filename: string, content: string) {
   link.click();
   URL.revokeObjectURL(url);
 }
+
+// [crm] P3-11c: a tiny client-side CSV parser for contact import -- the
+// mirror of escapeCell above (quoted fields, embedded commas/newlines,
+// doubled-quote escaping), not a general RFC4180 library. No `jsr:@std/csv`
+// here: that is Deno-only and this runs in the browser.
+export function parseCsv(text: string): string[][] {
+  const rows: string[][] = [];
+  let row: string[] = [];
+  let cell = "";
+  let inQuotes = false;
+  // Normalizing \r\n and bare \r to \n first keeps the loop below to one
+  // line-ending case, matching how escapeCell only ever emits \r\n or a
+  // bare value.
+  const normalized = text.replace(/\r\n|\r/g, "\n");
+
+  for (let i = 0; i < normalized.length; i++) {
+    const char = normalized[i];
+
+    if (inQuotes) {
+      if (char === '"') {
+        if (normalized[i + 1] === '"') {
+          cell += '"';
+          i++;
+        } else {
+          inQuotes = false;
+        }
+      } else {
+        cell += char;
+      }
+      continue;
+    }
+
+    if (char === '"') {
+      inQuotes = true;
+    } else if (char === ",") {
+      row.push(cell);
+      cell = "";
+    } else if (char === "\n") {
+      row.push(cell);
+      rows.push(row);
+      row = [];
+      cell = "";
+    } else {
+      cell += char;
+    }
+  }
+
+  // The last row has no trailing newline to flush it.
+  if (cell !== "" || row.length > 0) {
+    row.push(cell);
+    rows.push(row);
+  }
+
+  // A fully blank trailing line (trailing newline in the file) parses to a
+  // single empty cell -- drop it rather than surfacing a phantom last row.
+  return rows.filter((r) => !(r.length === 1 && r[0] === ""));
+}

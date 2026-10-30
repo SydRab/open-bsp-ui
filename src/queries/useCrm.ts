@@ -2086,3 +2086,210 @@ export function useExportContacts() {
     },
   });
 }
+
+// [crm] P3-11c: CSV import. Reuses every member-facing write path that
+// already exists -- /contacts/new's own `contacts_addresses` insert (the
+// upstream `crm_link_contact` trigger creates the `crm.contacts` row),
+// `crm.set_contact_fields` (merge semantics: an omitted key never clears an
+// existing value, see importOneContact below), `crm.create_tag`/
+// `crm.set_contact_tag` -- plus the one new function this phase adds,
+// `crm.set_contact_consent`. No new edge function and no new bulk SQL
+// function: a few hundred rows of small, independent writes is well within
+// what the browser can drive directly, with bounded concurrency so it
+// doesn't open hundreds of connections at once.
+export type ImportContactRow = {
+  address: string;
+  display_name?: string;
+  custom_fields?: Record<string, unknown>;
+  tag_names?: string[];
+  // Per row, not a batch-wide flag: a mapped consent column only marks the
+  // rows whose cell actually reads "yes" (the wizard resolves that before
+  // calling this hook); a blanket "treat the whole file as opted-in" choice
+  // just sets this on every row instead.
+  mark_opted_in?: boolean;
+};
+
+export type ImportRowResult = {
+  index: number;
+  status: "created" | "updated" | "error";
+  error?: string;
+};
+
+/** The import wizard refuses more than this many rows in one go (P3-11c). */
+export const IMPORT_MAX_ROWS = 500;
+
+async function importOneContact({
+  orgId,
+  organizationAddress,
+  service,
+  row,
+  tagByName,
+}: {
+  orgId: string;
+  organizationAddress: string;
+  service: Database["public"]["Enums"]["service"];
+  row: ImportContactRow;
+  tagByName: Map<string, string>;
+}): Promise<"created" | "updated"> {
+  const { data: existing } = await crm()
+    .from("contact_addresses")
+    .select("contact_id")
+    .eq("organization_id", orgId)
+    .eq("service", service)
+    .eq("address", row.address)
+    .maybeSingle()
+    .throwOnError();
+
+  let contactId: string;
+  let status: "created" | "updated";
+
+  if (existing) {
+    // Merge in place: an existing contact's display_name has no member-
+    // facing write path anywhere in the app (not even the contact page),
+    // so a duplicate row leaves it untouched rather than inventing one.
+    contactId = existing.contact_id;
+    status = "updated";
+  } else {
+    await supabase
+      .from("contacts_addresses")
+      .insert({
+        organization_id: orgId,
+        organization_address: organizationAddress,
+        service,
+        address: row.address,
+        extra: row.display_name ? { name: row.display_name } : null,
+      })
+      .throwOnError();
+
+    const { data: created } = await crm()
+      .from("contact_addresses")
+      .select("contact_id")
+      .eq("organization_id", orgId)
+      .eq("service", service)
+      .eq("address", row.address)
+      .single()
+      .throwOnError();
+    contactId = created.contact_id;
+    status = "created";
+  }
+
+  if (row.custom_fields && Object.keys(row.custom_fields).length > 0) {
+    await crm()
+      .rpc("set_contact_fields", {
+        p_contact_id: contactId,
+        p_values: row.custom_fields as Json,
+      })
+      .throwOnError();
+  }
+
+  for (const rawName of row.tag_names ?? []) {
+    const name = rawName.trim();
+    if (!name) continue;
+    const key = name.toLowerCase();
+    let tagId = tagByName.get(key);
+    if (!tagId) {
+      const { data } = await crm()
+        .rpc("create_tag", { p_organization_id: orgId, p_name: name })
+        .throwOnError();
+      tagId = data as string;
+      tagByName.set(key, tagId);
+    }
+    await crm()
+      .rpc("set_contact_tag", {
+        p_contact_id: contactId,
+        p_tag_id: tagId,
+        p_tagged: true,
+      })
+      .throwOnError();
+  }
+
+  if (row.mark_opted_in) {
+    await crm()
+      .rpc("set_contact_consent", {
+        p_organization_id: orgId,
+        p_organization_address: organizationAddress,
+        p_service: service,
+        p_address: row.address,
+        p_status: "opted_in",
+        p_source: "csv_import",
+      })
+      .throwOnError();
+  }
+
+  return status;
+}
+
+export function useImportContacts() {
+  const queryClient = useQueryClient();
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useMutation({
+    mutationFn: async ({
+      organizationAddress,
+      service,
+      rows,
+      onRowDone,
+    }: {
+      organizationAddress: string;
+      service: Database["public"]["Enums"]["service"];
+      rows: ImportContactRow[];
+      onRowDone?: (result: ImportRowResult) => void;
+    }) => {
+      if (!orgId) throw new Error("No active organization");
+      if (rows.length > IMPORT_MAX_ROWS) {
+        throw new Error(`Too many rows (max ${IMPORT_MAX_ROWS})`);
+      }
+
+      const { data: existingTags } = await crm()
+        .from("tags")
+        .select("id, name")
+        .eq("organization_id", orgId)
+        .throwOnError();
+      const tagByName = new Map(
+        (existingTags ?? []).map((t) => [t.name.toLowerCase(), t.id]),
+      );
+
+      const results: ImportRowResult[] = [];
+      const CONCURRENCY = 4;
+      let cursor = 0;
+
+      async function worker() {
+        while (cursor < rows.length) {
+          const index = cursor++;
+          const row = rows[index];
+          let result: ImportRowResult;
+          try {
+            const status = await importOneContact({
+              orgId: orgId!,
+              organizationAddress,
+              service,
+              row,
+              tagByName,
+            });
+            result = { index, status };
+          } catch (err) {
+            result = {
+              index,
+              status: "error",
+              error: err instanceof Error ? err.message : String(err),
+            };
+          }
+          results.push(result);
+          onRowDone?.(result);
+        }
+      }
+
+      await Promise.all(
+        Array.from({ length: Math.min(CONCURRENCY, rows.length) }, worker),
+      );
+
+      return results.sort((a, b) => a.index - b.index);
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["crm"] });
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.contacts.all(orgId),
+      });
+    },
+  });
+}
