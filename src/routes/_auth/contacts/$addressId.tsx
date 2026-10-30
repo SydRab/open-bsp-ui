@@ -19,6 +19,8 @@ import { formatPhoneNumber } from "@/utils/FormatUtils";
 import type { Database } from "@/supabase/db_types";
 import ContactFieldsForm from "@/components/ContactFieldsForm";
 import ContactActivity from "@/components/ContactActivity";
+import ContactTags from "@/components/ContactTags";
+import { useContactByAddress } from "@/queries/useCrm";
 
 type Service = Database["public"]["Enums"]["service"];
 
@@ -46,6 +48,8 @@ function ContactDetail() {
     service as Service,
     address,
   );
+  // [crm] P3-11b: the contact's own id, for the tags section.
+  const { data: contact } = useContactByAddress(service, address);
   const deleteAddress = useDeleteContactAddress();
   const updateAddress = useUpdateContactAddress();
 
@@ -143,6 +147,9 @@ function ContactDetail() {
 
           {/* [crm] Custom fields (P1-06) */}
           <ContactFieldsForm service={entry.service} address={entry.address} />
+
+          {/* [crm] P3-11b */}
+          {contact && <ContactTags contactId={contact.id} />}
 
           {/* [crm] P3-11a */}
           <ContactActivity service={entry.service} address={entry.address} />

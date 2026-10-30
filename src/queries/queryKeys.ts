@@ -106,6 +106,9 @@ export const queryKeys = {
     tags: (orgId: NullableId) => ["crm", orgId, "tags"] as const,
     conversationTags: (conversationId: NullableId) =>
       ["crm", "conversation_tags", conversationId] as const,
+    // [crm] P3-11b
+    contactTags: (contactId: NullableId) =>
+      ["crm", "contact_tags", contactId] as const,
     // [crm] P2-09c
     conversationAssignment: (conversationId: NullableId) =>
       ["crm", "conversation_assignments", conversationId] as const,

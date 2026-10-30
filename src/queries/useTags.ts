@@ -161,3 +161,47 @@ export function useSetConversationTag() {
     },
   });
 }
+
+// [crm] P3-11b: the same crm.tags catalog, applied to a contact instead
+// of a conversation.
+export function useContactTags(contactId: string | undefined) {
+  return useQuery({
+    queryKey: queryKeys.crm.contactTags(contactId),
+    queryFn: async () =>
+      await crm()
+        .from("contact_tags")
+        .select("tag_id, tags(id, name, color)")
+        .eq("contact_id", contactId!)
+        .throwOnError(),
+    enabled: !!contactId,
+    select: (data) => data.data.flatMap((row) => (row.tags ? [row.tags] : [])),
+  });
+}
+
+export function useSetContactTag() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      contactId,
+      tagId,
+      tagged,
+    }: {
+      contactId: string;
+      tagId: string;
+      tagged: boolean;
+    }) =>
+      await crm()
+        .rpc("set_contact_tag", {
+          p_contact_id: contactId,
+          p_tag_id: tagId,
+          p_tagged: tagged,
+        })
+        .throwOnError(),
+    onSuccess: (_data, { contactId }) => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.contactTags(contactId),
+      });
+    },
+  });
+}

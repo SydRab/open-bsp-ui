@@ -885,5 +885,13 @@
   "Actividad": "गतिविधि",
   "Llegó desde": "यहाँ से आया",
   "No tienes permiso para ver el historial de este lead.": "आपको इस लीड का इतिहास देखने की अनुमति नहीं है।",
-  "Sin lead todavía -- no hay más actividad que mostrar.": "अभी तक कोई लीड नहीं -- दिखाने के लिए और कुछ नहीं।"
+  "Sin lead todavía -- no hay más actividad que mostrar.": "अभी तक कोई लीड नहीं -- दिखाने के लिए और कुछ नहीं।",
+  "Servicio": "सेवा",
+  "Consentimiento": "सहमति",
+  "Etiquetas": "टैग",
+  "Estado del lead": "लीड की स्थिति",
+  "Valor del trato": "डील का मूल्य",
+  "Creado": "बनाया गया",
+  "Exportando...": "एक्सपोर्ट हो रहा है...",
+  "Exportar CSV": "CSV एक्सपोर्ट करें"
 }

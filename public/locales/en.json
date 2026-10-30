@@ -885,5 +885,13 @@
   "Actividad": "Activity",
   "Llegó desde": "Came from",
   "No tienes permiso para ver el historial de este lead.": "You don't have permission to see this lead's history.",
-  "Sin lead todavía -- no hay más actividad que mostrar.": "No lead yet -- nothing more to show."
+  "Sin lead todavía -- no hay más actividad que mostrar.": "No lead yet -- nothing more to show.",
+  "Servicio": "Service",
+  "Consentimiento": "Consent",
+  "Etiquetas": "Tags",
+  "Estado del lead": "Lead status",
+  "Valor del trato": "Deal value",
+  "Creado": "Created",
+  "Exportando...": "Exporting...",
+  "Exportar CSV": "Export CSV"
 }

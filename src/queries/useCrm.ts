@@ -2067,3 +2067,22 @@ export function useRepLeaderboardReport(
     enabled: !!orgId,
   });
 }
+
+// [crm] P3-11b: CSV export. A one-shot action (mutation, not a cached
+// query) -- the UI formats the CSV itself (src/utils/csv.ts) and
+// triggers a browser download, no new edge function needed.
+export type ExportContactRow =
+  Database["crm"]["Functions"]["export_contacts"]["Returns"][number];
+
+export function useExportContacts() {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useMutation({
+    mutationFn: async () => {
+      const { data } = await crm()
+        .rpc("export_contacts", { p_organization_id: orgId! })
+        .throwOnError();
+      return data;
+    },
+  });
+}

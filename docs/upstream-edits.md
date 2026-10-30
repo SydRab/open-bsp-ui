@@ -173,3 +173,7 @@ Edits inside upstream files are marked with a `[crm]` comment.
 | 2026-10-30 | `src/routes/_auth/contacts/$addressId.tsx` | New `ContactActivity` section rendered below `ContactFieldsForm`. Marked `[crm]`. | Entry point for the new per-contact activity timeline (P3-11, sub-phase 1). | P3-11a |
 | 2026-10-30 | `src/queries/queryKeys.ts` | New `crm.leadIdForContact` key builder. Marked `[crm]`. | Cache keys. | P3-11a |
 | 2026-10-30 | `public/locales/en.json` / `hi.json` | 4 new string pairs (both now 887 keys, parity maintained). | New UI text for the contact activity section. | P3-11a |
+| 2026-10-30 | `src/routes/_auth/contacts/$addressId.tsx` | New `ContactTags` section rendered below `ContactFieldsForm`. Marked `[crm]`. | Entry point for contact-level tagging (P3-11, sub-phase 2). | P3-11b |
+| 2026-10-30 | `src/routes/_auth/contacts/index.tsx` | New "Exportar CSV" entry (gated `contacts.export`), alongside "Agregar contacto". Marked `[crm]`. | Entry point for the new CSV export. | P3-11b |
+| 2026-10-30 | `src/queries/queryKeys.ts` | New `crm.contactTags` key builder. Marked `[crm]`. | Cache keys. | P3-11b |
+| 2026-10-30 | `public/locales/en.json` / `hi.json` | 8 new string pairs (both now 895 keys, parity maintained). | New UI text for contact tags and CSV export. | P3-11b |
