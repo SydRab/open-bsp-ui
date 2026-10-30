@@ -84,7 +84,10 @@ function BooleanObjectEditor({ setting, disabled, saving, onSave }: Props) {
 
 function FieldsEditor({ setting, disabled, saving, onSave }: Props) {
   const { translate: t } = useTranslation();
-  const initial = (setting.value ?? {}) as Record<string, string | number>;
+  const initial = (setting.value ?? {}) as Record<
+    string,
+    string | number | string[]
+  >;
   const [draft, setDraft] = useState(initial);
   const dirty = JSON.stringify(draft) !== JSON.stringify(initial);
 
@@ -95,20 +98,37 @@ function FieldsEditor({ setting, disabled, saving, onSave }: Props) {
           const fieldSchema = setting.schema.properties?.[field] ?? {};
           const isNumber =
             fieldSchema.type === "integer" || fieldSchema.type === "number";
+          // [crm] P3-08: trial.schedule's days/times fields -- same
+          // comma-separated convention as ListEditor's one-per-line, just
+          // inline since these are nested inside an object, not the
+          // setting's own top-level value.
+          const isArray = fieldSchema.type === "array";
+          const value = draft[field];
           return (
             <label key={field} className="flex flex-col gap-[4px]">
               <span className="label">{t(FIELD_LABELS[field] ?? field)}</span>
               <input
                 className="text w-[140px]"
-                type={isNumber ? "number" : "time"}
+                type={isNumber ? "number" : isArray ? "text" : "time"}
                 min={fieldSchema.minimum}
                 max={fieldSchema.maximum}
                 disabled={disabled}
-                value={draft[field] ?? ""}
+                value={
+                  isArray
+                    ? ((value as string[] | undefined) ?? []).join(", ")
+                    : ((value as string | number | undefined) ?? "")
+                }
                 onChange={(e) =>
                   setDraft({
                     ...draft,
-                    [field]: isNumber ? Number(e.target.value) : e.target.value,
+                    [field]: isNumber
+                      ? Number(e.target.value)
+                      : isArray
+                        ? e.target.value
+                            .split(",")
+                            .map((v) => v.trim())
+                            .filter(Boolean)
+                        : e.target.value,
                   })
                 }
               />

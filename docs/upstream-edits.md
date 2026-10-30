@@ -158,3 +158,5 @@ Edits inside upstream files are marked with a `[crm]` comment.
 | 2026-10-30 | `public/locales/en.json` / `hi.json` | 6 new string pairs (both now 813 keys, parity maintained). | New UI text for the tasks modal and the WhatsApp-number field. | P3-07d |
 | 2026-10-30 | `src/queries/queryKeys.ts` | New `crm.leadNotes` key builder. Marked `[crm]`. | Cache keys. | P3-07e |
 | 2026-10-30 | `public/locales/en.json` / `hi.json` | 4 new string pairs (both now 817 keys, parity maintained). | New UI text for the notes modal. | P3-07e |
+| 2026-10-30 | `src/queries/queryKeys.ts` | New `crm.trialBookings`/`crm.upcomingTrialSlots`/`crm.trialReminderTemplateApproved` key builders. Marked `[crm]`. | Cache keys. | P3-08 |
+| 2026-10-30 | `public/locales/en.json` / `hi.json` | 29 new string pairs (both now 846 keys, parity maintained). | New UI text for the trial-booking modal, the `trial.schedule` field labels, and the previously-missing `lead.task_*`/`lead.note_*`/`lead.trial_*` audit-action sentences (the task/note ones have existed since P3-07d/e but were never added -- same gap P3-07c's own comment already fixed once before). | P3-08 |

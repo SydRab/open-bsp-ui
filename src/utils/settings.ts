@@ -13,6 +13,11 @@ export const SETTING_FIELD_LABELS: Record<string, string> = {
   ai_message: "Mensajes de IA",
   receipt: "Recibos",
   payment_confirmation: "Confirmaciones de pago",
+  // [crm] P3-08
+  days: "Días",
+  times: "Horarios",
+  slot_duration_minutes: "Duración (min)",
+  capacity_per_slot: "Cupos por horario",
 };
 
 const FIELD_ORDER = Object.keys(SETTING_FIELD_LABELS);

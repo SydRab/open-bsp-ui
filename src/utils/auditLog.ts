@@ -65,6 +65,14 @@ const LEAD_SCOPE_LABELS: Record<string, string> = {
   all: "Todos",
 };
 
+// [crm] P3-07d/P3-08: how a reminder was actually delivered.
+const CHANNEL_LABELS: Record<string, string> = {
+  whatsapp: "WhatsApp",
+  in_app: "en la app",
+  none: "sin plantilla aprobada",
+  skipped_past_due: "omitido (ya había pasado)",
+};
+
 function fill(template: string, values: Record<string, string>) {
   return template.replace(/\{(\w+)\}/g, (match, key: string) =>
     key in values ? values[key] : match,
@@ -398,6 +406,48 @@ export function describeAction(
     case "lead.qualification_completed":
       return values("Terminó la calificación (puntaje {score})", {
         score: text(d.score),
+      });
+
+    // [crm] P3-07d: these have existed since P3-07d but were never added
+    // here -- same gap P3-07c's own comment above already fixed once for
+    // an earlier batch of lead actions.
+    case "lead.task_created":
+      return values("Creó la tarea: {title}", { title: text(d.title) });
+    case "lead.task_completed":
+      return values("Completó la tarea: {title}", { title: text(d.title) });
+    case "lead.task_reopened":
+      return values("Reabrió la tarea: {title}", { title: text(d.title) });
+    case "lead.task_reminder_sent":
+      return values("Envió el recordatorio de la tarea ({channel})", {
+        channel: t(CHANNEL_LABELS[text(d.channel)] ?? text(d.channel)),
+      });
+
+    // [crm] P3-07e
+    case "lead.note_created":
+      return t("Agregó una nota");
+    case "lead.note_updated":
+      return t("Editó una nota");
+    case "lead.note_deleted":
+      return t("Eliminó una nota");
+
+    // [crm] P3-08
+    case "lead.trial_offered":
+      return values("Ofreció horarios de clase de prueba ({count})", {
+        count: text(d.slot_count),
+      });
+    case "lead.trial_booked":
+      return values("Reservó la clase de prueba: {slot}", {
+        slot: text(d.slot_start),
+      });
+    case "lead.trial_rescheduled":
+      return values("Reprogramó la clase de prueba: {slot}", {
+        slot: text(d.slot_start),
+      });
+    case "lead.trial_cancelled":
+      return t("Canceló la reserva de la clase de prueba");
+    case "lead.trial_reminder_sent":
+      return values("Envió el recordatorio de la clase de prueba ({channel})", {
+        channel: t(CHANNEL_LABELS[text(d.channel)] ?? text(d.channel)),
       });
 
     default:

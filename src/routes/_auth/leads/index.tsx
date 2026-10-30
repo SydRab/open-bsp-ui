@@ -25,6 +25,7 @@ import LeadHistoryModal from "@/components/LeadHistoryModal";
 import LeadNotesModal from "@/components/LeadNotesModal";
 import LeadRequiredFieldsModal from "@/components/LeadRequiredFieldsModal";
 import LeadTasksModal from "@/components/LeadTasksModal";
+import LeadTrialModal from "@/components/LeadTrialModal";
 import { useTranslation } from "@/hooks/useTranslation";
 import {
   type LeadStage,
@@ -38,7 +39,13 @@ import {
   useSetLeadStage,
   useStageRequiredFields,
 } from "@/queries/useCrm";
-import { AlarmClockCheck, History, ListTodo, StickyNote } from "lucide-react";
+import {
+  AlarmClockCheck,
+  CalendarCheck,
+  History,
+  ListTodo,
+  StickyNote,
+} from "lucide-react";
 
 export const Route = createFileRoute("/_auth/leads/")({
   component: PipelineBoard,
@@ -88,6 +95,7 @@ function LeadCard({
   onShowHistory,
   onShowTasks,
   onShowNotes,
+  onShowTrial,
 }: {
   lead: PipelineLead;
   qualityName: string | null;
@@ -96,6 +104,7 @@ function LeadCard({
   onShowHistory: () => void;
   onShowTasks: () => void;
   onShowNotes: () => void;
+  onShowTrial: () => void;
 }) {
   const { translate: t } = useTranslation();
   const { attributes, listeners, setNodeRef, transform, isDragging } =
@@ -175,6 +184,17 @@ function LeadCard({
           className="shrink-0 text-muted-foreground hover:text-primary"
           onClick={(e) => {
             e.stopPropagation();
+            onShowTrial();
+          }}
+          onPointerDown={(e) => e.stopPropagation()}
+        >
+          <CalendarCheck className="w-[14px] h-[14px]" />
+        </button>
+        <button
+          type="button"
+          className="shrink-0 text-muted-foreground hover:text-primary"
+          onClick={(e) => {
+            e.stopPropagation();
             onShowHistory();
           }}
           onPointerDown={(e) => e.stopPropagation()}
@@ -195,6 +215,7 @@ function Column({
   onShowHistory,
   onShowTasks,
   onShowNotes,
+  onShowTrial,
 }: {
   stage: LeadStage | null;
   leads: PipelineLead[];
@@ -204,6 +225,7 @@ function Column({
   onShowHistory: (leadId: string) => void;
   onShowTasks: (leadId: string) => void;
   onShowNotes: (leadId: string) => void;
+  onShowTrial: (leadId: string) => void;
 }) {
   const { translate: t } = useTranslation();
   const { setNodeRef, isOver } = useDroppable({ id: stage?.id ?? UNSTAGED });
@@ -233,6 +255,7 @@ function Column({
             onShowHistory={() => onShowHistory(lead.id)}
             onShowTasks={() => onShowTasks(lead.id)}
             onShowNotes={() => onShowNotes(lead.id)}
+            onShowTrial={() => onShowTrial(lead.id)}
           />
         ))}
       </div>
@@ -284,6 +307,7 @@ function PipelineBoard() {
   const [historyLeadId, setHistoryLeadId] = useState<string | null>(null);
   const [tasksLeadId, setTasksLeadId] = useState<string | null>(null);
   const [notesLeadId, setNotesLeadId] = useState<string | null>(null);
+  const [trialLeadId, setTrialLeadId] = useState<string | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
@@ -441,6 +465,7 @@ function PipelineBoard() {
               onShowHistory={setHistoryLeadId}
               onShowTasks={setTasksLeadId}
               onShowNotes={setNotesLeadId}
+              onShowTrial={setTrialLeadId}
             />
             {(stages ?? []).map((stage) => (
               <Column
@@ -453,6 +478,7 @@ function PipelineBoard() {
                 onShowHistory={setHistoryLeadId}
                 onShowTasks={setTasksLeadId}
                 onShowNotes={setNotesLeadId}
+                onShowTrial={setTrialLeadId}
               />
             ))}
           </div>
@@ -536,6 +562,13 @@ function PipelineBoard() {
         <LeadNotesModal
           leadId={notesLeadId}
           onClose={() => setNotesLeadId(null)}
+        />
+      )}
+
+      {trialLeadId && (
+        <LeadTrialModal
+          leadId={trialLeadId}
+          onClose={() => setTrialLeadId(null)}
         />
       )}
     </>

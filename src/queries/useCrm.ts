@@ -1747,3 +1747,96 @@ export function useDeleteLeadNote() {
     },
   });
 }
+
+// [crm] P3-08: trial booking. Offer/confirm/remind run automatically
+// (crm.z_offer_trial_on_qualified, crm.z_handle_trial_slot_reply, crm.
+// sweep_trial_reminders) -- the UI only needs the lead's current booking
+// (if any) and staff-driven reschedule/cancel.
+export type TrialBooking = Database["crm"]["Tables"]["trial_bookings"]["Row"];
+
+/** This lead's current active (status='booked') trial booking, if any. */
+export function useTrialBooking(leadId: string | null) {
+  return useQuery({
+    queryKey: queryKeys.crm.trialBookings(leadId),
+    queryFn: async () =>
+      await crm()
+        .from("trial_bookings")
+        .select()
+        .eq("lead_id", leadId!)
+        .eq("status", "booked")
+        .maybeSingle()
+        .throwOnError(),
+    select: (data) => data.data as TrialBooking | null,
+    enabled: !!leadId,
+  });
+}
+
+/** Open upcoming trial slots (trial.schedule), for the reschedule picker. */
+export function useUpcomingTrialSlots() {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useQuery({
+    queryKey: queryKeys.crm.upcomingTrialSlots(orgId),
+    queryFn: async () =>
+      await crm()
+        .rpc("list_upcoming_trial_slots", { p_organization_id: orgId! })
+        .throwOnError(),
+    select: (data) => data.data,
+    enabled: !!orgId,
+  });
+}
+
+export function useRescheduleTrialBooking() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (args: { leadId: string; slotStart: string }) => {
+      await crm()
+        .rpc("reschedule_trial_booking", {
+          p_lead_id: args.leadId,
+          p_slot_start: args.slotStart,
+        })
+        .throwOnError();
+    },
+    onSuccess: (_data, { leadId }) => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.trialBookings(leadId),
+      });
+    },
+  });
+}
+
+export function useCancelTrialBooking() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (args: { id: string; leadId: string }) => {
+      await crm().rpc("cancel_trial_booking", { p_id: args.id }).throwOnError();
+    },
+    onSuccess: (_data, { leadId }) => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.trialBookings(leadId),
+      });
+    },
+  });
+}
+
+/** Whether an approved WhatsApp template exists yet for trial class reminders. */
+export function useTrialReminderTemplateApproved() {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useQuery({
+    queryKey: queryKeys.crm.trialReminderTemplateApproved(orgId),
+    queryFn: async () =>
+      await crm()
+        .from("templates")
+        .select("id")
+        .eq("organization_id", orgId!)
+        .eq("name", "trial_class_reminder")
+        .eq("status", "APPROVED")
+        .limit(1)
+        .throwOnError(),
+    select: (data) => data.data.length > 0,
+    enabled: !!orgId,
+  });
+}

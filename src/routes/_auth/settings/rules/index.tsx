@@ -25,6 +25,7 @@ const CATEGORIES: { key: string; label: string }[] = [
   { key: "messaging", label: "Mensajes" },
   { key: "approvals", label: "Aprobaciones" },
   { key: "disclaimer", label: "Aviso legal" },
+  { key: "trial", label: "Clase de prueba" },
   { key: "modules", label: "Módulos" },
 ];
 
