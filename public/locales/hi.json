@@ -913,5 +913,8 @@
   "Importando {done}/{total}...": "इम्पोर्ट हो रहा है {done}/{total}...",
   "{created} creados, {updated} actualizados, {errors} con error.": "{created} बनाए गए, {updated} अपडेट किए गए, {errors} में त्रुटि।",
   "Fila {n}: {error}": "पंक्ति {n}: {error}",
-  "Listo": "हो गया"
+  "Listo": "हो गया",
+  "Fusionar con otro contacto": "दूसरे संपर्क के साथ मर्ज करें",
+  "Fusionar": "मर्ज करें",
+  "Esta dirección y sus datos se moverán al contacto que estás viendo ahora. El otro contacto se borrará. Esta acción no se puede deshacer.": "यह पता और इसका डेटा अभी देखे जा रहे संपर्क में चला जाएगा। दूसरा संपर्क हटा दिया जाएगा। यह कार्रवाई पूर्ववत नहीं की जा सकती।"
 }

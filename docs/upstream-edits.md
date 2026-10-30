@@ -180,3 +180,6 @@ Edits inside upstream files are marked with a `[crm]` comment.
 | 2026-10-31 | `src/routes/_auth/contacts/index.tsx` | New "Importar CSV" entry (gated `contacts.edit`, not `.export` -- importing writes), alongside "Agregar contacto"/"Exportar CSV". Marked `[crm]`. | Entry point for the new CSV import wizard. | P3-11c |
 | 2026-10-31 | `public/locales/en.json` / `hi.json` | 20 new string pairs (both now 915 keys, parity maintained). | New UI text for the `/contacts/import` wizard (upload, column mapping, attestation, results). | P3-11c |
 | 2026-10-31 | `src/supabase/db_types.ts` | Regenerated: `crm.set_contact_consent`. | Types. | P3-11c |
+| 2026-10-31 | `src/routes/_auth/contacts/$addressId.tsx` | New `MergeContactAction` section rendered below `ContactActivity`, gated `contacts.edit`. Marked `[crm]`. | Entry point for contact merge (P3-11, sub-phase 4, the last one). | P3-11d |
+| 2026-10-31 | `public/locales/en.json` / `hi.json` | 3 new string pairs (both now 918 keys, parity maintained). | New UI text for the merge confirmation flow. | P3-11d |
+| 2026-10-31 | `src/supabase/db_types.ts` | Regenerated: `crm.merge_contacts`. | Types. | P3-11d |

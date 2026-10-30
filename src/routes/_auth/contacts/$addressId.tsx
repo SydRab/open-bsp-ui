@@ -20,7 +20,8 @@ import type { Database } from "@/supabase/db_types";
 import ContactFieldsForm from "@/components/ContactFieldsForm";
 import ContactActivity from "@/components/ContactActivity";
 import ContactTags from "@/components/ContactTags";
-import { useContactByAddress } from "@/queries/useCrm";
+import MergeContactAction from "@/components/MergeContactAction";
+import { useContactByAddress, useMyPermissions } from "@/queries/useCrm";
 
 type Service = Database["public"]["Enums"]["service"];
 
@@ -52,6 +53,7 @@ function ContactDetail() {
   const { data: contact } = useContactByAddress(service, address);
   const deleteAddress = useDeleteContactAddress();
   const updateAddress = useUpdateContactAddress();
+  const { can } = useMyPermissions();
 
   // A synced entry mirrors the service's address book — only the service
   // writes it (RLS refuses member updates and deletes).
@@ -153,6 +155,17 @@ function ContactDetail() {
 
           {/* [crm] P3-11a */}
           <ContactActivity service={entry.service} address={entry.address} />
+
+          {/* [crm] P3-11d */}
+          {contact && can("contacts.edit") && (
+            <div className="mt-[16px]">
+              <MergeContactAction
+                contactId={contact.id}
+                service={entry.service}
+                address={entry.address}
+              />
+            </div>
+          )}
         </SectionBody>
 
         {!synced && (

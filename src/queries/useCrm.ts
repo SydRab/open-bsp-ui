@@ -2293,3 +2293,32 @@ export function useImportContacts() {
     },
   });
 }
+
+// [crm] P3-11d: merge two contacts into one. Manual only (the user picks
+// both sides) -- no automatic duplicate-suggestion engine.
+export function useMergeContacts() {
+  const queryClient = useQueryClient();
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useMutation({
+    mutationFn: async ({
+      primaryContactId,
+      secondaryContactId,
+    }: {
+      primaryContactId: string;
+      secondaryContactId: string;
+    }) =>
+      await crm()
+        .rpc("merge_contacts", {
+          p_primary_contact_id: primaryContactId,
+          p_secondary_contact_id: secondaryContactId,
+        })
+        .throwOnError(),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["crm"] });
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.contacts.all(orgId),
+      });
+    },
+  });
+}
