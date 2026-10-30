@@ -16,6 +16,7 @@ import {
   Gem,
   Fingerprint,
   Workflow,
+  Target,
 } from "lucide-react";
 import { useMyPermissions } from "@/queries/useCrm";
 
@@ -149,6 +150,23 @@ function SettingsIndex() {
               onClick={() =>
                 navigate({
                   to: "/settings/pipeline",
+                  hash: (prevHash) => prevHash!,
+                })
+              }
+            />
+          )}
+          {/* [crm] P3-09: conversion feedback to Meta -- mapping config + delivery log */}
+          {can("organization.manage") && (
+            <SectionItem
+              title={t("Conversiones")}
+              aside={
+                <div className="p-[8px]">
+                  <Target className="w-[24px] h-[24px] text-muted-foreground" />
+                </div>
+              }
+              onClick={() =>
+                navigate({
+                  to: "/settings/conversions",
                   hash: (prevHash) => prevHash!,
                 })
               }

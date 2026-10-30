@@ -844,5 +844,21 @@
   "Reservó la clase de prueba: {slot}": "Booked the trial class: {slot}",
   "Reprogramó la clase de prueba: {slot}": "Rescheduled the trial class: {slot}",
   "Canceló la reserva de la clase de prueba": "Cancelled the trial-class booking",
-  "Envió el recordatorio de la clase de prueba ({channel})": "Sent the trial-class reminder ({channel})"
+  "Envió el recordatorio de la clase de prueba ({channel})": "Sent the trial-class reminder ({channel})",
+  "Conversiones": "Conversions",
+  "Mapeo de eventos": "Event mapping",
+  "Qué evento se reporta a Meta cuando un lead llega a un estado o etapa -- solo para leads con origen de anuncio.": "Which event is reported to Meta when a lead reaches a status or stage -- ad-sourced leads only.",
+  "Etapa": "Stage",
+  "Elegir": "Choose",
+  "Nombre del evento (ej. Lead, Purchase)": "Event name (e.g. Lead, Purchase)",
+  "Registro de envíos": "Delivery log",
+  "Sin eventos todavía.": "No events yet.",
+  "Enviado": "Sent",
+  "Agotado": "Exhausted",
+  "Pendiente": "Pending",
+  "Abierto": "Open",
+  "Calificado": "Qualified",
+  "No calificado": "Unqualified",
+  "Convertido": "Converted",
+  "Perdido": "Dropped"
 }

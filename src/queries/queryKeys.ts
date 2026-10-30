@@ -158,6 +158,11 @@ export const queryKeys = {
       ["crm", orgId, "upcoming_trial_slots"] as const,
     trialReminderTemplateApproved: (orgId: NullableId) =>
       ["crm", orgId, "trial_reminder_template_approved"] as const,
+    // [crm] P3-09
+    eventMappings: (orgId: NullableId) =>
+      ["crm", orgId, "event_mappings"] as const,
+    outboxEvents: (orgId: NullableId) =>
+      ["crm", orgId, "outbox_events"] as const,
   },
   // [crm] Super-admin console (P1-10) — platform-wide, not scoped to the
   // active org, so no orgId prefix (except tenant-specific lookups).

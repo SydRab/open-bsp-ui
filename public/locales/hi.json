@@ -844,5 +844,21 @@
   "Reservó la clase de prueba: {slot}": "ट्रायल क्लास बुक की: {slot}",
   "Reprogramó la clase de prueba: {slot}": "ट्रायल क्लास पुनर्निर्धारित की: {slot}",
   "Canceló la reserva de la clase de prueba": "ट्रायल क्लास की बुकिंग रद्द की",
-  "Envió el recordatorio de la clase de prueba ({channel})": "ट्रायल क्लास की याद दिलाई ({channel})"
+  "Envió el recordatorio de la clase de prueba ({channel})": "ट्रायल क्लास की याद दिलाई ({channel})",
+  "Conversiones": "कन्वर्शन",
+  "Mapeo de eventos": "इवेंट मैपिंग",
+  "Qué evento se reporta a Meta cuando un lead llega a un estado o etapa -- solo para leads con origen de anuncio.": "किसी लीड के किसी स्थिति या चरण पर पहुँचने पर Meta को कौन सा इवेंट भेजा जाए -- केवल विज्ञापन-स्रोत लीड के लिए।",
+  "Etapa": "चरण",
+  "Elegir": "चुनें",
+  "Nombre del evento (ej. Lead, Purchase)": "इवेंट का नाम (जैसे Lead, Purchase)",
+  "Registro de envíos": "डिलीवरी लॉग",
+  "Sin eventos todavía.": "अभी तक कोई इवेंट नहीं।",
+  "Enviado": "भेजा गया",
+  "Agotado": "समाप्त",
+  "Pendiente": "लंबित",
+  "Abierto": "खुला",
+  "Calificado": "योग्य",
+  "No calificado": "अयोग्य",
+  "Convertido": "परिवर्तित",
+  "Perdido": "खोया"
 }

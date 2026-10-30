@@ -1840,3 +1840,105 @@ export function useTrialReminderTemplateApproved() {
     enabled: !!orgId,
   });
 }
+
+// [crm] P3-09: conversion feedback to Meta. The offer/send mechanics
+// (crm.z_enqueue_status_conversion_event, crm._set_lead_stage's own hook,
+// crm-conversion-sender) run automatically -- the UI only needs the
+// mapping catalog (CRUD) and the delivery log (read + manual replay).
+export type EventMapping =
+  Database["crm"]["Tables"]["lead_event_mappings"]["Row"];
+export type OutboxEvent = Database["crm"]["Tables"]["outbox_events"]["Row"];
+
+export function useEventMappings() {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useQuery({
+    queryKey: queryKeys.crm.eventMappings(orgId),
+    queryFn: async () =>
+      await crm()
+        .from("lead_event_mappings")
+        .select()
+        .eq("organization_id", orgId!)
+        .throwOnError(),
+    select: (data) => data.data as EventMapping[],
+    enabled: !!orgId,
+  });
+}
+
+export function useSetEventMapping() {
+  const queryClient = useQueryClient();
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useMutation({
+    mutationFn: async (args: {
+      triggerType: "status" | "stage";
+      triggerValue: string;
+      metaEventName: string;
+    }) => {
+      await crm()
+        .rpc("set_event_mapping", {
+          p_organization_id: orgId!,
+          p_trigger_type: args.triggerType,
+          p_trigger_value: args.triggerValue,
+          p_meta_event_name: args.metaEventName,
+        })
+        .throwOnError();
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.eventMappings(orgId),
+      });
+    },
+  });
+}
+
+export function useDeleteEventMapping() {
+  const queryClient = useQueryClient();
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      await crm().rpc("delete_event_mapping", { p_id: id }).throwOnError();
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.eventMappings(orgId),
+      });
+    },
+  });
+}
+
+/** The delivery log: most recent 100 conversion events, newest first. */
+export function useOutboxEvents() {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useQuery({
+    queryKey: queryKeys.crm.outboxEvents(orgId),
+    queryFn: async () =>
+      await crm()
+        .from("outbox_events")
+        .select()
+        .eq("organization_id", orgId!)
+        .order("created_at", { ascending: false })
+        .limit(100)
+        .throwOnError(),
+    select: (data) => data.data as OutboxEvent[],
+    enabled: !!orgId,
+  });
+}
+
+export function useReplayOutboxEvent() {
+  const queryClient = useQueryClient();
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      await crm().rpc("replay_outbox_event", { p_id: id }).throwOnError();
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.outboxEvents(orgId),
+      });
+    },
+  });
+}
