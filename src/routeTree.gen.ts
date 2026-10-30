@@ -30,6 +30,7 @@ import { Route as OnboardInstagramCallbackRouteImport } from './routes/onboard.i
 import { Route as OnboardInstagramTokenRouteImport } from './routes/onboard.instagram.$token'
 import { Route as AuthStatsUsageRouteImport } from './routes/_auth/stats/usage'
 import { Route as AuthStatsQuotasRouteImport } from './routes/_auth/stats/quotas'
+import { Route as AuthStatsPipelineRouteImport } from './routes/_auth/stats/pipeline'
 import { Route as AuthLeadsUnansweredRouteImport } from './routes/_auth/leads/unanswered'
 import { Route as AuthIntegrationsMediaPreprocessingRouteImport } from './routes/_auth/integrations/media-preprocessing'
 import { Route as AuthConversationsNewRouteImport } from './routes/_auth/conversations/new'
@@ -187,6 +188,11 @@ const AuthStatsUsageRoute = AuthStatsUsageRouteImport.update({
 const AuthStatsQuotasRoute = AuthStatsQuotasRouteImport.update({
   id: '/quotas',
   path: '/quotas',
+  getParentRoute: () => AuthStatsRoute,
+} as any)
+const AuthStatsPipelineRoute = AuthStatsPipelineRouteImport.update({
+  id: '/pipeline',
+  path: '/pipeline',
   getParentRoute: () => AuthStatsRoute,
 } as any)
 const AuthLeadsUnansweredRoute = AuthLeadsUnansweredRouteImport.update({
@@ -508,6 +514,7 @@ export interface FileRoutesByFullPath {
   '/conversations/new': typeof AuthConversationsNewRoute
   '/integrations/media-preprocessing': typeof AuthIntegrationsMediaPreprocessingRoute
   '/leads/unanswered': typeof AuthLeadsUnansweredRoute
+  '/stats/pipeline': typeof AuthStatsPipelineRoute
   '/stats/quotas': typeof AuthStatsQuotasRoute
   '/stats/usage': typeof AuthStatsUsageRoute
   '/onboard/instagram/$token': typeof OnboardInstagramTokenRoute
@@ -582,6 +589,7 @@ export interface FileRoutesByTo {
   '/conversations/new': typeof AuthConversationsNewRoute
   '/integrations/media-preprocessing': typeof AuthIntegrationsMediaPreprocessingRoute
   '/leads/unanswered': typeof AuthLeadsUnansweredRoute
+  '/stats/pipeline': typeof AuthStatsPipelineRoute
   '/stats/quotas': typeof AuthStatsQuotasRoute
   '/stats/usage': typeof AuthStatsUsageRoute
   '/onboard/instagram/$token': typeof OnboardInstagramTokenRoute
@@ -659,6 +667,7 @@ export interface FileRoutesById {
   '/_auth/conversations/new': typeof AuthConversationsNewRoute
   '/_auth/integrations/media-preprocessing': typeof AuthIntegrationsMediaPreprocessingRoute
   '/_auth/leads/unanswered': typeof AuthLeadsUnansweredRoute
+  '/_auth/stats/pipeline': typeof AuthStatsPipelineRoute
   '/_auth/stats/quotas': typeof AuthStatsQuotasRoute
   '/_auth/stats/usage': typeof AuthStatsUsageRoute
   '/onboard/instagram/$token': typeof OnboardInstagramTokenRoute
@@ -736,6 +745,7 @@ export interface FileRouteTypes {
     | '/conversations/new'
     | '/integrations/media-preprocessing'
     | '/leads/unanswered'
+    | '/stats/pipeline'
     | '/stats/quotas'
     | '/stats/usage'
     | '/onboard/instagram/$token'
@@ -810,6 +820,7 @@ export interface FileRouteTypes {
     | '/conversations/new'
     | '/integrations/media-preprocessing'
     | '/leads/unanswered'
+    | '/stats/pipeline'
     | '/stats/quotas'
     | '/stats/usage'
     | '/onboard/instagram/$token'
@@ -886,6 +897,7 @@ export interface FileRouteTypes {
     | '/_auth/conversations/new'
     | '/_auth/integrations/media-preprocessing'
     | '/_auth/leads/unanswered'
+    | '/_auth/stats/pipeline'
     | '/_auth/stats/quotas'
     | '/_auth/stats/usage'
     | '/onboard/instagram/$token'
@@ -1102,6 +1114,13 @@ declare module '@tanstack/react-router' {
       path: '/quotas'
       fullPath: '/stats/quotas'
       preLoaderRoute: typeof AuthStatsQuotasRouteImport
+      parentRoute: typeof AuthStatsRoute
+    }
+    '/_auth/stats/pipeline': {
+      id: '/_auth/stats/pipeline'
+      path: '/pipeline'
+      fullPath: '/stats/pipeline'
+      preLoaderRoute: typeof AuthStatsPipelineRouteImport
       parentRoute: typeof AuthStatsRoute
     }
     '/_auth/leads/unanswered': {
@@ -1479,12 +1498,14 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthStatsRouteChildren {
+  AuthStatsPipelineRoute: typeof AuthStatsPipelineRoute
   AuthStatsQuotasRoute: typeof AuthStatsQuotasRoute
   AuthStatsUsageRoute: typeof AuthStatsUsageRoute
   AuthStatsIndexRoute: typeof AuthStatsIndexRoute
 }
 
 const AuthStatsRouteChildren: AuthStatsRouteChildren = {
+  AuthStatsPipelineRoute: AuthStatsPipelineRoute,
   AuthStatsQuotasRoute: AuthStatsQuotasRoute,
   AuthStatsUsageRoute: AuthStatsUsageRoute,
   AuthStatsIndexRoute: AuthStatsIndexRoute,

@@ -163,6 +163,17 @@ export const queryKeys = {
       ["crm", orgId, "event_mappings"] as const,
     outboxEvents: (orgId: NullableId) =>
       ["crm", orgId, "outbox_events"] as const,
+    // [crm] P3-10a
+    statusFunnelReport: (
+      orgId: NullableId,
+      from: string | null,
+      to: string | null,
+    ) => ["crm", orgId, "report_status_funnel", from, to] as const,
+    sourcePerformanceReport: (
+      orgId: NullableId,
+      from: string | null,
+      to: string | null,
+    ) => ["crm", orgId, "report_source_performance", from, to] as const,
   },
   // [crm] Super-admin console (P1-10) — platform-wide, not scoped to the
   // active org, so no orgId prefix (except tenant-specific lookups).

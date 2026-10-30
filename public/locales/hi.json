@@ -860,5 +860,19 @@
   "Calificado": "योग्य",
   "No calificado": "अयोग्य",
   "Convertido": "परिवर्तित",
-  "Perdido": "खोया"
+  "Perdido": "खोया",
+  "Leads": "लीड",
+  "Convertidos": "परिवर्तित",
+  "Embudo": "फ़नल",
+  "Anuncio": "विज्ञापन",
+  "Manual": "मैनुअल",
+  "Orgánico": "ऑर्गेनिक",
+  "Publicación": "पोस्ट",
+  "90 días": "90 दिन",
+  "Leads totales": "कुल लीड",
+  "Tasa de conversión": "कन्वर्शन दर",
+  "Leads perdidos": "खोई गई लीड",
+  "Valor ganado": "अर्जित मूल्य",
+  "Origen de los leads": "लीड के स्रोत",
+  "Rendimiento por anuncio": "विज्ञापन प्रदर्शन"
 }

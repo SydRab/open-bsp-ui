@@ -30,6 +30,27 @@
 
   --chat-out: oklch(91.619% 0.0445 38.665);
   --chat-in: oklch(1 0 0);
+
+  /* [crm] P3-10a: report charts (dataviz skill's reference palette,
+     unchanged -- this app has no categorical/status chart palette of its
+     own yet). cat-* is color-by-identity (fixed hue order, never
+     cycled) for the source/ad breakdown. lead-status-* maps each of the
+     5 fixed lead statuses to a distinct color: open/qualified borrow
+     categorical slots (still in progress, not yet a status outcome),
+     unqualified/converted/dropped use the reserved status palette
+     (color-by-state: a bad, good, and the worst outcome). */
+  --color-cat-1: #2a78d6;
+  --color-cat-2: #eb6834;
+  --color-cat-3: #1baf7a;
+  --color-cat-4: #eda100;
+  --status-good: #0ca30c;
+  --status-serious: #ec835a;
+  --status-critical: #d03b3b;
+  --lead-status-open: var(--color-cat-1);
+  --lead-status-qualified: var(--color-cat-3);
+  --lead-status-unqualified: var(--status-serious);
+  --lead-status-converted: var(--status-good);
+  --lead-status-dropped: var(--status-critical);
 }
 
 .dark {
@@ -62,6 +83,13 @@
 
   --chat-out: oklch(43.696% 0.08141 40.805);
   --chat-in: oklch(0.31 0 106.6);
+
+  /* [crm] P3-10a: same slots, dark-stepped per the dataviz skill's own
+     palette (status colors are "fixed -- never themed," so unchanged). */
+  --color-cat-1: #3987e5;
+  --color-cat-2: #d95926;
+  --color-cat-3: #199e70;
+  --color-cat-4: #c98500;
 }
 
 @theme inline {

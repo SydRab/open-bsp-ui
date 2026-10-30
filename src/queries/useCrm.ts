@@ -1942,3 +1942,52 @@ export function useReplayOutboxEvent() {
     },
   });
 }
+
+// [crm] P3-10a: pipeline reports (funnel, source/ad performance). Gated
+// server-side on reports.view -- a permission reserved since P1-02,
+// never consumed until now. Both report functions return raw counts; the
+// page computes rates/percentages, same "no pre-divided floats from SQL"
+// choice the functions' own schema comment states.
+export type StatusFunnelRow =
+  Database["crm"]["Functions"]["report_status_funnel"]["Returns"][number];
+export type SourcePerformanceRow =
+  Database["crm"]["Functions"]["report_source_performance"]["Returns"][number];
+
+export function useStatusFunnelReport(from: string | null, to: string | null) {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useQuery({
+    queryKey: queryKeys.crm.statusFunnelReport(orgId, from, to),
+    queryFn: async () =>
+      await crm()
+        .rpc("report_status_funnel", {
+          p_organization_id: orgId!,
+          p_from: from ?? undefined,
+          p_to: to ?? undefined,
+        })
+        .throwOnError(),
+    select: (data) => data.data,
+    enabled: !!orgId,
+  });
+}
+
+export function useSourcePerformanceReport(
+  from: string | null,
+  to: string | null,
+) {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useQuery({
+    queryKey: queryKeys.crm.sourcePerformanceReport(orgId, from, to),
+    queryFn: async () =>
+      await crm()
+        .rpc("report_source_performance", {
+          p_organization_id: orgId!,
+          p_from: from ?? undefined,
+          p_to: to ?? undefined,
+        })
+        .throwOnError(),
+    select: (data) => data.data,
+    enabled: !!orgId,
+  });
+}

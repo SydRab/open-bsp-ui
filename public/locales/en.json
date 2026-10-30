@@ -860,5 +860,19 @@
   "Calificado": "Qualified",
   "No calificado": "Unqualified",
   "Convertido": "Converted",
-  "Perdido": "Dropped"
+  "Perdido": "Dropped",
+  "Leads": "Leads",
+  "Convertidos": "Converted",
+  "Embudo": "Funnel",
+  "Anuncio": "Ad",
+  "Manual": "Manual",
+  "Orgánico": "Organic",
+  "Publicación": "Post",
+  "90 días": "90 days",
+  "Leads totales": "Total leads",
+  "Tasa de conversión": "Conversion rate",
+  "Leads perdidos": "Dropped leads",
+  "Valor ganado": "Value won",
+  "Origen de los leads": "Lead sources",
+  "Rendimiento por anuncio": "Ad performance"
 }
