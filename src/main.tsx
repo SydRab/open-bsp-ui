@@ -37,6 +37,15 @@ window.addEventListener("vite:preloadError", (event) => {
   window.location.reload();
 });
 
+// [crm] P3-12: installability only -- the service worker caches the app
+// shell for a reliable "Add to Home Screen" prompt, nothing else. No push
+// subscription is ever requested here (see public/sw.js's own header).
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js").catch(console.error);
+  });
+}
+
 // Dark mode detection
 const darkModeMediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 

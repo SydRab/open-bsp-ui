@@ -1,7 +1,7 @@
 {
-  "short_name": "OpenBSP",
-  "name": "OpenBSP - WhatsApp Web and Instagram interface",
-  "description": "Open-source WhatsApp Web and Instagram interface. Self-hostable, multi-tenant, and AI-agent ready.",
+  "short_name": "TGL CRM",
+  "name": "Trader Growth Labs CRM",
+  "description": "WhatsApp CRM and automation platform for training institutes.",
   "icons": [
     {
       "src": "/logo-192x192.png",

@@ -183,3 +183,7 @@ Edits inside upstream files are marked with a `[crm]` comment.
 | 2026-10-31 | `src/routes/_auth/contacts/$addressId.tsx` | New `MergeContactAction` section rendered below `ContactActivity`, gated `contacts.edit`. Marked `[crm]`. | Entry point for contact merge (P3-11, sub-phase 4, the last one). | P3-11d |
 | 2026-10-31 | `public/locales/en.json` / `hi.json` | 3 new string pairs (both now 918 keys, parity maintained). | New UI text for the merge confirmation flow. | P3-11d |
 | 2026-10-31 | `src/supabase/db_types.ts` | Regenerated: `crm.merge_contacts`. | Types. | P3-11d |
+| 2026-10-31 | `index.html` | `<title>`/description rebranded from "OpenBSP" to "Trader Growth Labs CRM"; OG/Twitter meta left untouched (unrelated to installability, out of this task's scope). Marked `[crm]`. | PWA install prompts surface the page title/description on some platforms. | P3-12 |
+| 2026-10-31 | `public/manifest.json` | `name`/`short_name`/`description` rebranded the same way. Marked `[crm]`. | What "Add to Home Screen" actually shows. | P3-12 |
+| 2026-10-31 | `src/main.tsx` | Registers `public/sw.js` on load, guarded by `'serviceWorker' in navigator`. Marked `[crm]`. | Installability. No push subscription is ever requested here -- see the file's own header and `public/sw.js`'s. | P3-12 |
+| 2026-10-31 | `src/supabase/db_types.ts` | Regenerated: the three new internal P3-12 functions. | Types. | P3-12 |
