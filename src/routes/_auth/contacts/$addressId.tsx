@@ -20,6 +20,7 @@ import type { Database } from "@/supabase/db_types";
 import ContactFieldsForm from "@/components/ContactFieldsForm";
 import ContactActivity from "@/components/ContactActivity";
 import ContactTags from "@/components/ContactTags";
+import ContactConsent from "@/components/ContactConsent";
 import MergeContactAction from "@/components/MergeContactAction";
 import { useContactByAddress, useMyPermissions } from "@/queries/useCrm";
 
@@ -155,6 +156,15 @@ function ContactDetail() {
 
           {/* [crm] P3-11a */}
           <ContactActivity service={entry.service} address={entry.address} />
+
+          {/* [crm] P4-01 */}
+          {can("contacts.edit") && (
+            <ContactConsent
+              organizationAddress={entry.organization_address}
+              service={entry.service}
+              address={entry.address}
+            />
+          )}
 
           {/* [crm] P3-11d */}
           {contact && can("contacts.edit") && (

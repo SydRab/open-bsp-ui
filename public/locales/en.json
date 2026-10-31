@@ -916,5 +916,15 @@
   "Listo": "Done",
   "Fusionar con otro contacto": "Merge with another contact",
   "Fusionar": "Merge",
-  "Esta dirección y sus datos se moverán al contacto que estás viendo ahora. El otro contacto se borrará. Esta acción no se puede deshacer.": "This address and its data will move to the contact you're viewing now. The other contact will be deleted. This cannot be undone."
+  "Esta dirección y sus datos se moverán al contacto que estás viendo ahora. El otro contacto se borrará. Esta acción no se puede deshacer.": "This address and its data will move to the contact you're viewing now. The other contact will be deleted. This cannot be undone.",
+  "Registrar consentimiento": "Record consent",
+  "Opt-in": "Opt-in",
+  "Opt-out": "Opt-out",
+  "Prueba (opcional)": "Proof (optional)",
+  "Texto, URL, o id de formulario": "Text, URL, or form id",
+  "Sin registros de consentimiento.": "No consent records.",
+  "Palabra clave": "Keyword",
+  "Alta": "Signup",
+  "API": "API",
+  "Importación CSV": "CSV import"
 }

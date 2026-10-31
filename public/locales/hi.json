@@ -916,5 +916,15 @@
   "Listo": "हो गया",
   "Fusionar con otro contacto": "दूसरे संपर्क के साथ मर्ज करें",
   "Fusionar": "मर्ज करें",
-  "Esta dirección y sus datos se moverán al contacto que estás viendo ahora. El otro contacto se borrará. Esta acción no se puede deshacer.": "यह पता और इसका डेटा अभी देखे जा रहे संपर्क में चला जाएगा। दूसरा संपर्क हटा दिया जाएगा। यह कार्रवाई पूर्ववत नहीं की जा सकती।"
+  "Esta dirección y sus datos se moverán al contacto que estás viendo ahora. El otro contacto se borrará. Esta acción no se puede deshacer.": "यह पता और इसका डेटा अभी देखे जा रहे संपर्क में चला जाएगा। दूसरा संपर्क हटा दिया जाएगा। यह कार्रवाई पूर्ववत नहीं की जा सकती।",
+  "Registrar consentimiento": "सहमति दर्ज करें",
+  "Opt-in": "Opt-in",
+  "Opt-out": "Opt-out",
+  "Prueba (opcional)": "प्रमाण (वैकल्पिक)",
+  "Texto, URL, o id de formulario": "टेक्स्ट, URL, या फ़ॉर्म id",
+  "Sin registros de consentimiento.": "कोई सहमति रिकॉर्ड नहीं।",
+  "Palabra clave": "कीवर्ड",
+  "Alta": "साइन-अप",
+  "API": "API",
+  "Importación CSV": "CSV इम्पोर्ट"
 }

@@ -187,3 +187,7 @@ Edits inside upstream files are marked with a `[crm]` comment.
 | 2026-10-31 | `public/manifest.json` | `name`/`short_name`/`description` rebranded the same way. Marked `[crm]`. | What "Add to Home Screen" actually shows. | P3-12 |
 | 2026-10-31 | `src/main.tsx` | Registers `public/sw.js` on load, guarded by `'serviceWorker' in navigator`. Marked `[crm]`. | Installability. No push subscription is ever requested here -- see the file's own header and `public/sw.js`'s. | P3-12 |
 | 2026-10-31 | `src/supabase/db_types.ts` | Regenerated: the three new internal P3-12 functions. | Types. | P3-12 |
+| 2026-10-31 | `src/routes/_auth/contacts/$addressId.tsx` | New `ContactConsent` section rendered below `ContactActivity`, gated `contacts.edit`. Marked `[crm]`. | Entry point for the consent ledger's per-contact history + manual record action. | P4-01 |
+| 2026-10-31 | `src/queries/queryKeys.ts` | New `crm.contactConsentHistory` key builder. Marked `[crm]`. | Cache keys. | P4-01 |
+| 2026-10-31 | `public/locales/en.json` / `hi.json` | 10 new string pairs (both now 928 keys, parity maintained). | New UI text for the consent history list and the manual "record consent" form. | P4-01 |
+| 2026-10-31 | `src/supabase/db_types.ts` | Regenerated: `crm.record_import_attestation`, `crm.set_contact_consent`'s new signature. | Types. | P4-01 |

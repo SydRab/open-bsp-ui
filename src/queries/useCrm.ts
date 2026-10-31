@@ -2283,12 +2283,106 @@ export function useImportContacts() {
         Array.from({ length: Math.min(CONCURRENCY, rows.length) }, worker),
       );
 
+      // [crm] P4-01: a durable record of this run's attestation -- one
+      // audit entry per import, not per row (the attestation covers the
+      // whole file, same as the checkbox itself gates the whole import).
+      await crm()
+        .rpc("record_import_attestation", {
+          p_organization_id: orgId,
+          p_row_count: rows.length,
+          p_marked_opted_in_count: rows.filter((r) => r.mark_opted_in).length,
+        })
+        .throwOnError();
+
       return results.sort((a, b) => a.index - b.index);
     },
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["crm"] });
       void queryClient.invalidateQueries({
         queryKey: queryKeys.contacts.all(orgId),
+      });
+    },
+  });
+}
+
+// [crm] P4-01: consent history (direct table read -- crm.contacts_consent's
+// own RLS already lets any org member read their org's rows, P2-05, no new
+// function needed for this half) and the manual "record consent" action
+// (crm.set_contact_consent's first caller outside CSV import).
+export type ConsentEvent = {
+  id: string;
+  status: string;
+  source: string;
+  note: string | null;
+  created_at: string;
+};
+
+export function useContactConsentHistory(
+  organizationAddress: string | null | undefined,
+  service: string | null | undefined,
+  address: string | null | undefined,
+) {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useQuery({
+    queryKey: queryKeys.crm.contactConsentHistory(
+      orgId,
+      organizationAddress ?? "",
+      service ?? "",
+      address ?? "",
+    ),
+    queryFn: async () =>
+      await crm()
+        .from("contacts_consent")
+        .select("id, status, source, note, created_at")
+        .eq("organization_id", orgId!)
+        .eq("organization_address", organizationAddress!)
+        .eq("service", service as Database["public"]["Enums"]["service"])
+        .eq("address", address!)
+        .order("seq", { ascending: false })
+        .throwOnError(),
+    enabled: !!orgId && !!organizationAddress && !!service && !!address,
+    select: (data) => data.data as ConsentEvent[],
+  });
+}
+
+export function useSetContactConsent() {
+  const queryClient = useQueryClient();
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useMutation({
+    mutationFn: async ({
+      organizationAddress,
+      service,
+      address,
+      status,
+      note,
+    }: {
+      organizationAddress: string;
+      service: Database["public"]["Enums"]["service"];
+      address: string;
+      status: "opted_in" | "opted_out";
+      note?: string;
+    }) =>
+      await crm()
+        .rpc("set_contact_consent", {
+          p_organization_id: orgId!,
+          p_organization_address: organizationAddress,
+          p_service: service,
+          p_address: address,
+          p_status: status,
+          p_source: "admin",
+          p_note: note || undefined,
+        })
+        .throwOnError(),
+    onSuccess: (_data, { organizationAddress, service, address }) => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.contactConsentHistory(
+          orgId,
+          organizationAddress,
+          service,
+          address,
+        ),
       });
     },
   });

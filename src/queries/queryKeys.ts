@@ -120,6 +120,21 @@ export const queryKeys = {
     // [crm] P3-11a
     leadIdForContact: (orgId: NullableId, contactId: NullableId) =>
       ["crm", orgId, "lead_id_for_contact", contactId] as const,
+    // [crm] P4-01
+    contactConsentHistory: (
+      orgId: NullableId,
+      organizationAddress: string,
+      service: string,
+      address: string,
+    ) =>
+      [
+        "crm",
+        orgId,
+        "contact_consent_history",
+        organizationAddress,
+        service,
+        address,
+      ] as const,
     disclaimerTemplates: (orgId: NullableId) =>
       ["crm", orgId, "disclaimer_templates"] as const,
     features: (orgId: NullableId) => ["crm", orgId, "features"] as const,
