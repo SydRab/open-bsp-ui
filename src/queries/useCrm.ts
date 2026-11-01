@@ -2625,3 +2625,223 @@ export function useSegmentContacts(
     enabled: !!segmentId,
   });
 }
+
+// [crm] P4-04: campaigns. Ties a crm.templates row to a crm.segments
+// audience and a variable mapping. P4-06 (fan-out) doesn't exist yet, so
+// a campaign only ever reaches 'draft' or 'scheduled' here -- the one real
+// send is useSendTestCampaignMessage, to the caller's own connected
+// number.
+export type CampaignVariableMapping = {
+  component: "header" | "body";
+  index: number;
+  type: "fixed" | "field";
+  value: string;
+};
+
+export type Campaign = {
+  id: string;
+  name: string;
+  organizationAddress: string;
+  templateName: string;
+  templateLanguage: string;
+  segmentId: string;
+  variableMapping: CampaignVariableMapping[];
+  status: "draft" | "scheduled";
+  scheduledAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+/** The organization's campaigns, most recently created first. */
+export function useCampaigns() {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useQuery({
+    queryKey: queryKeys.crm.campaigns(orgId),
+    queryFn: async () =>
+      await crm()
+        .from("campaigns")
+        .select(
+          "id, name, organization_address, template_name, template_language, segment_id, variable_mapping, status, scheduled_at, created_at, updated_at",
+        )
+        .eq("organization_id", orgId!)
+        .order("created_at", { ascending: false })
+        .throwOnError(),
+    enabled: !!orgId,
+    select: (data): Campaign[] =>
+      data.data.map((c) => ({
+        id: c.id,
+        name: c.name,
+        organizationAddress: c.organization_address,
+        templateName: c.template_name,
+        templateLanguage: c.template_language,
+        segmentId: c.segment_id,
+        variableMapping: (c.variable_mapping ??
+          []) as unknown as CampaignVariableMapping[],
+        status: c.status as Campaign["status"],
+        scheduledAt: c.scheduled_at,
+        createdAt: c.created_at,
+        updatedAt: c.updated_at,
+      })),
+  });
+}
+
+export function useCreateCampaign() {
+  const queryClient = useQueryClient();
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useMutation({
+    mutationFn: async (c: {
+      name: string;
+      organizationAddress: string;
+      templateName: string;
+      templateLanguage: string;
+      segmentId: string;
+      variableMapping: CampaignVariableMapping[];
+    }) => {
+      if (!orgId) throw new Error("No active organization");
+      const { data } = await crm()
+        .rpc("create_campaign", {
+          p_organization_id: orgId,
+          p_name: c.name,
+          p_organization_address: c.organizationAddress,
+          p_template_name: c.templateName,
+          p_template_language: c.templateLanguage,
+          p_segment_id: c.segmentId,
+          p_variable_mapping: c.variableMapping as unknown as Json,
+        })
+        .throwOnError();
+      return data as string;
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.campaigns(orgId),
+      });
+    },
+  });
+}
+
+export function useUpdateCampaign() {
+  const queryClient = useQueryClient();
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useMutation({
+    mutationFn: async (c: {
+      id: string;
+      name: string;
+      segmentId: string;
+      variableMapping: CampaignVariableMapping[];
+    }) =>
+      await crm()
+        .rpc("update_campaign", {
+          p_campaign_id: c.id,
+          p_name: c.name,
+          p_segment_id: c.segmentId,
+          p_variable_mapping: c.variableMapping as unknown as Json,
+        })
+        .throwOnError(),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.campaigns(orgId),
+      });
+    },
+  });
+}
+
+export function useDeleteCampaign() {
+  const queryClient = useQueryClient();
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useMutation({
+    mutationFn: async (campaignId: string) =>
+      await crm()
+        .rpc("delete_campaign", { p_campaign_id: campaignId })
+        .throwOnError(),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.campaigns(orgId),
+      });
+    },
+  });
+}
+
+/** p_local_date/p_local_time are wall-clock in the org's own timezone --
+ * converted server-side (crm.schedule_campaign), same pattern trial
+ * booking (P3-08) uses. */
+export function useScheduleCampaign() {
+  const queryClient = useQueryClient();
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useMutation({
+    mutationFn: async (c: {
+      id: string;
+      localDate: string;
+      localTime: string;
+    }) =>
+      await crm()
+        .rpc("schedule_campaign", {
+          p_campaign_id: c.id,
+          p_local_date: c.localDate,
+          p_local_time: c.localTime,
+        })
+        .throwOnError(),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.campaigns(orgId),
+      });
+    },
+  });
+}
+
+export function useUnscheduleCampaign() {
+  const queryClient = useQueryClient();
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useMutation({
+    mutationFn: async (campaignId: string) =>
+      await crm()
+        .rpc("unschedule_campaign", { p_campaign_id: campaignId })
+        .throwOnError(),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.campaigns(orgId),
+      });
+    },
+  });
+}
+
+export type CampaignCostEstimate = {
+  audience_count: number;
+  opted_in_count: number;
+  rate: number | null;
+  currency: string;
+  estimated_total: number | null;
+};
+
+export function useEstimateCampaignCost(campaignId: string | undefined) {
+  return useQuery({
+    queryKey: queryKeys.crm.campaignCostEstimate(campaignId),
+    queryFn: async () => {
+      const { data } = await crm()
+        .rpc("estimate_campaign_cost", { p_campaign_id: campaignId! })
+        .throwOnError();
+      return (data[0] ?? null) as CampaignCostEstimate | null;
+    },
+    enabled: !!campaignId,
+  });
+}
+
+/** Sends ONE real WhatsApp template message to the caller's own connected
+ * number (crm.member_roles.whatsapp_address, P3-07d) -- the only real send
+ * this phase can do, through the exact same compliance-gated path every
+ * other send uses. */
+export function useSendTestCampaignMessage() {
+  return useMutation({
+    mutationFn: async (campaignId: string) => {
+      const { data } = await crm()
+        .rpc("send_test_campaign_message", { p_campaign_id: campaignId })
+        .throwOnError();
+      return data as string;
+    },
+  });
+}

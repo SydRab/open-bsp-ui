@@ -212,6 +212,10 @@ export const queryKeys = {
       ["crm", "segment_members", segmentId] as const,
     segmentPreviewCount: (orgId: NullableId, criteria: unknown) =>
       ["crm", orgId, "segment_preview_count", criteria] as const,
+    // [crm] P4-04
+    campaigns: (orgId: NullableId) => ["crm", orgId, "campaigns"] as const,
+    campaignCostEstimate: (campaignId: NullableId) =>
+      ["crm", "campaign_cost_estimate", campaignId] as const,
   },
   // [crm] Super-admin console (P1-10) — platform-wide, not scoped to the
   // active org, so no orgId prefix (except tenant-specific lookups).

@@ -18,6 +18,7 @@ import {
   Workflow,
   Target,
   ListFilter,
+  Megaphone,
 } from "lucide-react";
 import { useMyPermissions } from "@/queries/useCrm";
 
@@ -168,6 +169,23 @@ function SettingsIndex() {
               onClick={() =>
                 navigate({
                   to: "/settings/segments",
+                  hash: (prevHash) => prevHash!,
+                })
+              }
+            />
+          )}
+          {/* [crm] Campaigns: template + segment + schedule drafts (P4-04) */}
+          {can("broadcasts.create") && (
+            <SectionItem
+              title={t("Campaigns")}
+              aside={
+                <div className="p-[8px]">
+                  <Megaphone className="w-[24px] h-[24px] text-muted-foreground" />
+                </div>
+              }
+              onClick={() =>
+                navigate({
+                  to: "/settings/campaigns",
                   hash: (prevHash) => prevHash!,
                 })
               }

@@ -56,6 +56,7 @@ import { Route as AuthSettingsMembersIndexRouteImport } from './routes/_auth/set
 import { Route as AuthSettingsFieldsIndexRouteImport } from './routes/_auth/settings/fields/index'
 import { Route as AuthSettingsDisclaimerIndexRouteImport } from './routes/_auth/settings/disclaimer/index'
 import { Route as AuthSettingsConversionsIndexRouteImport } from './routes/_auth/settings/conversions/index'
+import { Route as AuthSettingsCampaignsIndexRouteImport } from './routes/_auth/settings/campaigns/index'
 import { Route as AuthSettingsApiKeysIndexRouteImport } from './routes/_auth/settings/api-keys/index'
 import { Route as AuthSettingsActivityIndexRouteImport } from './routes/_auth/settings/activity/index'
 import { Route as AuthIntegrationsWhatsappIndexRouteImport } from './routes/_auth/integrations/whatsapp/index'
@@ -71,6 +72,8 @@ import { Route as AuthSettingsMembersNewRouteImport } from './routes/_auth/setti
 import { Route as AuthSettingsMembersMemberIdRouteImport } from './routes/_auth/settings/members/$memberId'
 import { Route as AuthSettingsFieldsNewRouteImport } from './routes/_auth/settings/fields/new'
 import { Route as AuthSettingsFieldsFieldIdRouteImport } from './routes/_auth/settings/fields/$fieldId'
+import { Route as AuthSettingsCampaignsNewRouteImport } from './routes/_auth/settings/campaigns/new'
+import { Route as AuthSettingsCampaignsCampaignIdRouteImport } from './routes/_auth/settings/campaigns/$campaignId'
 import { Route as AuthSettingsApiKeysNewRouteImport } from './routes/_auth/settings/api-keys/new'
 import { Route as AuthSettingsApiKeysApiKeyIdRouteImport } from './routes/_auth/settings/api-keys/$apiKeyId'
 import { Route as AuthIntegrationsWhatsappNewRouteImport } from './routes/_auth/integrations/whatsapp/new'
@@ -334,6 +337,12 @@ const AuthSettingsConversionsIndexRoute =
     path: '/settings/conversions/',
     getParentRoute: () => AuthRoute,
   } as any)
+const AuthSettingsCampaignsIndexRoute =
+  AuthSettingsCampaignsIndexRouteImport.update({
+    id: '/settings/campaigns/',
+    path: '/settings/campaigns/',
+    getParentRoute: () => AuthRoute,
+  } as any)
 const AuthSettingsApiKeysIndexRoute =
   AuthSettingsApiKeysIndexRouteImport.update({
     id: '/settings/api-keys/',
@@ -417,6 +426,18 @@ const AuthSettingsFieldsFieldIdRoute =
   AuthSettingsFieldsFieldIdRouteImport.update({
     id: '/settings/fields/$fieldId',
     path: '/settings/fields/$fieldId',
+    getParentRoute: () => AuthRoute,
+  } as any)
+const AuthSettingsCampaignsNewRoute =
+  AuthSettingsCampaignsNewRouteImport.update({
+    id: '/settings/campaigns/new',
+    path: '/settings/campaigns/new',
+    getParentRoute: () => AuthRoute,
+  } as any)
+const AuthSettingsCampaignsCampaignIdRoute =
+  AuthSettingsCampaignsCampaignIdRouteImport.update({
+    id: '/settings/campaigns/$campaignId',
+    path: '/settings/campaigns/$campaignId',
     getParentRoute: () => AuthRoute,
   } as any)
 const AuthSettingsApiKeysNewRoute = AuthSettingsApiKeysNewRouteImport.update({
@@ -567,6 +588,8 @@ export interface FileRoutesByFullPath {
   '/integrations/whatsapp/new': typeof AuthIntegrationsWhatsappNewRoute
   '/settings/api-keys/$apiKeyId': typeof AuthSettingsApiKeysApiKeyIdRoute
   '/settings/api-keys/new': typeof AuthSettingsApiKeysNewRoute
+  '/settings/campaigns/$campaignId': typeof AuthSettingsCampaignsCampaignIdRoute
+  '/settings/campaigns/new': typeof AuthSettingsCampaignsNewRoute
   '/settings/fields/$fieldId': typeof AuthSettingsFieldsFieldIdRoute
   '/settings/fields/new': typeof AuthSettingsFieldsNewRoute
   '/settings/members/$memberId': typeof AuthSettingsMembersMemberIdRoute
@@ -582,6 +605,7 @@ export interface FileRoutesByFullPath {
   '/integrations/whatsapp': typeof AuthIntegrationsWhatsappIndexRoute
   '/settings/activity': typeof AuthSettingsActivityIndexRoute
   '/settings/api-keys': typeof AuthSettingsApiKeysIndexRoute
+  '/settings/campaigns': typeof AuthSettingsCampaignsIndexRoute
   '/settings/conversions': typeof AuthSettingsConversionsIndexRoute
   '/settings/disclaimer': typeof AuthSettingsDisclaimerIndexRoute
   '/settings/fields': typeof AuthSettingsFieldsIndexRoute
@@ -647,6 +671,8 @@ export interface FileRoutesByTo {
   '/integrations/whatsapp/new': typeof AuthIntegrationsWhatsappNewRoute
   '/settings/api-keys/$apiKeyId': typeof AuthSettingsApiKeysApiKeyIdRoute
   '/settings/api-keys/new': typeof AuthSettingsApiKeysNewRoute
+  '/settings/campaigns/$campaignId': typeof AuthSettingsCampaignsCampaignIdRoute
+  '/settings/campaigns/new': typeof AuthSettingsCampaignsNewRoute
   '/settings/fields/$fieldId': typeof AuthSettingsFieldsFieldIdRoute
   '/settings/fields/new': typeof AuthSettingsFieldsNewRoute
   '/settings/members/$memberId': typeof AuthSettingsMembersMemberIdRoute
@@ -662,6 +688,7 @@ export interface FileRoutesByTo {
   '/integrations/whatsapp': typeof AuthIntegrationsWhatsappIndexRoute
   '/settings/activity': typeof AuthSettingsActivityIndexRoute
   '/settings/api-keys': typeof AuthSettingsApiKeysIndexRoute
+  '/settings/campaigns': typeof AuthSettingsCampaignsIndexRoute
   '/settings/conversions': typeof AuthSettingsConversionsIndexRoute
   '/settings/disclaimer': typeof AuthSettingsDisclaimerIndexRoute
   '/settings/fields': typeof AuthSettingsFieldsIndexRoute
@@ -730,6 +757,8 @@ export interface FileRoutesById {
   '/_auth/integrations/whatsapp/new': typeof AuthIntegrationsWhatsappNewRoute
   '/_auth/settings/api-keys/$apiKeyId': typeof AuthSettingsApiKeysApiKeyIdRoute
   '/_auth/settings/api-keys/new': typeof AuthSettingsApiKeysNewRoute
+  '/_auth/settings/campaigns/$campaignId': typeof AuthSettingsCampaignsCampaignIdRoute
+  '/_auth/settings/campaigns/new': typeof AuthSettingsCampaignsNewRoute
   '/_auth/settings/fields/$fieldId': typeof AuthSettingsFieldsFieldIdRoute
   '/_auth/settings/fields/new': typeof AuthSettingsFieldsNewRoute
   '/_auth/settings/members/$memberId': typeof AuthSettingsMembersMemberIdRoute
@@ -745,6 +774,7 @@ export interface FileRoutesById {
   '/_auth/integrations/whatsapp/': typeof AuthIntegrationsWhatsappIndexRoute
   '/_auth/settings/activity/': typeof AuthSettingsActivityIndexRoute
   '/_auth/settings/api-keys/': typeof AuthSettingsApiKeysIndexRoute
+  '/_auth/settings/campaigns/': typeof AuthSettingsCampaignsIndexRoute
   '/_auth/settings/conversions/': typeof AuthSettingsConversionsIndexRoute
   '/_auth/settings/disclaimer/': typeof AuthSettingsDisclaimerIndexRoute
   '/_auth/settings/fields/': typeof AuthSettingsFieldsIndexRoute
@@ -813,6 +843,8 @@ export interface FileRouteTypes {
     | '/integrations/whatsapp/new'
     | '/settings/api-keys/$apiKeyId'
     | '/settings/api-keys/new'
+    | '/settings/campaigns/$campaignId'
+    | '/settings/campaigns/new'
     | '/settings/fields/$fieldId'
     | '/settings/fields/new'
     | '/settings/members/$memberId'
@@ -828,6 +860,7 @@ export interface FileRouteTypes {
     | '/integrations/whatsapp'
     | '/settings/activity'
     | '/settings/api-keys'
+    | '/settings/campaigns'
     | '/settings/conversions'
     | '/settings/disclaimer'
     | '/settings/fields'
@@ -893,6 +926,8 @@ export interface FileRouteTypes {
     | '/integrations/whatsapp/new'
     | '/settings/api-keys/$apiKeyId'
     | '/settings/api-keys/new'
+    | '/settings/campaigns/$campaignId'
+    | '/settings/campaigns/new'
     | '/settings/fields/$fieldId'
     | '/settings/fields/new'
     | '/settings/members/$memberId'
@@ -908,6 +943,7 @@ export interface FileRouteTypes {
     | '/integrations/whatsapp'
     | '/settings/activity'
     | '/settings/api-keys'
+    | '/settings/campaigns'
     | '/settings/conversions'
     | '/settings/disclaimer'
     | '/settings/fields'
@@ -975,6 +1011,8 @@ export interface FileRouteTypes {
     | '/_auth/integrations/whatsapp/new'
     | '/_auth/settings/api-keys/$apiKeyId'
     | '/_auth/settings/api-keys/new'
+    | '/_auth/settings/campaigns/$campaignId'
+    | '/_auth/settings/campaigns/new'
     | '/_auth/settings/fields/$fieldId'
     | '/_auth/settings/fields/new'
     | '/_auth/settings/members/$memberId'
@@ -990,6 +1028,7 @@ export interface FileRouteTypes {
     | '/_auth/integrations/whatsapp/'
     | '/_auth/settings/activity/'
     | '/_auth/settings/api-keys/'
+    | '/_auth/settings/campaigns/'
     | '/_auth/settings/conversions/'
     | '/_auth/settings/disclaimer/'
     | '/_auth/settings/fields/'
@@ -1360,6 +1399,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSettingsConversionsIndexRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/settings/campaigns/': {
+      id: '/_auth/settings/campaigns/'
+      path: '/settings/campaigns'
+      fullPath: '/settings/campaigns'
+      preLoaderRoute: typeof AuthSettingsCampaignsIndexRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/settings/api-keys/': {
       id: '/_auth/settings/api-keys/'
       path: '/settings/api-keys'
@@ -1463,6 +1509,20 @@ declare module '@tanstack/react-router' {
       path: '/settings/fields/$fieldId'
       fullPath: '/settings/fields/$fieldId'
       preLoaderRoute: typeof AuthSettingsFieldsFieldIdRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/settings/campaigns/new': {
+      id: '/_auth/settings/campaigns/new'
+      path: '/settings/campaigns/new'
+      fullPath: '/settings/campaigns/new'
+      preLoaderRoute: typeof AuthSettingsCampaignsNewRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/settings/campaigns/$campaignId': {
+      id: '/_auth/settings/campaigns/$campaignId'
+      path: '/settings/campaigns/$campaignId'
+      fullPath: '/settings/campaigns/$campaignId'
+      preLoaderRoute: typeof AuthSettingsCampaignsCampaignIdRouteImport
       parentRoute: typeof AuthRoute
     }
     '/_auth/settings/api-keys/new': {
@@ -1641,6 +1701,8 @@ interface AuthRouteChildren {
   AuthIntegrationsWhatsappNewRoute: typeof AuthIntegrationsWhatsappNewRoute
   AuthSettingsApiKeysApiKeyIdRoute: typeof AuthSettingsApiKeysApiKeyIdRoute
   AuthSettingsApiKeysNewRoute: typeof AuthSettingsApiKeysNewRoute
+  AuthSettingsCampaignsCampaignIdRoute: typeof AuthSettingsCampaignsCampaignIdRoute
+  AuthSettingsCampaignsNewRoute: typeof AuthSettingsCampaignsNewRoute
   AuthSettingsFieldsFieldIdRoute: typeof AuthSettingsFieldsFieldIdRoute
   AuthSettingsFieldsNewRoute: typeof AuthSettingsFieldsNewRoute
   AuthSettingsMembersMemberIdRoute: typeof AuthSettingsMembersMemberIdRoute
@@ -1656,6 +1718,7 @@ interface AuthRouteChildren {
   AuthIntegrationsWhatsappIndexRoute: typeof AuthIntegrationsWhatsappIndexRoute
   AuthSettingsActivityIndexRoute: typeof AuthSettingsActivityIndexRoute
   AuthSettingsApiKeysIndexRoute: typeof AuthSettingsApiKeysIndexRoute
+  AuthSettingsCampaignsIndexRoute: typeof AuthSettingsCampaignsIndexRoute
   AuthSettingsConversionsIndexRoute: typeof AuthSettingsConversionsIndexRoute
   AuthSettingsDisclaimerIndexRoute: typeof AuthSettingsDisclaimerIndexRoute
   AuthSettingsFieldsIndexRoute: typeof AuthSettingsFieldsIndexRoute
@@ -1711,6 +1774,8 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthIntegrationsWhatsappNewRoute: AuthIntegrationsWhatsappNewRoute,
   AuthSettingsApiKeysApiKeyIdRoute: AuthSettingsApiKeysApiKeyIdRoute,
   AuthSettingsApiKeysNewRoute: AuthSettingsApiKeysNewRoute,
+  AuthSettingsCampaignsCampaignIdRoute: AuthSettingsCampaignsCampaignIdRoute,
+  AuthSettingsCampaignsNewRoute: AuthSettingsCampaignsNewRoute,
   AuthSettingsFieldsFieldIdRoute: AuthSettingsFieldsFieldIdRoute,
   AuthSettingsFieldsNewRoute: AuthSettingsFieldsNewRoute,
   AuthSettingsMembersMemberIdRoute: AuthSettingsMembersMemberIdRoute,
@@ -1726,6 +1791,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthIntegrationsWhatsappIndexRoute: AuthIntegrationsWhatsappIndexRoute,
   AuthSettingsActivityIndexRoute: AuthSettingsActivityIndexRoute,
   AuthSettingsApiKeysIndexRoute: AuthSettingsApiKeysIndexRoute,
+  AuthSettingsCampaignsIndexRoute: AuthSettingsCampaignsIndexRoute,
   AuthSettingsConversionsIndexRoute: AuthSettingsConversionsIndexRoute,
   AuthSettingsDisclaimerIndexRoute: AuthSettingsDisclaimerIndexRoute,
   AuthSettingsFieldsIndexRoute: AuthSettingsFieldsIndexRoute,
