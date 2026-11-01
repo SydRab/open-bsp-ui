@@ -17,6 +17,7 @@ import {
   Fingerprint,
   Workflow,
   Target,
+  ListFilter,
 } from "lucide-react";
 import { useMyPermissions } from "@/queries/useCrm";
 
@@ -150,6 +151,23 @@ function SettingsIndex() {
               onClick={() =>
                 navigate({
                   to: "/settings/pipeline",
+                  hash: (prevHash) => prevHash!,
+                })
+              }
+            />
+          )}
+          {/* [crm] Segments: saved contact filters for marketing (P4-03) */}
+          {can("broadcasts.create") && (
+            <SectionItem
+              title={t("Segments")}
+              aside={
+                <div className="p-[8px]">
+                  <ListFilter className="w-[24px] h-[24px] text-muted-foreground" />
+                </div>
+              }
+              onClick={() =>
+                navigate({
+                  to: "/settings/segments",
                   hash: (prevHash) => prevHash!,
                 })
               }

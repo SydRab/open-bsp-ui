@@ -45,6 +45,7 @@ import { Route as AuthAdminAuditRouteImport } from './routes/_auth/admin/audit'
 import { Route as AuthAdminAdminsRouteImport } from './routes/_auth/admin/admins'
 import { Route as AuthAdminOrgIdRouteImport } from './routes/_auth/admin/$orgId'
 import { Route as AuthSettingsWebhooksIndexRouteImport } from './routes/_auth/settings/webhooks/index'
+import { Route as AuthSettingsSegmentsIndexRouteImport } from './routes/_auth/settings/segments/index'
 import { Route as AuthSettingsSecurityIndexRouteImport } from './routes/_auth/settings/security/index'
 import { Route as AuthSettingsRulesIndexRouteImport } from './routes/_auth/settings/rules/index'
 import { Route as AuthSettingsRolesIndexRouteImport } from './routes/_auth/settings/roles/index'
@@ -62,6 +63,8 @@ import { Route as AuthIntegrationsWhatsappWebIndexRouteImport } from './routes/_
 import { Route as AuthIntegrationsInstagramIndexRouteImport } from './routes/_auth/integrations/instagram/index'
 import { Route as AuthSettingsWebhooksNewRouteImport } from './routes/_auth/settings/webhooks/new'
 import { Route as AuthSettingsWebhooksWebhookIdRouteImport } from './routes/_auth/settings/webhooks/$webhookId'
+import { Route as AuthSettingsSegmentsNewRouteImport } from './routes/_auth/settings/segments/new'
+import { Route as AuthSettingsSegmentsSegmentIdRouteImport } from './routes/_auth/settings/segments/$segmentId'
 import { Route as AuthSettingsRolesRoleIdRouteImport } from './routes/_auth/settings/roles/$roleId'
 import { Route as AuthSettingsOrganizationNewRouteImport } from './routes/_auth/settings/organization/new'
 import { Route as AuthSettingsMembersNewRouteImport } from './routes/_auth/settings/members/new'
@@ -269,6 +272,12 @@ const AuthSettingsWebhooksIndexRoute =
     path: '/settings/webhooks/',
     getParentRoute: () => AuthRoute,
   } as any)
+const AuthSettingsSegmentsIndexRoute =
+  AuthSettingsSegmentsIndexRouteImport.update({
+    id: '/settings/segments/',
+    path: '/settings/segments/',
+    getParentRoute: () => AuthRoute,
+  } as any)
 const AuthSettingsSecurityIndexRoute =
   AuthSettingsSecurityIndexRouteImport.update({
     id: '/settings/security/',
@@ -364,6 +373,17 @@ const AuthSettingsWebhooksWebhookIdRoute =
   AuthSettingsWebhooksWebhookIdRouteImport.update({
     id: '/settings/webhooks/$webhookId',
     path: '/settings/webhooks/$webhookId',
+    getParentRoute: () => AuthRoute,
+  } as any)
+const AuthSettingsSegmentsNewRoute = AuthSettingsSegmentsNewRouteImport.update({
+  id: '/settings/segments/new',
+  path: '/settings/segments/new',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthSettingsSegmentsSegmentIdRoute =
+  AuthSettingsSegmentsSegmentIdRouteImport.update({
+    id: '/settings/segments/$segmentId',
+    path: '/settings/segments/$segmentId',
     getParentRoute: () => AuthRoute,
   } as any)
 const AuthSettingsRolesRoleIdRoute = AuthSettingsRolesRoleIdRouteImport.update({
@@ -553,6 +573,8 @@ export interface FileRoutesByFullPath {
   '/settings/members/new': typeof AuthSettingsMembersNewRoute
   '/settings/organization/new': typeof AuthSettingsOrganizationNewRoute
   '/settings/roles/$roleId': typeof AuthSettingsRolesRoleIdRoute
+  '/settings/segments/$segmentId': typeof AuthSettingsSegmentsSegmentIdRoute
+  '/settings/segments/new': typeof AuthSettingsSegmentsNewRoute
   '/settings/webhooks/$webhookId': typeof AuthSettingsWebhooksWebhookIdRoute
   '/settings/webhooks/new': typeof AuthSettingsWebhooksNewRoute
   '/integrations/instagram': typeof AuthIntegrationsInstagramIndexRoute
@@ -570,6 +592,7 @@ export interface FileRoutesByFullPath {
   '/settings/roles': typeof AuthSettingsRolesIndexRoute
   '/settings/rules': typeof AuthSettingsRulesIndexRoute
   '/settings/security': typeof AuthSettingsSecurityIndexRoute
+  '/settings/segments': typeof AuthSettingsSegmentsIndexRoute
   '/settings/webhooks': typeof AuthSettingsWebhooksIndexRoute
   '/integrations/instagram/onboarding/$tokenId': typeof AuthIntegrationsInstagramOnboardingTokenIdRoute
   '/integrations/instagram/onboarding/new': typeof AuthIntegrationsInstagramOnboardingNewRoute
@@ -630,6 +653,8 @@ export interface FileRoutesByTo {
   '/settings/members/new': typeof AuthSettingsMembersNewRoute
   '/settings/organization/new': typeof AuthSettingsOrganizationNewRoute
   '/settings/roles/$roleId': typeof AuthSettingsRolesRoleIdRoute
+  '/settings/segments/$segmentId': typeof AuthSettingsSegmentsSegmentIdRoute
+  '/settings/segments/new': typeof AuthSettingsSegmentsNewRoute
   '/settings/webhooks/$webhookId': typeof AuthSettingsWebhooksWebhookIdRoute
   '/settings/webhooks/new': typeof AuthSettingsWebhooksNewRoute
   '/integrations/instagram': typeof AuthIntegrationsInstagramIndexRoute
@@ -647,6 +672,7 @@ export interface FileRoutesByTo {
   '/settings/roles': typeof AuthSettingsRolesIndexRoute
   '/settings/rules': typeof AuthSettingsRulesIndexRoute
   '/settings/security': typeof AuthSettingsSecurityIndexRoute
+  '/settings/segments': typeof AuthSettingsSegmentsIndexRoute
   '/settings/webhooks': typeof AuthSettingsWebhooksIndexRoute
   '/integrations/instagram/onboarding/$tokenId': typeof AuthIntegrationsInstagramOnboardingTokenIdRoute
   '/integrations/instagram/onboarding/new': typeof AuthIntegrationsInstagramOnboardingNewRoute
@@ -710,6 +736,8 @@ export interface FileRoutesById {
   '/_auth/settings/members/new': typeof AuthSettingsMembersNewRoute
   '/_auth/settings/organization/new': typeof AuthSettingsOrganizationNewRoute
   '/_auth/settings/roles/$roleId': typeof AuthSettingsRolesRoleIdRoute
+  '/_auth/settings/segments/$segmentId': typeof AuthSettingsSegmentsSegmentIdRoute
+  '/_auth/settings/segments/new': typeof AuthSettingsSegmentsNewRoute
   '/_auth/settings/webhooks/$webhookId': typeof AuthSettingsWebhooksWebhookIdRoute
   '/_auth/settings/webhooks/new': typeof AuthSettingsWebhooksNewRoute
   '/_auth/integrations/instagram/': typeof AuthIntegrationsInstagramIndexRoute
@@ -727,6 +755,7 @@ export interface FileRoutesById {
   '/_auth/settings/roles/': typeof AuthSettingsRolesIndexRoute
   '/_auth/settings/rules/': typeof AuthSettingsRulesIndexRoute
   '/_auth/settings/security/': typeof AuthSettingsSecurityIndexRoute
+  '/_auth/settings/segments/': typeof AuthSettingsSegmentsIndexRoute
   '/_auth/settings/webhooks/': typeof AuthSettingsWebhooksIndexRoute
   '/_auth/integrations/instagram/onboarding/$tokenId': typeof AuthIntegrationsInstagramOnboardingTokenIdRoute
   '/_auth/integrations/instagram/onboarding/new': typeof AuthIntegrationsInstagramOnboardingNewRoute
@@ -790,6 +819,8 @@ export interface FileRouteTypes {
     | '/settings/members/new'
     | '/settings/organization/new'
     | '/settings/roles/$roleId'
+    | '/settings/segments/$segmentId'
+    | '/settings/segments/new'
     | '/settings/webhooks/$webhookId'
     | '/settings/webhooks/new'
     | '/integrations/instagram'
@@ -807,6 +838,7 @@ export interface FileRouteTypes {
     | '/settings/roles'
     | '/settings/rules'
     | '/settings/security'
+    | '/settings/segments'
     | '/settings/webhooks'
     | '/integrations/instagram/onboarding/$tokenId'
     | '/integrations/instagram/onboarding/new'
@@ -867,6 +899,8 @@ export interface FileRouteTypes {
     | '/settings/members/new'
     | '/settings/organization/new'
     | '/settings/roles/$roleId'
+    | '/settings/segments/$segmentId'
+    | '/settings/segments/new'
     | '/settings/webhooks/$webhookId'
     | '/settings/webhooks/new'
     | '/integrations/instagram'
@@ -884,6 +918,7 @@ export interface FileRouteTypes {
     | '/settings/roles'
     | '/settings/rules'
     | '/settings/security'
+    | '/settings/segments'
     | '/settings/webhooks'
     | '/integrations/instagram/onboarding/$tokenId'
     | '/integrations/instagram/onboarding/new'
@@ -946,6 +981,8 @@ export interface FileRouteTypes {
     | '/_auth/settings/members/new'
     | '/_auth/settings/organization/new'
     | '/_auth/settings/roles/$roleId'
+    | '/_auth/settings/segments/$segmentId'
+    | '/_auth/settings/segments/new'
     | '/_auth/settings/webhooks/$webhookId'
     | '/_auth/settings/webhooks/new'
     | '/_auth/integrations/instagram/'
@@ -963,6 +1000,7 @@ export interface FileRouteTypes {
     | '/_auth/settings/roles/'
     | '/_auth/settings/rules/'
     | '/_auth/settings/security/'
+    | '/_auth/settings/segments/'
     | '/_auth/settings/webhooks/'
     | '/_auth/integrations/instagram/onboarding/$tokenId'
     | '/_auth/integrations/instagram/onboarding/new'
@@ -1245,6 +1283,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSettingsWebhooksIndexRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/settings/segments/': {
+      id: '/_auth/settings/segments/'
+      path: '/settings/segments'
+      fullPath: '/settings/segments'
+      preLoaderRoute: typeof AuthSettingsSegmentsIndexRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/settings/security/': {
       id: '/_auth/settings/security/'
       path: '/settings/security'
@@ -1362,6 +1407,20 @@ declare module '@tanstack/react-router' {
       path: '/settings/webhooks/$webhookId'
       fullPath: '/settings/webhooks/$webhookId'
       preLoaderRoute: typeof AuthSettingsWebhooksWebhookIdRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/settings/segments/new': {
+      id: '/_auth/settings/segments/new'
+      path: '/settings/segments/new'
+      fullPath: '/settings/segments/new'
+      preLoaderRoute: typeof AuthSettingsSegmentsNewRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/settings/segments/$segmentId': {
+      id: '/_auth/settings/segments/$segmentId'
+      path: '/settings/segments/$segmentId'
+      fullPath: '/settings/segments/$segmentId'
+      preLoaderRoute: typeof AuthSettingsSegmentsSegmentIdRouteImport
       parentRoute: typeof AuthRoute
     }
     '/_auth/settings/roles/$roleId': {
@@ -1588,6 +1647,8 @@ interface AuthRouteChildren {
   AuthSettingsMembersNewRoute: typeof AuthSettingsMembersNewRoute
   AuthSettingsOrganizationNewRoute: typeof AuthSettingsOrganizationNewRoute
   AuthSettingsRolesRoleIdRoute: typeof AuthSettingsRolesRoleIdRoute
+  AuthSettingsSegmentsSegmentIdRoute: typeof AuthSettingsSegmentsSegmentIdRoute
+  AuthSettingsSegmentsNewRoute: typeof AuthSettingsSegmentsNewRoute
   AuthSettingsWebhooksWebhookIdRoute: typeof AuthSettingsWebhooksWebhookIdRoute
   AuthSettingsWebhooksNewRoute: typeof AuthSettingsWebhooksNewRoute
   AuthIntegrationsInstagramIndexRoute: typeof AuthIntegrationsInstagramIndexRoute
@@ -1605,6 +1666,7 @@ interface AuthRouteChildren {
   AuthSettingsRolesIndexRoute: typeof AuthSettingsRolesIndexRoute
   AuthSettingsRulesIndexRoute: typeof AuthSettingsRulesIndexRoute
   AuthSettingsSecurityIndexRoute: typeof AuthSettingsSecurityIndexRoute
+  AuthSettingsSegmentsIndexRoute: typeof AuthSettingsSegmentsIndexRoute
   AuthSettingsWebhooksIndexRoute: typeof AuthSettingsWebhooksIndexRoute
   AuthIntegrationsInstagramOnboardingTokenIdRoute: typeof AuthIntegrationsInstagramOnboardingTokenIdRoute
   AuthIntegrationsInstagramOnboardingNewRoute: typeof AuthIntegrationsInstagramOnboardingNewRoute
@@ -1655,6 +1717,8 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthSettingsMembersNewRoute: AuthSettingsMembersNewRoute,
   AuthSettingsOrganizationNewRoute: AuthSettingsOrganizationNewRoute,
   AuthSettingsRolesRoleIdRoute: AuthSettingsRolesRoleIdRoute,
+  AuthSettingsSegmentsSegmentIdRoute: AuthSettingsSegmentsSegmentIdRoute,
+  AuthSettingsSegmentsNewRoute: AuthSettingsSegmentsNewRoute,
   AuthSettingsWebhooksWebhookIdRoute: AuthSettingsWebhooksWebhookIdRoute,
   AuthSettingsWebhooksNewRoute: AuthSettingsWebhooksNewRoute,
   AuthIntegrationsInstagramIndexRoute: AuthIntegrationsInstagramIndexRoute,
@@ -1672,6 +1736,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthSettingsRolesIndexRoute: AuthSettingsRolesIndexRoute,
   AuthSettingsRulesIndexRoute: AuthSettingsRulesIndexRoute,
   AuthSettingsSecurityIndexRoute: AuthSettingsSecurityIndexRoute,
+  AuthSettingsSegmentsIndexRoute: AuthSettingsSegmentsIndexRoute,
   AuthSettingsWebhooksIndexRoute: AuthSettingsWebhooksIndexRoute,
   AuthIntegrationsInstagramOnboardingTokenIdRoute:
     AuthIntegrationsInstagramOnboardingTokenIdRoute,

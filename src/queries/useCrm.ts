@@ -2416,3 +2416,212 @@ export function useMergeContacts() {
     },
   });
 }
+
+// [crm] P4-03: segments. A saved filter over contacts -- "static" freezes
+// membership at creation/refresh, "dynamic" re-evaluates its criteria live.
+// crm.filter_contacts' condition-array shape (P1-06) grew tag/stage/
+// last_contact_days alongside custom fields; segments just save and name one.
+// Gated `broadcasts.create` end to end (crm.filter_contacts included).
+export type SegmentConditionOp =
+  | "eq"
+  | "neq"
+  | "has"
+  | "not_has"
+  | "is_empty"
+  | "is_not_empty"
+  | "lt"
+  | "lte"
+  | "gt"
+  | "gte"
+  | "contains";
+
+export type SegmentCondition = {
+  field: string;
+  op: SegmentConditionOp;
+  value?: string | number | boolean | null;
+};
+
+export type Segment = {
+  id: string;
+  name: string;
+  type: "static" | "dynamic";
+  criteria: SegmentCondition[];
+  refreshedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+/** The organization's saved segments, most recently created first. */
+export function useSegments() {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useQuery({
+    queryKey: queryKeys.crm.segments(orgId),
+    queryFn: async () =>
+      await crm()
+        .from("segments")
+        .select(
+          "id, name, type, criteria, refreshed_at, created_at, updated_at",
+        )
+        .eq("organization_id", orgId!)
+        .order("created_at", { ascending: false })
+        .throwOnError(),
+    enabled: !!orgId,
+    select: (data): Segment[] =>
+      data.data.map((s) => ({
+        id: s.id,
+        name: s.name,
+        type: s.type as Segment["type"],
+        criteria: (s.criteria ?? []) as unknown as SegmentCondition[],
+        refreshedAt: s.refreshed_at,
+        createdAt: s.created_at,
+        updatedAt: s.updated_at,
+      })),
+  });
+}
+
+/**
+ * How many contacts a filter (saved or not) matches right now, and how many
+ * of those are opted in and reachable for marketing -- both, since a segment
+ * built for a broadcast is only as useful as its sendable subset.
+ */
+export function useSegmentPreviewCount(criteria: SegmentCondition[]) {
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useQuery({
+    queryKey: queryKeys.crm.segmentPreviewCount(orgId, criteria),
+    queryFn: async () => {
+      const { data } = await crm()
+        .rpc("preview_segment_count", {
+          p_organization_id: orgId!,
+          p_criteria: criteria as unknown as Json,
+        })
+        .throwOnError();
+      return data[0] ?? { total_count: 0, opted_in_count: 0 };
+    },
+    enabled: !!orgId,
+  });
+}
+
+export function useCreateSegment() {
+  const queryClient = useQueryClient();
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useMutation({
+    mutationFn: async (s: {
+      name: string;
+      type: Segment["type"];
+      criteria: SegmentCondition[];
+    }) => {
+      if (!orgId) throw new Error("No active organization");
+      const { data } = await crm()
+        .rpc("create_segment", {
+          p_organization_id: orgId,
+          p_name: s.name,
+          p_type: s.type,
+          p_criteria: s.criteria as unknown as Json,
+        })
+        .throwOnError();
+      return data as string;
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.segments(orgId),
+      });
+    },
+  });
+}
+
+export function useUpdateSegment() {
+  const queryClient = useQueryClient();
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useMutation({
+    mutationFn: async (s: {
+      id: string;
+      name: string;
+      criteria: SegmentCondition[];
+    }) =>
+      await crm()
+        .rpc("update_segment", {
+          p_segment_id: s.id,
+          p_name: s.name,
+          p_criteria: s.criteria as unknown as Json,
+        })
+        .throwOnError(),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.segments(orgId),
+      });
+    },
+  });
+}
+
+export function useDeleteSegment() {
+  const queryClient = useQueryClient();
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useMutation({
+    mutationFn: async (segmentId: string) =>
+      await crm()
+        .rpc("delete_segment", { p_segment_id: segmentId })
+        .throwOnError(),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.segments(orgId),
+      });
+    },
+  });
+}
+
+/** Static only -- re-snapshots membership from the segment's own criteria. */
+export function useRefreshSegment() {
+  const queryClient = useQueryClient();
+  const orgId = useBoundStore((state) => state.ui.activeOrgId);
+
+  return useMutation({
+    mutationFn: async (segmentId: string) =>
+      await crm()
+        .rpc("refresh_segment", { p_segment_id: segmentId })
+        .throwOnError(),
+    onSuccess: (_data, segmentId) => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.segments(orgId),
+      });
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.crm.segmentMembers(segmentId),
+      });
+    },
+  });
+}
+
+export type SegmentContact = {
+  id: string;
+  display_name: string | null;
+  created_at: string;
+};
+
+/**
+ * A segment's current contacts -- live-evaluated for dynamic, the frozen
+ * snapshot for static. Paginated the same way filter_contacts is.
+ */
+export function useSegmentContacts(
+  segmentId: string | undefined,
+  page: number,
+  pageSize = 25,
+) {
+  return useQuery({
+    queryKey: [...queryKeys.crm.segmentMembers(segmentId), page, pageSize],
+    queryFn: async () => {
+      const { data } = await crm()
+        .rpc("get_segment_contacts", {
+          p_segment_id: segmentId!,
+          p_limit: pageSize,
+          p_offset: page * pageSize,
+        })
+        .throwOnError();
+      return data as SegmentContact[];
+    },
+    enabled: !!segmentId,
+  });
+}
