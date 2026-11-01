@@ -33,15 +33,15 @@ function ListContacts() {
       onSuccess: (data) => {
         const csv = toCsv(
           [
-            t("Nombre"),
-            t("Servicio"),
-            t("Dirección"),
-            t("Consentimiento"),
-            t("Etiquetas"),
-            t("Estado del lead"),
-            t("Etapa"),
-            t("Valor del trato"),
-            t("Creado"),
+            t("Name"),
+            t("Service"),
+            t("Address"),
+            t("Consent"),
+            t("Tags"),
+            t("Lead status"),
+            t("Stage"),
+            t("Deal value"),
+            t("Created"),
           ],
           data,
           [
@@ -80,17 +80,17 @@ function ListContacts() {
 
   return (
     <>
-      <SectionHeader title={t("Contactos")} />
+      <SectionHeader title={t("Contacts")} />
 
       <SearchBar
         value={search}
         onChange={setSearch}
-        placeholder={t("Buscar contactos")}
+        placeholder={t("Search contacts")}
       />
 
       <SectionBody>
         <SectionItem
-          title={t("Agregar contacto")}
+          title={t("Add contact")}
           aside={
             <div className="p-[8px] bg-primary/10 rounded-full">
               <Plus className="w-[24px] h-[24px] text-primary" />
@@ -106,7 +106,7 @@ function ListContacts() {
         {/* [crm] P3-11c */}
         {can("contacts.edit") && (
           <SectionItem
-            title={t("Importar CSV")}
+            title={t("Import CSV")}
             aside={
               <div className="p-[8px] bg-muted rounded-full">
                 <Upload className="w-[24px] h-[24px] text-muted-foreground" />
@@ -123,7 +123,7 @@ function ListContacts() {
         {can("contacts.export") && (
           <SectionItem
             title={
-              exportContacts.isPending ? t("Exportando...") : t("Exportar CSV")
+              exportContacts.isPending ? t("Exporting...") : t("Export CSV")
             }
             aside={
               <div className="p-[8px] bg-muted rounded-full">
@@ -136,13 +136,13 @@ function ListContacts() {
         )}
         {search && filtered.length === 0 && (
           <div className="py-[32px] text-center text-muted-foreground text-[14px]">
-            {t("Sin resultados para")} "{search}"
+            {t("No results for")} "{search}"
           </div>
         )}
         {filtered.map(({ row, name }) => (
           <SectionItem
             key={addressId(row)}
-            title={name || t("Sin nombre")}
+            title={name || t("No name")}
             description={
               row.service === "whatsapp" || row.service === "whatsapp-web"
                 ? formatPhoneNumber(row.address)

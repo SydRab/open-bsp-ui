@@ -24,7 +24,7 @@ function ListRoles() {
 
   return (
     <>
-      <SectionHeader title={t("Roles y permisos")} />
+      <SectionHeader title={t("Roles & permissions")} />
 
       <SectionBody>
         {roles?.map((role) => {
@@ -34,9 +34,9 @@ function ListRoles() {
               key={role.id}
               title={t(role.name)}
               description={
-                `${role.permissions.length} ${t("permisos")} · ${members} ${t(
-                  members === 1 ? "miembro" : "miembros",
-                )}` + (role.is_locked ? ` · ${t("siempre tiene todo")}` : "")
+                `${role.permissions.length} ${t("permissions")} · ${members} ${t(
+                  members === 1 ? "member" : "members",
+                )}` + (role.is_locked ? ` · ${t("always has everything")}` : "")
               }
               aside={
                 <div className="p-[8px]">

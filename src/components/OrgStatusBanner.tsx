@@ -25,14 +25,14 @@ export default function OrgStatusBanner() {
             {org.status === "suspended" ? (
               <>
                 <strong>{org.name}</strong>{" "}
-                {t("está suspendida. Contacta al soporte para reactivarla.")}
+                {t("is suspended. Contact support to reactivate it.")}
                 {org.suspended_reason && (
                   <span className="opacity-80"> ({org.suspended_reason})</span>
                 )}
               </>
             ) : (
               <>
-                <strong>{org.name}</strong> {t("será eliminada el")}{" "}
+                <strong>{org.name}</strong> {t("will be deleted on")}{" "}
                 {dayjs(org.purge_after).format("D MMM YYYY")}.
               </>
             )}
@@ -43,7 +43,7 @@ export default function OrgStatusBanner() {
               disabled={cancelDeletion.isPending}
               onClick={() => cancelDeletion.mutate(org.organization_id)}
             >
-              {t("Cancelar eliminación")}
+              {t("Cancel deletion")}
             </button>
           )}
         </div>

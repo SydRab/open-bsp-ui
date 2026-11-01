@@ -48,7 +48,7 @@ function InstagramAddressDetail() {
         title={
           extra?.username
             ? `@${extra.username}`
-            : extra?.name || t("Cuenta de Instagram")
+            : extra?.name || t("Instagram account")
         }
       />
 
@@ -56,13 +56,13 @@ function InstagramAddressDetail() {
         <form>
           {extra?.name && (
             <label>
-              <div className="label">{t("Nombre")}</div>
+              <div className="label">{t("Name")}</div>
               <input type="text" className="text" value={extra.name} readOnly />
             </label>
           )}
 
           <label>
-            <div className="label">{t("Usuario")}</div>
+            <div className="label">{t("User")}</div>
             <input
               type="text"
               className="text"
@@ -72,7 +72,7 @@ function InstagramAddressDetail() {
           </label>
 
           <label>
-            <div className="label">{t("ID de cuenta")}</div>
+            <div className="label">{t("Account ID")}</div>
             <input
               type="text"
               className="text"
@@ -83,7 +83,7 @@ function InstagramAddressDetail() {
 
           {extra?.token_expires_at && (
             <label>
-              <div className="label">{t("El acceso expira")}</div>
+              <div className="label">{t("Access expires")}</div>
               <input
                 type="text"
                 className="text"
@@ -94,14 +94,14 @@ function InstagramAddressDetail() {
           )}
 
           <label>
-            <div className="label">{t("Estado")}</div>
+            <div className="label">{t("Status")}</div>
             <input
               type="text"
               className="text capitalize"
               value={
                 integration.status === "connected"
-                  ? t("Conectado")
-                  : t("Desconectado")
+                  ? t("Connected")
+                  : t("Disconnected")
               }
               readOnly
             />
@@ -111,7 +111,7 @@ function InstagramAddressDetail() {
             <div className="instructions">
               <p className="text-destructive">
                 {t(
-                  "La conexión expiró o fue revocada. Volvé a conectar la cuenta.",
+                  "The connection expired or was revoked. Reconnect the account.",
                 )}
               </p>
             </div>
@@ -123,10 +123,10 @@ function InstagramAddressDetail() {
               className="primary bg-destructive text-primary-foreground hover:bg-destructive/80 px-4 py-2 rounded-full font-medium transition-colors w-fit text-[14px]"
               onClick={handleDisconnect}
               disabled={!canManage}
-              disabledReason={t("Requiere permisos de administrador")}
+              disabledReason={t("Requires administrator permissions")}
               loading={disconnect.isPending}
             >
-              {t("Desconectar")}
+              {t("Disconnect")}
             </Button>
           )}
         </form>

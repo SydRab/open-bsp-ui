@@ -24,9 +24,9 @@ function WhatsAppWebIndex() {
   );
 
   const statusLabels: Record<string, string | JSX.Element> = {
-    connected: <span className="text-primary">{t("Conectado")}</span>,
+    connected: <span className="text-primary">{t("Connected")}</span>,
     disconnected: (
-      <span className="text-destructive">{t("Requiere re-vincular")}</span>
+      <span className="text-destructive">{t("Needs re-linking")}</span>
     ),
   };
 
@@ -37,7 +37,7 @@ function WhatsAppWebIndex() {
       <SectionBody className="gap-4">
         <div className="flex flex-col">
           <SectionItem
-            title={t("Vincular dispositivo")}
+            title={t("Link device")}
             aside={
               <div className="p-[8px] bg-primary/10 rounded-full">
                 <Plus className="w-[24px] h-[24px] text-primary" />

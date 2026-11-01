@@ -4,10 +4,10 @@
 import { useMemo, useState } from "react";
 
 export const REPORT_RANGES = [
-  { key: "all", label: "Todo", days: null },
-  { key: "7", label: "7 días", days: 7 },
-  { key: "30", label: "30 días", days: 30 },
-  { key: "90", label: "90 días", days: 90 },
+  { key: "all", label: "All time", days: null },
+  { key: "7", label: "7 days", days: 7 },
+  { key: "30", label: "30 days", days: 30 },
+  { key: "90", label: "90 days", days: 90 },
 ] as const;
 
 export type ReportRangeKey = (typeof REPORT_RANGES)[number]["key"];

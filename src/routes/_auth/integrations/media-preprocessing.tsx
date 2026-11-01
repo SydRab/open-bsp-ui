@@ -59,7 +59,7 @@ function MediaPreprocessingSettings() {
 
   return (
     <>
-      <SectionHeader title={t("Pre-procesamiento de media")} />
+      <SectionHeader title={t("Media pre-processing")} />
 
       <SectionBody>
         <form
@@ -72,7 +72,7 @@ function MediaPreprocessingSettings() {
             render={({ field }) => (
               <label className="flex items-center gap-[12px] cursor-pointer justify-between">
                 <div className="flex flex-col gap-[2px]">
-                  <div className="text-foreground">{t("Estado")}</div>
+                  <div className="text-foreground">{t("Status")}</div>
                 </div>
                 <Switch
                   checked={field.value === "active"}
@@ -89,7 +89,7 @@ function MediaPreprocessingSettings() {
           <SelectField
             control={control}
             name="extra.media_preprocessing.model"
-            label={t("Modelo")}
+            label={t("Model")}
             options={[
               { value: "gemini-2.5-flash", label: "Gemini 2.5 Flash" },
               { value: "gemini-3-flash-preview", label: "Gemini 3 Flash" },
@@ -100,7 +100,7 @@ function MediaPreprocessingSettings() {
           />
 
           <label>
-            <div className="label">{t("Clave API de Google")}</div>
+            <div className="label">{t("Google API Key")}</div>
             <input
               type="password"
               className="text"
@@ -112,7 +112,7 @@ function MediaPreprocessingSettings() {
 
           <div className="instructions">
             <p>
-              <strong>{t("Obtené una clave gratuita:")}</strong>{" "}
+              <strong>{t("Get a free key:")}</strong>{" "}
               <a
                 href="https://aistudio.google.com/app/apikey"
                 target="_blank"
@@ -126,7 +126,7 @@ function MediaPreprocessingSettings() {
           </div>
 
           <label>
-            <div className="label">{t("Idioma")}</div>
+            <div className="label">{t("Language")}</div>
             <input
               type="text"
               className="text"
@@ -139,8 +139,8 @@ function MediaPreprocessingSettings() {
           <TextAreaField
             control={control}
             name="extra.media_preprocessing.extra_prompt"
-            label={t("Instrucciones adicionales")}
-            placeholder={t("Instrucciones adicionales para el modelo...")}
+            label={t("Additional instructions")}
+            placeholder={t("Additional instructions for the model...")}
             disabled={!isAdmin}
           />
         </form>
@@ -153,10 +153,10 @@ function MediaPreprocessingSettings() {
           disabled={!isAdmin}
           invalid={!isValid || !isDirty}
           loading={updateOrg.isPending}
-          disabledReason={t("Requiere permisos de administrador")}
+          disabledReason={t("Requires administrator permissions")}
           className="primary"
         >
-          {t("Actualizar")}
+          {t("Update")}
         </Button>
       </SectionFooter>
     </>

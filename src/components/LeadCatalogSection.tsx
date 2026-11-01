@@ -74,7 +74,7 @@ export default function LeadCatalogSection<T extends CatalogItem>({
           <input
             className="text w-[56px] text-center"
             type="number"
-            title={t("Orden")}
+            title={t("Order")}
             disabled={!canManage}
             defaultValue={item.sort_order}
             onBlur={(e) => {
@@ -89,7 +89,7 @@ export default function LeadCatalogSection<T extends CatalogItem>({
             <button
               type="button"
               className="p-[4px] text-muted-foreground hover:text-destructive"
-              title={t("Eliminar")}
+              title={t("Delete")}
               onClick={() => remove.mutate(item.id)}
             >
               <Trash2 className="w-[16px] h-[16px]" />
@@ -109,7 +109,7 @@ export default function LeadCatalogSection<T extends CatalogItem>({
         >
           <input
             className="text grow"
-            placeholder={t("Nuevo elemento")}
+            placeholder={t("New item")}
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
           />

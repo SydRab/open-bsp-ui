@@ -24,8 +24,8 @@ function InstagramIndex() {
   );
 
   const statusLabels: Record<string, string | JSX.Element> = {
-    connected: <span className="text-primary">{t("Conectado")}</span>,
-    disconnected: t("Desconectado"),
+    connected: <span className="text-primary">{t("Connected")}</span>,
+    disconnected: t("Disconnected"),
   };
 
   return (
@@ -35,7 +35,7 @@ function InstagramIndex() {
       <SectionBody className="gap-4">
         <div className="flex flex-col">
           <SectionItem
-            title={t("Conectar cuenta")}
+            title={t("Connect account")}
             aside={
               <div className="p-[8px] bg-primary/10 rounded-full">
                 <Plus className="w-[24px] h-[24px] text-primary" />
@@ -49,7 +49,7 @@ function InstagramIndex() {
             }
           />
           <SectionItem
-            title={t("Invitaciones a terceros")}
+            title={t("Third-party invitations")}
             aside={
               <div className="p-[8px]">
                 <Link className="w-[24px] h-[24px] text-muted-foreground" />

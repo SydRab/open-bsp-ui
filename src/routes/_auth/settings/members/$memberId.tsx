@@ -106,8 +106,8 @@ function EditMember() {
         deleteDisabled={(!canManage && !isMe) || (isMe && isLastOwner)}
         deleteDisabledReason={
           isLastOwner
-            ? t("No se puede eliminar al único propietario")
-            : t("Requiere el permiso para gestionar miembros")
+            ? t("Cannot delete the only owner")
+            : t("Requires permission to manage members")
         }
         deleteLoading={leave.isPending || deactivate.isPending}
       />
@@ -119,18 +119,18 @@ function EditMember() {
           )}
         >
           <label>
-            <div className="label">{t("Nombre")}</div>
+            <div className="label">{t("Name")}</div>
             <input
               className="text"
               disabled={!canManage && !isMe}
-              placeholder={t("Nombre del miembro")}
+              placeholder={t("Member name")}
               {...register("name", { required: true })}
             />
           </label>
         </form>
 
         <SelectField
-          label={t("Rol")}
+          label={t("Role")}
           value={currentRoleKey ?? ""}
           onChange={(roleKey) => setRole.mutate({ agentId: agent.id, roleKey })}
           options={(canManage ? options : (roles ?? [])).map((r) => ({
@@ -155,7 +155,7 @@ function EditMember() {
         {(setRole.error || deactivate.error) && (
           <div className="text-destructive text-[13px]">
             {(setRole.error ?? deactivate.error)!.message.includes("last owner")
-              ? t("No se puede quitar al único propietario")
+              ? t("The only owner can't be removed")
               : (setRole.error ?? deactivate.error)!.message}
           </div>
         )}
@@ -168,10 +168,10 @@ function EditMember() {
           disabled={!canManage && !isMe}
           invalid={!isValid || !isDirty}
           loading={updateAgent.isPending}
-          disabledReason={t("Requiere el permiso para gestionar miembros")}
+          disabledReason={t("Requires permission to manage members")}
           className="primary"
         >
-          {t("Actualizar")}
+          {t("Update")}
         </Button>
       </SectionFooter>
     </>
@@ -191,7 +191,7 @@ function MyWhatsappAddress() {
 
   return (
     <label>
-      <div className="label">{t("Tu número de WhatsApp para alertas")}</div>
+      <div className="label">{t("Your WhatsApp number for alerts")}</div>
       <div className="flex gap-[8px]">
         <input
           className="text grow"
@@ -209,7 +209,7 @@ function MyWhatsappAddress() {
             })
           }
         >
-          {t("Guardar")}
+          {t("Save")}
         </Button>
       </div>
       {save.error && (

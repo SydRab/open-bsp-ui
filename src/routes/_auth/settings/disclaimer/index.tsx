@@ -33,12 +33,12 @@ const LANGUAGES = [
   { value: "hi", label: "हिंदी (Hindi)" },
 ];
 const CONTENT_TYPES = [
-  { value: "broadcast", label: "Difusión" },
-  { value: "digest", label: "Resumen" },
-  { value: "ai_message", label: "Mensaje de IA" },
-  { value: "payment_confirmation", label: "Confirmación de pago" },
-  { value: "receipt", label: "Recibo" },
-  { value: "public_page", label: "Página pública" },
+  { value: "broadcast", label: "Broadcast" },
+  { value: "digest", label: "Digest" },
+  { value: "ai_message", label: "AI message" },
+  { value: "payment_confirmation", label: "Payment confirmation" },
+  { value: "receipt", label: "Receipt" },
+  { value: "public_page", label: "Public page" },
 ];
 
 function DisclaimerPage() {
@@ -56,12 +56,12 @@ function DisclaimerPage() {
 
   return (
     <>
-      <SectionHeader title={t("Aviso legal")} />
+      <SectionHeader title={t("Disclaimer")} />
 
       <SectionBody className="gap-[24px]">
         <p className="text-[14px] text-muted-foreground px-[6px]">
           {t(
-            "El aviso corto va en los mensajes de WhatsApp y las difusiones; el completo, en las páginas públicas, los recibos y la respuesta a DISCLAIMER. Cada cambio guarda una versión nueva.",
+            "The short disclaimer goes in WhatsApp messages and broadcasts; the full one on public pages, receipts and the DISCLAIMER reply. Every change saves a new version.",
           )}
         </p>
 
@@ -94,7 +94,7 @@ function DisclaimerPage() {
         {templateCount !== undefined && templateCount > 0 && (
           <div className="mx-[6px] rounded-lg bg-accent p-[12px] text-[13px]">
             {t(
-              "{count} plantillas del pack llevan el aviso corto como pie. Cuando Meta las apruebe (fase 2), cambiar el aviso corto exigirá volver a enviarlas a aprobación.",
+              "{count} pack templates carry the short disclaimer as their footer. Once Meta approves them (phase 2), changing the short disclaimer means submitting them for approval again.",
             ).replace("{count}", String(templateCount))}
           </div>
         )}
@@ -102,7 +102,7 @@ function DisclaimerPage() {
         {attachRules && (
           <div className="flex flex-col gap-[8px] px-[6px]">
             <div className="text-[14px] font-medium text-muted-foreground uppercase tracking-wide">
-              {t("Adjuntar el aviso a")}
+              {t("Attach the disclaimer to")}
             </div>
             <SettingEditor
               setting={attachRules}
@@ -114,7 +114,7 @@ function DisclaimerPage() {
             />
             <div className="text-[12px] text-muted-foreground">
               {t(
-                "Las páginas públicas y la respuesta a DISCLAIMER siempre llevan el aviso completo.",
+                "Public pages and the DISCLAIMER reply always carry the full disclaimer.",
               )}
             </div>
           </div>
@@ -147,10 +147,10 @@ function DisclaimerField({
 
   const source =
     current?.source === "tenant"
-      ? t("Versión {n}").replace("{n}", String(current.version))
+      ? t("Version {n}").replace("{n}", String(current.version))
       : current?.source === "pack"
-        ? t("Del pack")
-        : t("Sin aviso");
+        ? t("From pack")
+        : t("No disclaimer");
 
   return (
     <div
@@ -159,7 +159,7 @@ function DisclaimerField({
     >
       <div className="flex items-center justify-between">
         <span className="label">
-          {kind === "short" ? t("Aviso corto") : t("Aviso completo")}
+          {kind === "short" ? t("Short disclaimer") : t("Full disclaimer")}
         </span>
         <span
           className={
@@ -200,7 +200,7 @@ function DisclaimerField({
             loading={save.isPending}
             onClick={() => save.mutate({ kind, locale, text: draft })}
           >
-            {t("Guardar versión")}
+            {t("Save version")}
           </Button>
         </div>
       )}
@@ -226,10 +226,10 @@ function Preview() {
   return (
     <div className="flex flex-col gap-[10px] px-[6px]">
       <div className="text-[14px] font-medium text-muted-foreground uppercase tracking-wide">
-        {t("Vista previa")}
+        {t("Preview")}
       </div>
       <SelectField
-        label={t("Tipo de contenido")}
+        label={t("Content type")}
         value={contentType}
         onChange={setContentType}
         options={CONTENT_TYPES.map((c) => ({
@@ -238,13 +238,13 @@ function Preview() {
         }))}
       />
       <SelectField
-        label={t("Idioma")}
+        label={t("Language")}
         value={locale}
         onChange={setLocale}
         options={LANGUAGES}
       />
       <label>
-        <div className="label">{t("Mensaje de ejemplo")}</div>
+        <div className="label">{t("Sample message")}</div>
         <textarea
           className="text min-h-[60px]"
           value={text}
@@ -263,15 +263,15 @@ function Preview() {
           </div>
           <div className="text-[12px] text-muted-foreground">
             {preview.data.attached
-              ? t("Aviso {kind}, versión {n}")
+              ? t("Disclaimer: {kind}, version {n}")
                   .replace(
                     "{kind}",
                     preview.data.disclaimer_kind === "full"
-                      ? t("completo")
-                      : t("corto"),
+                      ? t("full")
+                      : t("short"),
                   )
                   .replace("{n}", String(preview.data.disclaimer_version))
-              : t("Sin aviso: la regla para este tipo está desactivada.")}
+              : t("No disclaimer: the rule for this type is off.")}
           </div>
         </div>
       )}
@@ -288,15 +288,17 @@ function History() {
   return (
     <details className="px-[6px]">
       <summary className="cursor-pointer text-[14px] font-medium text-muted-foreground uppercase tracking-wide">
-        {t("Historial de versiones")} ({versions.length})
+        {t("Version history")} ({versions.length})
       </summary>
       <div className="flex flex-col gap-[10px] pt-[10px]">
         {versions.map((v) => (
           <div key={v.id} className="flex flex-col gap-[2px]">
             <div className="text-[12px] text-muted-foreground">
-              {v.kind === "short" ? t("Aviso corto") : t("Aviso completo")} ·{" "}
-              {v.locale.toUpperCase()} ·{" "}
-              {t("Versión {n}").replace("{n}", String(v.version))} ·{" "}
+              {v.kind === "short"
+                ? t("Short disclaimer")
+                : t("Full disclaimer")}{" "}
+              · {v.locale.toUpperCase()} ·{" "}
+              {t("Version {n}").replace("{n}", String(v.version))} ·{" "}
               {new Date(v.created_at).toLocaleString()}
             </div>
             <div className="text-[14px] whitespace-pre-wrap">{v.text}</div>

@@ -193,12 +193,12 @@ const FilePreviewer = () => {
   /**
    * File Picker TODO
    *
-   * 2. Contención de la previsualización (ahora atado con alambre)
-   * 3. Badge botón enviar
-   * 4. Placeholder caption ("escribe un mensaje")
-   * 7. Cartel de previsualización no disponible
-   * 8. Borrador en ChatListItem (si guarda borrador y se cierra, el borrador permanece y escribe el mensaje)
-   * 9. Títulos (tooltips) botones?
+   * 2. Preview containment (currently held together with wire)
+   * 3. Send button badge
+   * 4. Placeholder caption ("write a message")
+   * 7. "Preview unavailable" banner
+   * 8. Draft in ChatListItem (if a draft is saved and the chat is closed, the draft stays and writes the message)
+   * 9. Button titles (tooltips)?
    */
   return (
     activeConvId &&
@@ -208,7 +208,7 @@ const FilePreviewer = () => {
         <div className="py-[8px] px-[16px] min-h-[60px] flex justify-between items-center">
           <button
             className="p-[8px] rounded-full hover:bg-muted mr-[8px] ml-[-8px]"
-            title={t("Cerrar")}
+            title={t("Close")}
             onClick={quitPreviewer}
           >
             <X className="w-[24px] h-[24px]" />
@@ -275,7 +275,7 @@ const FilePreviewer = () => {
                 className="absolute top-[10px] left-[16px] text-[17px] leading-[24px] text-muted-foreground pointer-events-none"
                 onClick={() => editableDiv.current?.focus()}
               >
-                {t("Escribe un mensaje")}
+                {t("Write a message")}
               </div>
             )}
           </div>

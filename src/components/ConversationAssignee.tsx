@@ -75,7 +75,7 @@ export default function ConversationAssignee({
         ) : (
           <>
             <User className="w-[14px] h-[14px] text-muted-foreground" />
-            {t("Sin asignar")}
+            {t("Unassigned")}
           </>
         )}
       </button>
@@ -83,7 +83,7 @@ export default function ConversationAssignee({
       {assignee && (
         <button
           className="ml-[4px] p-[4px] rounded-full cursor-pointer opacity-60 hover:opacity-100"
-          title={t("Quitar asignación")}
+          title={t("Remove assignment")}
           onClick={() => unassignConversation.mutate(conversationId)}
         >
           <X className="w-[11px] h-[11px]" />
@@ -121,7 +121,7 @@ export default function ConversationAssignee({
 
           {!agents?.length && (
             <div className="px-[8px] py-[6px] text-[13px] text-muted-foreground">
-              {t("No hay miembros")}
+              {t("No members")}
             </div>
           )}
         </div>

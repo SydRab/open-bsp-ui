@@ -47,7 +47,7 @@ export default function LeadTasksModal({
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40">
       <div className="bg-background text-foreground rounded-xl w-[380px] max-h-[75vh] p-[20px] flex flex-col gap-[12px]">
         <div className="flex items-center justify-between shrink-0">
-          <div className="text-[16px] font-medium">{t("Tareas")}</div>
+          <div className="text-[16px] font-medium">{t("Tasks")}</div>
           <button
             className="p-[4px] rounded-full hover:bg-muted"
             onClick={onClose}
@@ -59,7 +59,7 @@ export default function LeadTasksModal({
         {templateApproved === false && (
           <div className="text-[12px] text-muted-foreground bg-muted rounded-lg p-[8px]">
             {t(
-              "Los recordatorios por WhatsApp necesitan una plantilla aprobada -- revisa Plantillas de mensajes.",
+              "WhatsApp reminders need an approved template -- check Message templates.",
             )}
           </div>
         )}
@@ -67,7 +67,7 @@ export default function LeadTasksModal({
         <div className="flex-1 overflow-y-auto flex flex-col gap-[8px]">
           {(tasks ?? []).length === 0 && (
             <div className="text-[13px] text-muted-foreground">
-              {t("Sin tareas todavía.")}
+              {t("No tasks yet.")}
             </div>
           )}
           {(tasks ?? []).map((task) => {
@@ -142,7 +142,7 @@ export default function LeadTasksModal({
         >
           <input
             className="text"
-            placeholder={t("Nueva tarea")}
+            placeholder={t("New task")}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
@@ -158,7 +158,7 @@ export default function LeadTasksModal({
               value={assignedTo}
               onChange={(e) => setAssignedTo(e.target.value)}
             >
-              <option value="">{t("Sin asignar")}</option>
+              <option value="">{t("Unassigned")}</option>
               {people.map((a) => (
                 <option key={a.id} value={a.id}>
                   {a.name}
@@ -172,7 +172,7 @@ export default function LeadTasksModal({
             </div>
           )}
           <Button type="submit" className="primary" loading={create.isPending}>
-            {t("Añadir tarea")}
+            {t("Add task")}
           </Button>
         </form>
       </div>

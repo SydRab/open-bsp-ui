@@ -114,14 +114,14 @@ export default function CannedReplyPicker({
                 className="text-[12px] text-muted-foreground hover:underline"
                 onClick={() => setEditingId(null)}
               >
-                {t("Cancelar")}
+                {t("Cancel")}
               </button>
               <button
                 className="text-[12px] text-primary hover:underline disabled:opacity-30"
                 disabled={!editName.trim() || !editContent.trim()}
                 onClick={saveEdit}
               >
-                {t("Guardar")}
+                {t("Save")}
               </button>
             </div>
           </div>
@@ -146,7 +146,7 @@ export default function CannedReplyPicker({
               <div className="shrink-0 flex items-center gap-[2px] opacity-0 group-hover:opacity-100">
                 <button
                   className="p-[4px] rounded-full hover:bg-background"
-                  title={t("Editar")}
+                  title={t("Edit")}
                   onClick={(e) => {
                     e.stopPropagation();
                     startEdit(reply);
@@ -156,7 +156,7 @@ export default function CannedReplyPicker({
                 </button>
                 <button
                   className="p-[4px] rounded-full hover:bg-background"
-                  title={t("Eliminar")}
+                  title={t("Delete")}
                   onClick={(e) => {
                     e.stopPropagation();
                     deleteReply.mutate(reply.id);
@@ -172,7 +172,7 @@ export default function CannedReplyPicker({
 
       {!replies?.length && !creating && (
         <div className="px-[8px] py-[6px] text-[13px] text-muted-foreground">
-          {t("Todavía no hay respuestas rápidas")}
+          {t("No canned replies yet")}
         </div>
       )}
 
@@ -184,7 +184,7 @@ export default function CannedReplyPicker({
                 type="text"
                 value={newName}
                 onChange={(e) => setNewName(e.target.value)}
-                placeholder={t("Nombre...")}
+                placeholder={t("Name...")}
                 className="text-[13px] outline-none bg-transparent border-b border-border pb-[2px]"
                 maxLength={80}
                 autoFocus
@@ -192,7 +192,7 @@ export default function CannedReplyPicker({
               <textarea
                 value={newContent}
                 onChange={(e) => setNewContent(e.target.value)}
-                placeholder={t("Contenido de la respuesta...")}
+                placeholder={t("Reply content...")}
                 className="text-[13px] outline-none bg-transparent resize-none min-h-[60px]"
                 maxLength={4096}
               />
@@ -205,14 +205,14 @@ export default function CannedReplyPicker({
                     setNewContent("");
                   }}
                 >
-                  {t("Cancelar")}
+                  {t("Cancel")}
                 </button>
                 <button
                   className="text-[12px] text-primary hover:underline disabled:opacity-30"
                   disabled={!newName.trim() || !newContent.trim()}
                   onClick={saveNew}
                 >
-                  {t("Guardar")}
+                  {t("Save")}
                 </button>
               </div>
             </div>
@@ -222,7 +222,7 @@ export default function CannedReplyPicker({
               onClick={() => setCreating(true)}
             >
               <Plus className="w-[14px] h-[14px]" />
-              {t("Nueva respuesta rápida")}
+              {t("New canned reply")}
             </button>
           )}
         </div>

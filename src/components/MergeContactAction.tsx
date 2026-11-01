@@ -43,7 +43,7 @@ export default function MergeContactAction({
     return (
       <Button className="secondary w-full" onClick={() => setOpen(true)}>
         <ArrowLeftRight className="w-[16px] h-[16px]" />
-        {t("Fusionar con otro contacto")}
+        {t("Merge with another contact")}
       </Button>
     );
   }
@@ -72,7 +72,7 @@ export default function MergeContactAction({
     <div className="flex flex-col gap-[8px] p-[12px] rounded-[12px] border border-border">
       <div className="flex items-center justify-between">
         <div className="text-[14px] font-medium">
-          {t("Fusionar con otro contacto")}
+          {t("Merge with another contact")}
         </div>
         <button
           className="p-[4px] rounded-full hover:bg-muted text-muted-foreground"
@@ -87,7 +87,7 @@ export default function MergeContactAction({
           <input
             type="text"
             className="text"
-            placeholder={t("Buscar contactos")}
+            placeholder={t("Search contacts")}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             autoFocus
@@ -99,7 +99,7 @@ export default function MergeContactAction({
                 className="text-left px-[8px] py-[6px] rounded-lg hover:bg-accent text-[14px]"
                 onClick={() => setTarget(row)}
               >
-                {name || t("Sin nombre")} ·{" "}
+                {name || t("No name")} ·{" "}
                 <span className="text-muted-foreground">
                   {row.service === "whatsapp" || row.service === "whatsapp-web"
                     ? formatPhoneNumber(row.address)
@@ -109,7 +109,7 @@ export default function MergeContactAction({
             ))}
             {search && results.length === 0 && (
               <div className="px-[8px] py-[6px] text-[13px] text-muted-foreground">
-                {t("Sin resultados para")} "{search}"
+                {t("No results for")} "{search}"
               </div>
             )}
           </div>
@@ -120,11 +120,11 @@ export default function MergeContactAction({
         <div className="flex flex-col gap-[8px]">
           <div className="text-[13px] text-muted-foreground">
             {t(
-              "Esta dirección y sus datos se moverán al contacto que estás viendo ahora. El otro contacto se borrará. Esta acción no se puede deshacer.",
+              "This address and its data will move to the contact you're viewing now. The other contact will be deleted. This cannot be undone.",
             )}
           </div>
           <div className="text-[14px]">
-            {contactName(target.extra) || t("Sin nombre")} ·{" "}
+            {contactName(target.extra) || t("No name")} ·{" "}
             {target.service === "whatsapp" || target.service === "whatsapp-web"
               ? formatPhoneNumber(target.address)
               : target.address}
@@ -137,7 +137,7 @@ export default function MergeContactAction({
               className="secondary flex-1"
               onClick={() => setTarget(null)}
             >
-              {t("Atrás")}
+              {t("Previous")}
             </Button>
             <Button
               className="primary flex-1"
@@ -159,7 +159,7 @@ export default function MergeContactAction({
                 );
               }}
             >
-              {t("Fusionar")}
+              {t("Merge")}
             </Button>
           </div>
         </div>

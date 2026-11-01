@@ -206,7 +206,7 @@ export function TextMessage({
               className="text-primary cursor-pointer mt-1"
               onClick={() => setExpanded(!expanded)}
             >
-              {expanded ? t("ver menos...") : t("ver más...")}
+              {expanded ? t("show less...") : t("show more...")}
             </div>
           )}
 
@@ -454,9 +454,9 @@ export default function Message(props: UIMessage & { message: MessageRow }) {
       .join("__");
 
     if (toolInfo.event === "use") {
-      headerText = `${t("Uso")}: ${toolName}`;
+      headerText = `${t("Usage")}: ${toolName}`;
     } else if (toolInfo.event === "result") {
-      headerText = `${t("Resultado")}: ${toolName}`;
+      headerText = `${t("Result")}: ${toolName}`;
     }
 
     fixedWidth = true;
@@ -504,7 +504,7 @@ export default function Message(props: UIMessage & { message: MessageRow }) {
       <TextMessage
         header={headerText}
         body={
-          `_${t("Contenido multimedia no disponible")}_` +
+          `_${t("Unavailable media")}_` +
           (props.message.content.text
             ? `\n\n${props.message.content.text}`
             : "")
@@ -530,8 +530,8 @@ export default function Message(props: UIMessage & { message: MessageRow }) {
           poll.options.map((option) => `- ${option}`).join("\n") +
           `\n\n_${
             poll.selectable_count === 1
-              ? t("Selecciona una opción")
-              : t("Selecciona una o más opciones")
+              ? t("Select one option")
+              : t("Select one or more options")
           }_`
         }
         type="markdown"
@@ -554,7 +554,7 @@ export default function Message(props: UIMessage & { message: MessageRow }) {
           `🗳️ ${vote.question}\n\n` +
           (vote.selected.length
             ? vote.selected.map((option) => `✓ *${option}*`).join("\n")
-            : `_${t("Voto retirado")}_`) +
+            : `_${t("Vote withdrawn")}_`) +
           (vote.results?.length
             ? "\n\n" +
               vote.results

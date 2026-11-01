@@ -57,7 +57,7 @@ function BusinessProfile() {
 
   return (
     <>
-      <SectionHeader title={t("Perfil de negocio")} />
+      <SectionHeader title={t("Business profile")} />
 
       <SectionBody className="pb-[40px]">
         <form
@@ -68,7 +68,7 @@ function BusinessProfile() {
           }}
         >
           <label>
-            <div className="label">{t("Acerca de")}</div>
+            <div className="label">{t("About")}</div>
             <input
               type="text"
               className="text"
@@ -79,7 +79,7 @@ function BusinessProfile() {
           </label>
 
           <label>
-            <div className="label">{t("Dirección")}</div>
+            <div className="label">{t("Address")}</div>
             <input
               type="text"
               className="text"
@@ -90,7 +90,7 @@ function BusinessProfile() {
           </label>
 
           <label>
-            <div className="label">{t("Descripción")}</div>
+            <div className="label">{t("Description")}</div>
             <textarea
               className="text"
               maxLength={512}
@@ -102,7 +102,7 @@ function BusinessProfile() {
           </label>
 
           <label>
-            <div className="label">{t("Correo electrónico")}</div>
+            <div className="label">{t("Email")}</div>
             <input
               type="email"
               className="text"
@@ -113,13 +113,13 @@ function BusinessProfile() {
           </label>
 
           <label>
-            <div className="label">{t("Categoría")}</div>
+            <div className="label">{t("Category")}</div>
             <select
               className="text"
               value={draft.vertical ?? ""}
               onChange={(e) => setDraft({ ...draft, vertical: e.target.value })}
             >
-              <option value="">{t("Sin especificar")}</option>
+              <option value="">{t("Not specified")}</option>
               {BUSINESS_PROFILE_VERTICALS.map((v) => (
                 <option key={v} value={v}>
                   {v}
@@ -129,7 +129,7 @@ function BusinessProfile() {
           </label>
 
           <label>
-            <div className="label">{t("Sitio web")} 1</div>
+            <div className="label">{t("Website")} 1</div>
             <input
               type="url"
               className="text"
@@ -140,7 +140,7 @@ function BusinessProfile() {
           </label>
 
           <label>
-            <div className="label">{t("Sitio web")} 2</div>
+            <div className="label">{t("Website")} 2</div>
             <input
               type="url"
               className="text"
@@ -165,7 +165,7 @@ function BusinessProfile() {
           loading={update.isPending}
           className="primary"
         >
-          {t("Guardar")}
+          {t("Save")}
         </Button>
       </SectionFooter>
     </>

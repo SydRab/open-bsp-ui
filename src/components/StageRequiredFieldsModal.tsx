@@ -35,7 +35,7 @@ export default function StageRequiredFieldsModal({
       <div className="bg-background text-foreground rounded-xl w-[360px] p-[20px] flex flex-col gap-[16px]">
         <div className="flex items-center justify-between">
           <div className="text-[16px] font-medium">
-            {t("Campos requeridos")} — {stageName}
+            {t("Required fields")} — {stageName}
           </div>
           <button
             className="p-[4px] rounded-full hover:bg-muted"
@@ -48,7 +48,7 @@ export default function StageRequiredFieldsModal({
         {dealFields.length === 0 ? (
           <p className="text-[14px] text-muted-foreground">
             {t(
-              "Todavía no hay campos de oportunidades para elegir -- créalos en Campos personalizados.",
+              "There are no deal fields to choose from yet -- create them in Custom fields.",
             )}
           </p>
         ) : (
@@ -91,7 +91,7 @@ export default function StageRequiredFieldsModal({
             )
           }
         >
-          {t("Guardar")}
+          {t("Save")}
         </Button>
       </div>
     </div>

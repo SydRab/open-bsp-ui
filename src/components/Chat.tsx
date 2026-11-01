@@ -78,9 +78,9 @@ export default function Chat() {
 
     const days = dayjs().diff(dayjsTs.startOf("day"), "day", true);
 
-    if (days < 1) return t("hoy");
+    if (days < 1) return t("today");
 
-    if (days < 2) return t("ayer");
+    if (days < 2) return t("yesterday");
 
     if (days < 7) return dayjsTs.format("dddd"); // Jueves
 

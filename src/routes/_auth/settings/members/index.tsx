@@ -37,9 +37,9 @@ function ListMembers() {
   const canInvite = can("members.invite");
 
   const tierNames: Record<string, string> = {
-    owner: t("Propietario"),
-    admin: t("Administrador"),
-    member: t("Miembro"),
+    owner: t("Owner"),
+    admin: t("Administrator"),
+    member: t("Member"),
   };
   const roleName = (roleId: string | undefined, tier: string | null) => {
     const role = crmRoles?.find((r) => r.id === roleId);
@@ -48,11 +48,11 @@ function ListMembers() {
 
   return (
     <>
-      <SectionHeader title={t("Miembros")} />
+      <SectionHeader title={t("Members")} />
 
       <SectionBody>
         <SectionItem
-          title={t("Agregar miembro")}
+          title={t("Add member")}
           aside={
             <div className="p-[8px] bg-primary/10 rounded-full">
               <Plus className="w-[24px] h-[24px] text-primary" />
@@ -65,7 +65,7 @@ function ListMembers() {
             })
           }
           disabled={!canInvite}
-          disabledReason={t("Requiere el permiso para invitar miembros")}
+          disabledReason={t("Requires permission to invite members")}
         />
         {agents
           ?.filter((agent) => agent.user_id !== null)
@@ -76,7 +76,7 @@ function ListMembers() {
             return (
               <SectionItem
                 key={agent.id}
-                title={agent.name + (isMe ? ` (${t("tú")})` : "")}
+                title={agent.name + (isMe ? ` (${t("you")})` : "")}
                 description={role}
                 aside={
                   <Avatar
@@ -101,7 +101,7 @@ function ListMembers() {
             title={invitation.email}
             description={
               roleName(invitationRoles?.get(invitation.id), invitation.role) +
-              ` (${t("pendiente")})`
+              ` (${t("pending")})`
             }
             aside={
               <Avatar
@@ -111,11 +111,11 @@ function ListMembers() {
               />
             }
             onClick={() => {
-              if (canInvite && window.confirm(t("¿Revocar esta invitación?")))
+              if (canInvite && window.confirm(t("Revoke this invitation?")))
                 revokeInvitation.mutate(invitation.id);
             }}
             disabled={!canInvite}
-            disabledReason={t("Requiere el permiso para invitar miembros")}
+            disabledReason={t("Requires permission to invite members")}
           />
         ))}
       </SectionBody>

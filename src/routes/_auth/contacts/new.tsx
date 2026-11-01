@@ -56,7 +56,7 @@ function ContactNew() {
 
   return (
     <>
-      <SectionHeader title={t("Nuevo contacto")} />
+      <SectionHeader title={t("New contact")} />
 
       <SectionBody>
         <form
@@ -82,25 +82,25 @@ function ContactNew() {
           })}
         >
           <label>
-            <div className="label">{t("Nombre")}</div>
+            <div className="label">{t("Name")}</div>
             <input
               type="text"
               className="text"
-              placeholder={t("Nombre del contacto")}
+              placeholder={t("Contact name")}
               {...register("name")}
             />
           </label>
 
           <label>
-            <div className="label">{t("Teléfono")}</div>
+            <div className="label">{t("Phone")}</div>
             <input
               type="tel"
               className={`text ${errors.address ? "border-destructive" : ""}`}
-              placeholder={t("+54 9 11 1234 5678")}
+              placeholder={t("+91 98765 43210")}
               {...register("address", {
                 required: true,
                 validate: (value) =>
-                  isValidPhoneNumber(value) || t("Número inválido"),
+                  isValidPhoneNumber(value) || t("Invalid number"),
               })}
             />
             <FieldError error={errors.address} />
@@ -108,7 +108,7 @@ function ContactNew() {
 
           {accounts.length > 1 && (
             <label>
-              <div className="label">{t("Cuenta")}</div>
+              <div className="label">{t("Account")}</div>
               <select
                 className="text"
                 value={chosenKey || ""}
@@ -134,7 +134,7 @@ function ContactNew() {
           loading={createAddress.isPending}
           className="primary"
         >
-          {t("Crear")}
+          {t("Create")}
         </Button>
       </SectionFooter>
     </>

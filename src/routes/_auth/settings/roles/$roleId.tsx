@@ -24,16 +24,16 @@ export const Route = createFileRoute("/_auth/settings/roles/$roleId")({
 });
 
 const CATEGORY_LABELS: Record<string, string> = {
-  organization: "Organización",
-  team: "Equipo",
-  inbox: "Bandeja de entrada",
-  contacts: "Contactos",
-  pipeline: "Embudo de ventas",
+  organization: "Organization",
+  team: "Team",
+  inbox: "Inbox",
+  contacts: "Contacts",
+  pipeline: "Sales pipeline",
   marketing: "Marketing",
-  payments: "Pagos",
-  classroom: "Aula",
-  reports: "Reportes",
-  integrations: "Integraciones",
+  payments: "Payments",
+  classroom: "Classroom",
+  reports: "Reports",
+  integrations: "Integrations",
 };
 
 function EditRole() {
@@ -57,10 +57,10 @@ function EditRole() {
   const reason = (permission: (typeof catalog)[number]): string | null => {
     if (!editable) return null;
     if (tierRank(permission.min_tier) > tierRank(role.tier)) {
-      return t("Requiere un rol de administrador o superior");
+      return t("Requires an admin-level role or higher");
     }
     if (!granted.has(permission.key) && !can(permission.key)) {
-      return t("No puedes otorgar un permiso que no tienes");
+      return t("You can't grant a permission you don't have");
     }
     return null;
   };
@@ -78,8 +78,8 @@ function EditRole() {
         {!editable && (
           <p className="text-muted-foreground text-[14px]">
             {role.is_locked
-              ? t("El rol de propietario siempre tiene todos los permisos.")
-              : t("No puedes cambiar este rol.")}
+              ? t("The Owner role always has every permission.")
+              : t("You can't change this role.")}
           </p>
         )}
 
@@ -144,13 +144,13 @@ function EditRole() {
           type="button"
           disabled={!editable}
           loading={resetRole.isPending}
-          disabledReason={t("No puedes cambiar este rol.")}
+          disabledReason={t("You can't change this role.")}
           onClick={() => {
-            if (window.confirm(t("¿Restablecer los permisos predeterminados?")))
+            if (window.confirm(t("Reset to the default permissions?")))
               resetRole.mutate(role.id);
           }}
         >
-          {t("Restablecer predeterminados")}
+          {t("Reset to defaults")}
         </Button>
       </SectionFooter>
     </>

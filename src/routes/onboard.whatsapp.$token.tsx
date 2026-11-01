@@ -63,7 +63,7 @@ function Onboard() {
       setState({
         status: "error",
         message: t(
-          "No se pudo cargar el SDK de Facebook. Desactivá la protección contra rastreo o el bloqueador de anuncios para este sitio, o probá con otro navegador.",
+          "Couldn't load the Facebook SDK. Disable tracking protection or your ad blocker for this site, or try another browser.",
         ),
       });
       return;
@@ -129,7 +129,7 @@ function Onboard() {
               setState({
                 status: "error",
                 message: t(
-                  "Error al conectar. Intentá de nuevo o contactá al proveedor.",
+                  "Connection error. Try again or contact the provider.",
                 ),
               });
             })
@@ -159,16 +159,16 @@ function Onboard() {
 
       <div className="flex flex-col gap-4 w-[320px] text-center">
         {state.status === "loading" && (
-          <p className="text-muted-foreground">{t("Validando enlace...")}</p>
+          <p className="text-muted-foreground">{t("Validating link...")}</p>
         )}
 
         {state.status === "invalid" && (
           <div className="flex flex-col gap-2">
             <p className="text-destructive font-medium">
-              {t("Este enlace es inválido o ha expirado.")}
+              {t("This link is invalid or has expired.")}
             </p>
             <p className="text-muted-foreground text-[14px]">
-              {t("Solicitá un nuevo enlace a tu proveedor.")}
+              {t("Request a new link from your provider.")}
             </p>
           </div>
         )}
@@ -176,28 +176,28 @@ function Onboard() {
         {state.status === "valid" && (
           <div className="flex flex-col gap-4">
             <p className="text-foreground">
-              {t("Conectá tu número de WhatsApp a")}{" "}
+              {t("Connect your WhatsApp number to")}{" "}
               <strong>{state.organization_name}</strong>
             </p>
 
             <div className="instructions text-left text-[14px] text-muted-foreground">
               <p>
                 {t(
-                  "Iniciá sesión en tu cuenta de Meta y seguí el proceso de registro.",
+                  "Sign in to your Meta account and follow the registration process.",
                 )}
               </p>
               <p>
-                <strong>{t("Requisitos importantes")}</strong>
+                <strong>{t("Important requirements")}</strong>
               </p>
               <ul>
                 <li>
                   {t(
-                    "Si usás la app WhatsApp Business, podés conectar tu número actual y seguir usando la app.",
+                    "If you use the WhatsApp Business app, you can connect your current number and continue using the app.",
                   )}
                 </li>
                 <li>
                   {t(
-                    "Si no usás la app, el número a conectar no debe estar activo en otra cuenta de WhatsApp.",
+                    "If you don't use the app, the number to connect must not be active on another WhatsApp account.",
                   )}
                 </li>
               </ul>
@@ -207,7 +207,7 @@ function Onboard() {
               {sdkFailed && (
                 <p className="text-destructive font-medium">
                   {t(
-                    "No se pudo cargar el SDK de Facebook. Desactivá la protección contra rastreo o el bloqueador de anuncios para este sitio, o probá con otro navegador.",
+                    "Couldn't load the Facebook SDK. Disable tracking protection or your ad blocker for this site, or try another browser.",
                   )}
                 </p>
               )}
@@ -216,7 +216,7 @@ function Onboard() {
                 disabledReason={
                   sdkFailed
                     ? t(
-                        "No se pudo cargar el SDK de Facebook. Desactivá la protección contra rastreo o el bloqueador de anuncios para este sitio, o probá con otro navegador.",
+                        "Couldn't load the Facebook SDK. Disable tracking protection or your ad blocker for this site, or try another browser.",
                       )
                     : undefined
                 }
@@ -224,7 +224,7 @@ function Onboard() {
                 className="primary bg-[#4267b2] hover:bg-[#4267b2]/90 text-white w-full"
                 onClick={handleSignup}
               >
-                {t("Continuar con Facebook")}
+                {t("Continue with Facebook")}
               </Button>
             </div>
           </div>
@@ -233,10 +233,10 @@ function Onboard() {
         {state.status === "success" && (
           <div className="flex flex-col gap-2">
             <p className="text-primary font-medium text-[18px]">
-              {t("Tu número de WhatsApp fue conectado exitosamente.")}
+              {t("Your WhatsApp number was connected successfully.")}
             </p>
             <p className="text-muted-foreground text-[14px]">
-              {t("Podés cerrar esta página.")}
+              {t("You can close this page.")}
             </p>
           </div>
         )}
@@ -257,7 +257,7 @@ function Onboard() {
                   .catch(() => setState({ status: "invalid" }));
               }}
             >
-              {t("Reintentar")}
+              {t("Retry")}
             </Button>
           </div>
         )}

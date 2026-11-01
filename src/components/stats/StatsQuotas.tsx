@@ -36,7 +36,7 @@ export default function StatsQuotas() {
 
   return (
     <div className="flex flex-col gap-[16px] p-[24px] max-w-[600px] mx-auto w-full">
-      <h2 className="text-[20px] font-medium">{t("Cuotas")}</h2>
+      <h2 className="text-[20px] font-medium">{t("Quotas")}</h2>
       {visibleProducts?.map((product) => {
         const tier = tierMap.get(product.id)!;
         const plan = planMap.get(product.id);
@@ -60,7 +60,7 @@ export default function StatsQuotas() {
       })}
       {!visibleProducts?.length && (
         <div className="text-muted-foreground text-center py-[40px]">
-          {t("Sin cuotas configuradas")}
+          {t("No quotas configured")}
         </div>
       )}
     </div>

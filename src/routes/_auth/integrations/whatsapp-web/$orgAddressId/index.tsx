@@ -37,12 +37,12 @@ function WhatsAppWebDetails() {
 
   // Durable row status is the source of truth; live health refines the label.
   const statusText = !isConnected
-    ? t("Desconectado")
+    ? t("Disconnected")
     : health
       ? health.connected && health.logged_in
-        ? t("Conectado")
-        : t("Reconectando...")
-      : t("Conectado");
+        ? t("Connected")
+        : t("Reconnecting...")
+      : t("Connected");
 
   const handleDisconnect = () => {
     disconnect.mutate(integration.address, {
@@ -60,7 +60,7 @@ function WhatsAppWebDetails() {
           <div className="instructions">
             <p className="text-destructive font-medium">
               {t(
-                "La sesión se cerró (logout o baneo). Volvé a vincular el dispositivo para seguir enviando y recibiendo mensajes.",
+                "The session ended (logout or ban). Re-link the device to keep sending and receiving messages.",
               )}
             </p>
           </div>
@@ -68,7 +68,7 @@ function WhatsAppWebDetails() {
 
         <form>
           <label>
-            <div className="label">{t("Número de teléfono")}</div>
+            <div className="label">{t("Phone number")}</div>
             <input
               type="tel"
               className="text"
@@ -78,7 +78,7 @@ function WhatsAppWebDetails() {
           </label>
 
           <label>
-            <div className="label">{t("Estado")}</div>
+            <div className="label">{t("Status")}</div>
             <input
               type="text"
               className="text capitalize"
@@ -98,9 +98,9 @@ function WhatsAppWebDetails() {
                 })
               }
               disabled={!canManage}
-              disabledReason={t("Requiere permisos de administrador")}
+              disabledReason={t("Requires administrator permissions")}
             >
-              {t("Volver a vincular")}
+              {t("Re-link")}
             </Button>
           ) : (
             <Button
@@ -108,10 +108,10 @@ function WhatsAppWebDetails() {
               className="primary bg-destructive text-primary-foreground hover:bg-destructive/80 px-4 py-2 rounded-full font-medium w-fit text-[14px]"
               onClick={handleDisconnect}
               disabled={!canManage}
-              disabledReason={t("Requiere permisos de administrador")}
+              disabledReason={t("Requires administrator permissions")}
               loading={disconnect.isPending}
             >
-              {t("Desconectar")}
+              {t("Disconnect")}
             </Button>
           )}
         </form>

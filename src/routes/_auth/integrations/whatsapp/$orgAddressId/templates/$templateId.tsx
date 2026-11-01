@@ -32,16 +32,14 @@ function EditTemplate() {
 
   if (!template) {
     return (
-      <div className="p-4 text-muted-foreground">
-        {t("Plantilla no encontrada")}
-      </div>
+      <div className="p-4 text-muted-foreground">{t("Template not found")}</div>
     );
   }
 
   return (
     <>
       <SectionHeader
-        title={t("Editar plantilla")}
+        title={t("Edit template")}
         onDelete={() => {
           deleteTemplate.mutate(
             { template, organizationAddress: orgAddressId },
@@ -57,8 +55,8 @@ function EditTemplate() {
       language are separate objects -- this starts a new one pre-filled
       with this template's name/category. */}
       <SectionItem
-        title={t("Agregar idioma")}
-        description={t("Crear esta plantilla en otro idioma")}
+        title={t("Add language")}
+        description={t("Create this template in another language")}
         aside={
           <div className="p-[8px]">
             <Languages className="w-[24px] h-[24px] text-muted-foreground" />

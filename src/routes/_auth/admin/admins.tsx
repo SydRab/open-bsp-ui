@@ -38,7 +38,7 @@ function PlatformAdmins() {
 
   return (
     <>
-      <SectionHeader title={t("Administradores de la plataforma")} />
+      <SectionHeader title={t("Platform admins")} />
 
       <SectionBody>
         <form
@@ -49,11 +49,11 @@ function PlatformAdmins() {
           )}
         >
           <label>
-            <div className="label">{t("Correo electrónico")}</div>
+            <div className="label">{t("Email")}</div>
             <input
               type="email"
               className="text"
-              placeholder={t("usuario@ejemplo.com")}
+              placeholder={t("user@example.com")}
               {...register("email", { required: true })}
             />
           </label>
@@ -80,11 +80,11 @@ function PlatformAdmins() {
             title={admin.email}
             description={
               admin.granted_by_email
-                ? t("Otorgado por {email}").replace(
+                ? t("Granted by {email}").replace(
                     "{email}",
                     admin.granted_by_email,
                   )
-                : t("Administrador fundador")
+                : t("Founding admin")
             }
             aside={
               <Avatar
@@ -94,7 +94,7 @@ function PlatformAdmins() {
               />
             }
             onClick={() => {
-              if (window.confirm(t("¿Revocar el acceso de administrador?")))
+              if (window.confirm(t("Revoke this admin's access?")))
                 revoke.mutate({ userId: admin.user_id });
             }}
           />
@@ -116,7 +116,7 @@ function PlatformAdmins() {
           className="primary"
         >
           <ShieldUser className="w-[18px] h-[18px]" />
-          {t("Otorgar acceso de administrador")}
+          {t("Grant admin access")}
         </Button>
       </SectionFooter>
     </>

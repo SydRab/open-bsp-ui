@@ -25,8 +25,8 @@ function WhatsAppIndex() {
   );
 
   const statusLabels: Record<string, string | JSX.Element> = {
-    connected: <span className="text-primary">{t("Conectado")}</span>,
-    disconnected: t("Desconectado"),
+    connected: <span className="text-primary">{t("Connected")}</span>,
+    disconnected: t("Disconnected"),
   };
 
   return (
@@ -36,7 +36,7 @@ function WhatsAppIndex() {
       <SectionBody className="gap-4">
         <div className="flex flex-col">
           <SectionItem
-            title={t("Conectar número")}
+            title={t("Connect number")}
             aside={
               <div className="p-[8px] bg-primary/10 rounded-full">
                 <Plus className="w-[24px] h-[24px] text-primary" />
@@ -50,7 +50,7 @@ function WhatsAppIndex() {
             }
           />
           <SectionItem
-            title={t("Invitaciones a terceros")}
+            title={t("Third-party invitations")}
             aside={
               <div className="p-[8px]">
                 <Link className="w-[24px] h-[24px] text-muted-foreground" />
@@ -87,27 +87,27 @@ function WhatsAppIndex() {
                     {extra?.is_mock && (
                       <span className="text-muted-foreground">
                         {" · "}
-                        {t("Prueba")}
+                        {t("Test")}
                       </span>
                     )}
                     {/* [crm] Needs-reconnect badge (P2-03) */}
                     {extra?.needs_reauth && (
                       <span className="text-destructive">
                         {" · "}
-                        {t("Reconectar")}
+                        {t("Reconnect")}
                       </span>
                     )}
                     {/* [crm] Quality-rating badge (P2-10) */}
                     {extra?.quality_rating === "RED" && (
                       <span className="text-destructive">
                         {" · "}
-                        {t("Calidad baja")}
+                        {t("Poor quality")}
                       </span>
                     )}
                     {extra?.quality_rating === "YELLOW" && (
                       <span className="text-yellow-700 dark:text-yellow-400">
                         {" · "}
-                        {t("Calidad media")}
+                        {t("Medium quality")}
                       </span>
                     )}
                     <ConnectionOwner agentId={integration.agent_id} />

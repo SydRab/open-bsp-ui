@@ -43,7 +43,7 @@ function ApiKeyDetail() {
     apiKey && (
       <>
         <SectionHeader
-          title={t("Clave API")}
+          title={t("API Key")}
           onDelete={() =>
             deleteApiKey.mutate(apiKeyId, {
               onSuccess: () =>
@@ -51,7 +51,7 @@ function ApiKeyDetail() {
             })
           }
           deleteDisabled={!isOwner}
-          deleteDisabledReason={t("Requiere permisos de propietario")}
+          deleteDisabledReason={t("Requires owner permissions")}
           deleteLoading={deleteApiKey.isPending}
         />
 
@@ -59,9 +59,7 @@ function ApiKeyDetail() {
           <form>
             <div className="instructions">
               <p>
-                {t(
-                  "Configura los siguientes encabezados HTTP para autenticarte:",
-                )}
+                {t("Configure the following HTTP headers for authentication:")}
               </p>
               <ul>
                 <li>
@@ -72,13 +70,13 @@ function ApiKeyDetail() {
                 </li>
                 <li>
                   <code className="font-mono">api-key:</code>{" "}
-                  {t("el valor de la clave generada abajo")}
+                  {t("the value of the generated key below")}
                 </li>
               </ul>
             </div>
 
             <label>
-              <div className="label">{t("Nombre")}</div>
+              <div className="label">{t("Name")}</div>
               <input
                 type="text"
                 className="text"
@@ -88,16 +86,16 @@ function ApiKeyDetail() {
             </label>
 
             <label>
-              <div className="label">{t("Rol")}</div>
+              <div className="label">{t("Role")}</div>
               <div className="text-[16px] text-foreground">
-                {apiKey.role === "owner" && t("Propietario")}
-                {apiKey.role === "admin" && t("Administrador")}
-                {apiKey.role === "member" && t("Miembro")}
+                {apiKey.role === "owner" && t("Owner")}
+                {apiKey.role === "admin" && t("Administrator")}
+                {apiKey.role === "member" && t("Member")}
               </div>
             </label>
 
             <label>
-              <div className="label">{t("Clave")}</div>
+              <div className="label">{t("Key")}</div>
               <div className="flex items-center gap-2">
                 <input
                   type="text"
@@ -108,7 +106,7 @@ function ApiKeyDetail() {
                 <button
                   type="button"
                   className="p-[8px] hover:bg-muted rounded-full shrink-0"
-                  title={t("Copiar clave")}
+                  title={t("Copy key")}
                   onClick={copyKey}
                 >
                   {copied ? (

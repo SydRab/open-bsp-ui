@@ -74,7 +74,7 @@ export default function TemplatePicker() {
       <SearchBar
         value={search}
         onChange={setSearch}
-        placeholder={t("Buscar plantilla...")}
+        placeholder={t("Search template...")}
         autoFocus
         size="small"
         className="px-[40px] pt-[12px] pb-[8px] flex"
@@ -85,11 +85,11 @@ export default function TemplatePicker() {
         <div className="flex flex-col gap-[4px]">
           {isLoading ? (
             <div className="px-[10px] py-[8px] text-muted-foreground text-[13px]">
-              {t("Cargando...")}
+              {t("Loading...")}
             </div>
           ) : !filtered?.length ? (
             <div className="px-[10px] py-[8px] text-muted-foreground text-[13px]">
-              {t("Solo se muestran plantillas aprobadas")}
+              {t("Only approved templates are shown")}
             </div>
           ) : (
             filtered.map((tpl) => {
@@ -125,7 +125,7 @@ export default function TemplatePicker() {
             >
               <div className="font-medium text-[14px] flex items-center gap-[4px]">
                 <Plus className="w-[14px] h-[14px]" />
-                {t("Crear plantilla")}
+                {t("Create template")}
               </div>
             </div>
           )}

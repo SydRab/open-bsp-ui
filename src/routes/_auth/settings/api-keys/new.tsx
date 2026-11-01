@@ -33,14 +33,14 @@ function AddApiKey() {
   });
 
   const roles = {
-    owner: t("Propietario"),
-    admin: t("Administrador"),
-    member: t("Miembro"),
+    owner: t("Owner"),
+    admin: t("Administrator"),
+    member: t("Member"),
   };
 
   return (
     <>
-      <SectionHeader title={t("Generar clave API")} />
+      <SectionHeader title={t("Generate API Key")} />
 
       <SectionBody>
         <form
@@ -58,15 +58,15 @@ function AddApiKey() {
           <fieldset disabled={!isOwner} className="contents">
             <p className="text-muted-foreground text-[14px]">
               {t(
-                "Esto generará una nueva clave API que podrás usar para autenticarte.",
+                "This will generate a new API key that you can use to authenticate.",
               )}
             </p>
 
             <label>
-              <div className="label">{t("Nombre")}</div>
+              <div className="label">{t("Name")}</div>
               <input
                 className="text"
-                placeholder={t("Nombre de la clave")}
+                placeholder={t("Key name")}
                 {...register("name", { required: true })}
               />
             </label>
@@ -74,7 +74,7 @@ function AddApiKey() {
             <SelectField
               name="role"
               control={control}
-              label={t("Rol")}
+              label={t("Role")}
               options={[
                 { value: "member", label: roles.member },
                 { value: "admin", label: roles.admin },
@@ -93,10 +93,10 @@ function AddApiKey() {
           disabled={!isOwner}
           invalid={!isValid || !isDirty}
           loading={createApiKey.isPending}
-          disabledReason={t("Requiere permisos de propietario")}
+          disabledReason={t("Requires owner permissions")}
           className="primary"
         >
-          {t("Generar")}
+          {t("Generate")}
         </Button>
       </SectionFooter>
     </>

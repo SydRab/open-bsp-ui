@@ -65,16 +65,16 @@ function OnboardInstagram() {
 
       <div className="flex flex-col gap-4 w-[320px] text-center">
         {state.status === "loading" && (
-          <p className="text-muted-foreground">{t("Validando enlace...")}</p>
+          <p className="text-muted-foreground">{t("Validating link...")}</p>
         )}
 
         {state.status === "invalid" && (
           <div className="flex flex-col gap-2">
             <p className="text-destructive font-medium">
-              {t("Este enlace es inválido o ha expirado.")}
+              {t("This link is invalid or has expired.")}
             </p>
             <p className="text-muted-foreground text-[14px]">
-              {t("Solicitá un nuevo enlace a tu proveedor.")}
+              {t("Request a new link from your provider.")}
             </p>
           </div>
         )}
@@ -82,14 +82,14 @@ function OnboardInstagram() {
         {state.status === "valid" && (
           <div className="flex flex-col gap-4">
             <p className="text-foreground">
-              {t("Conectá tu cuenta de Instagram a")}{" "}
+              {t("Connect your Instagram account to")}{" "}
               <strong>{state.organization_name}</strong>
             </p>
 
             <div className="instructions text-left text-[14px] text-muted-foreground">
               <p>
                 {t(
-                  "Iniciá sesión con la cuenta de Instagram profesional (empresa o creador) que querés conectar. Vas a ser redirigido a Instagram para autorizar.",
+                  "Log in with the professional Instagram account (business or creator) you want to connect. You will be redirected to Instagram to authorize.",
                 )}
               </p>
             </div>
@@ -99,7 +99,7 @@ function OnboardInstagram() {
               className="primary bg-[#E1306C] hover:bg-[#E1306C]/90 text-white w-full"
               onClick={handleConnect}
             >
-              {t("Continuar con Instagram")}
+              {t("Continue with Instagram")}
             </Button>
           </div>
         )}

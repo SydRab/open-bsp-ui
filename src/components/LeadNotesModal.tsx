@@ -33,7 +33,7 @@ export default function LeadNotesModal({
   const [editDraft, setEditDraft] = useState("");
 
   const authorName = (agentId: string) =>
-    agents?.find((a) => a.id === agentId)?.name ?? t("un miembro");
+    agents?.find((a) => a.id === agentId)?.name ?? t("a member");
 
   const formatTime = (iso: string) =>
     new Intl.DateTimeFormat(undefined, {
@@ -45,7 +45,7 @@ export default function LeadNotesModal({
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40">
       <div className="bg-background text-foreground rounded-xl w-[380px] max-h-[75vh] p-[20px] flex flex-col gap-[12px]">
         <div className="flex items-center justify-between shrink-0">
-          <div className="text-[16px] font-medium">{t("Notas")}</div>
+          <div className="text-[16px] font-medium">{t("Notes")}</div>
           <button
             className="p-[4px] rounded-full hover:bg-muted"
             onClick={onClose}
@@ -57,7 +57,7 @@ export default function LeadNotesModal({
         <div className="flex-1 overflow-y-auto flex flex-col gap-[12px]">
           {(notes ?? []).length === 0 && (
             <div className="text-[13px] text-muted-foreground">
-              {t("Sin notas todavía.")}
+              {t("No notes yet.")}
             </div>
           )}
           {(notes ?? []).map((note) => (
@@ -81,14 +81,14 @@ export default function LeadNotesModal({
                         )
                       }
                     >
-                      {t("Guardar")}
+                      {t("Save")}
                     </Button>
                     <button
                       type="button"
                       className="text-[13px] text-muted-foreground"
                       onClick={() => setEditingId(null)}
                     >
-                      {t("Cancelar")}
+                      {t("Cancel")}
                     </button>
                   </div>
                 </div>
@@ -141,7 +141,7 @@ export default function LeadNotesModal({
         >
           <textarea
             className="text min-h-[60px]"
-            placeholder={t("Nueva nota")}
+            placeholder={t("New note")}
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
           />
@@ -151,7 +151,7 @@ export default function LeadNotesModal({
             </div>
           )}
           <Button type="submit" className="primary" loading={create.isPending}>
-            {t("Añadir nota")}
+            {t("Add note")}
           </Button>
         </form>
       </div>

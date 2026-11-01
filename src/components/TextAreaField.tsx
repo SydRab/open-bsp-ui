@@ -46,8 +46,8 @@ export default function TextAreaField<T extends FieldValues>({
                 <span className="text-foreground">{label}</span>
                 <span className="text-muted-foreground text-[14px]">
                   {charCount > 0
-                    ? `${charCount} ${t("caracteres")}`
-                    : t("Ninguna")}
+                    ? `${charCount} ${t("characters")}`
+                    : t("None")}
                 </span>
               </div>
               <ChevronRight className="w-[20px] h-[20px] text-muted-foreground shrink-0" />
@@ -60,7 +60,7 @@ export default function TextAreaField<T extends FieldValues>({
                 <div className="header items-center truncate shrink-0">
                   <button
                     className="p-[8px] rounded-full hover:bg-muted mr-[8px] ml-[-8px]"
-                    title={t("Volver")}
+                    title={t("Back")}
                     onClick={() => setIsOpen(false)}
                   >
                     <ArrowLeft className="w-[24px] h-[24px]" />

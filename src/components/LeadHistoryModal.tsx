@@ -38,7 +38,7 @@ export default function LeadHistoryModal({
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40">
       <div className="bg-background text-foreground rounded-xl w-[400px] max-h-[70vh] p-[20px] flex flex-col gap-[12px]">
         <div className="flex items-center justify-between shrink-0">
-          <div className="text-[16px] font-medium">{t("Historial")}</div>
+          <div className="text-[16px] font-medium">{t("History")}</div>
           <button
             className="p-[4px] rounded-full hover:bg-muted"
             onClick={onClose}

@@ -26,11 +26,11 @@ export const Route = createFileRoute("/_auth/settings/conversions/")({
 });
 
 const STATUS_LABELS: Record<string, string> = {
-  open: "Abierto",
-  qualified: "Calificado",
-  unqualified: "No calificado",
-  converted: "Convertido",
-  dropped: "Perdido",
+  open: "Open",
+  qualified: "Qualified",
+  unqualified: "Unqualified",
+  converted: "Converted",
+  dropped: "Dropped",
 };
 
 function ConversionSettings() {
@@ -50,7 +50,7 @@ function ConversionSettings() {
   const [metaEventName, setMetaEventName] = useState("");
 
   const stageName = (id: string) =>
-    stages?.find((s) => s.id === id)?.name ?? t("una etapa");
+    stages?.find((s) => s.id === id)?.name ?? t("a stage");
 
   const formatTime = (iso: string) =>
     new Intl.DateTimeFormat(undefined, {
@@ -60,16 +60,16 @@ function ConversionSettings() {
 
   return (
     <>
-      <SectionHeader title={t("Conversiones")} />
+      <SectionHeader title={t("Conversions")} />
 
       <SectionBody className="gap-[24px]">
         <div className="flex flex-col gap-[8px]">
           <div className="text-[14px] font-medium text-muted-foreground uppercase tracking-wide">
-            {t("Mapeo de eventos")}
+            {t("Event mapping")}
           </div>
           <div className="text-[13px] text-muted-foreground">
             {t(
-              "Qué evento se reporta a Meta cuando un lead llega a un estado o etapa -- solo para leads con origen de anuncio.",
+              "Which event is reported to Meta when a lead reaches a status or stage -- ad-sourced leads only.",
             )}
           </div>
 
@@ -92,7 +92,7 @@ function ConversionSettings() {
                   className="text-[13px] text-destructive"
                   onClick={() => deleteMapping.mutate(mapping.id)}
                 >
-                  {t("Quitar")}
+                  {t("Remove")}
                 </button>
               )}
             </div>
@@ -118,15 +118,15 @@ function ConversionSettings() {
                   setTriggerValue("");
                 }}
               >
-                <option value="status">{t("Estado")}</option>
-                <option value="stage">{t("Etapa")}</option>
+                <option value="status">{t("Status")}</option>
+                <option value="stage">{t("Stage")}</option>
               </select>
               <select
                 className="text"
                 value={triggerValue}
                 onChange={(e) => setTriggerValue(e.target.value)}
               >
-                <option value="">{t("Elegir")}</option>
+                <option value="">{t("Choose")}</option>
                 {triggerType === "status"
                   ? Object.entries(STATUS_LABELS).map(([value, label]) => (
                       <option key={value} value={value}>
@@ -141,7 +141,7 @@ function ConversionSettings() {
               </select>
               <input
                 className="text"
-                placeholder={t("Nombre del evento (ej. Lead, Purchase)")}
+                placeholder={t("Event name (e.g. Lead, Purchase)")}
                 value={metaEventName}
                 onChange={(e) => setMetaEventName(e.target.value)}
               />
@@ -155,7 +155,7 @@ function ConversionSettings() {
                 className="primary"
                 loading={setMapping.isPending}
               >
-                {t("Guardar")}
+                {t("Save")}
               </Button>
             </form>
           )}
@@ -163,12 +163,12 @@ function ConversionSettings() {
 
         <div className="flex flex-col gap-[8px]">
           <div className="text-[14px] font-medium text-muted-foreground uppercase tracking-wide">
-            {t("Registro de envíos")}
+            {t("Delivery log")}
           </div>
 
           {(outbox ?? []).length === 0 && (
             <div className="text-[13px] text-muted-foreground">
-              {t("Sin eventos todavía.")}
+              {t("No events yet.")}
             </div>
           )}
           {(outbox ?? []).map((event) => (
@@ -182,10 +182,10 @@ function ConversionSettings() {
                   {formatTime(event.created_at)}
                   {" · "}
                   {event.processed_at
-                    ? t("Enviado")
+                    ? t("Sent")
                     : event.attempts >= 5
-                      ? t("Agotado")
-                      : t("Pendiente")}
+                      ? t("Exhausted")
+                      : t("Pending")}
                   {event.processing_error && ` · ${event.processing_error}`}
                 </div>
               </div>
@@ -193,7 +193,7 @@ function ConversionSettings() {
                 <button
                   type="button"
                   className="shrink-0 p-[4px] text-muted-foreground hover:text-primary"
-                  title={t("Reintentar")}
+                  title={t("Retry")}
                   onClick={() => replay.mutate(event.id)}
                 >
                   <RefreshCw className="w-[14px] h-[14px]" />

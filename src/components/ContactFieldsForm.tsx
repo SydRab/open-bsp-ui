@@ -40,7 +40,7 @@ export default function ContactFieldsForm({
 
   return (
     <div className="flex flex-col gap-[12px] pt-[24px] pl-[10px]">
-      <div className="text-[16px] text-muted-foreground">{t("Detalles")}</div>
+      <div className="text-[16px] text-muted-foreground">{t("Details")}</div>
       <FieldsEditor
         // Remount when the saved values change, so the draft starts fresh.
         key={JSON.stringify(contact.custom_fields)}
@@ -99,7 +99,7 @@ function FieldsEditor({
             loading={save.isPending}
             onClick={() => save.mutate({ id: contact.id, values: changed })}
           >
-            {t("Guardar detalles")}
+            {t("Save details")}
           </Button>
         </div>
       )}

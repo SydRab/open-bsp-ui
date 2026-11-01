@@ -73,11 +73,11 @@ function WhatsAppWebNew() {
 
   const errorMessage =
     poll.data?.status === "error"
-      ? poll.data.error || t("Error al vincular. Intentá de nuevo.")
+      ? poll.data.error || t("Pairing error. Try again.")
       : start.isError
-        ? t("Error al vincular. Intentá de nuevo.")
+        ? t("Pairing error. Try again.")
         : poll.isError
-          ? t("No se pudo contactar el puente. Intentá de nuevo.")
+          ? t("Couldn't reach the bridge. Try again.")
           : undefined;
 
   const started = !!sessionId || start.isPending;
@@ -85,22 +85,22 @@ function WhatsAppWebNew() {
 
   return (
     <>
-      <SectionHeader title={t("Vincular dispositivo")} />
+      <SectionHeader title={t("Link device")} />
 
       <SectionBody>
         <form>
           <div className="instructions">
             <p>
               {t(
-                "Vinculá tu número escaneando un código QR o ingresando un código en tu teléfono, como un dispositivo más de WhatsApp.",
+                "Link your number by scanning a QR code or entering a code on your phone, just like another WhatsApp device.",
               )}
             </p>
             <p>
-              <strong>{t("Importante")}</strong>
+              <strong>{t("Important")}</strong>
             </p>
             <p className="text-destructive font-medium">
               {t(
-                "El uso de este método de conexión infringe los términos y condiciones de WhatsApp y tu cuenta podría ser baneada.",
+                "Using this connection method breaks WhatsApp terms and conditions and your account could be banned.",
               )}
             </p>
           </div>
@@ -108,7 +108,7 @@ function WhatsAppWebNew() {
           {/* Whose number this is - hidden once pairing is under way */}
           {!pairedPending && !start.isPending && (
             <label>
-              <div className="label">{t("Número")}</div>
+              <div className="label">{t("Number")}</div>
               <ScopeToggle
                 value={scope}
                 onChange={setScope}
@@ -132,7 +132,7 @@ function WhatsAppWebNew() {
                       : "text-muted-foreground hover:bg-accent")
                   }
                 >
-                  {m === "qr" ? t("Código QR") : t("Vincular con número")}
+                  {m === "qr" ? t("QR code") : t("Link with number")}
                 </button>
               ))}
             </div>
@@ -147,7 +147,7 @@ function WhatsAppWebNew() {
           {/* Phone input (code method, before start) */}
           {method === "code" && !pairedPending && (
             <label>
-              <div className="label">{t("Número de teléfono")}</div>
+              <div className="label">{t("Phone number")}</div>
               <input
                 type="tel"
                 className="text"
@@ -166,7 +166,7 @@ function WhatsAppWebNew() {
               </div>
               <p className="text-[14px] text-muted-foreground text-center">
                 {t(
-                  "Abrí WhatsApp → Dispositivos vinculados → Vincular un dispositivo y escaneá el código.",
+                  "Open WhatsApp → Linked devices → Link a device and scan the code.",
                 )}
               </p>
             </div>
@@ -179,7 +179,7 @@ function WhatsAppWebNew() {
               </div>
               <p className="text-[14px] text-muted-foreground text-center">
                 {t(
-                  "Abrí WhatsApp → Dispositivos vinculados → Vincular con número de teléfono e ingresá el código.",
+                  "Open WhatsApp → Linked devices → Link with phone number and enter the code.",
                 )}
               </p>
             </div>
@@ -188,7 +188,7 @@ function WhatsAppWebNew() {
           {pairedPending && !qrCode && !pairingCode && (
             <div className="flex items-center gap-[8px] text-muted-foreground">
               <Spinner size={20} />
-              {t("Generando...")}
+              {t("Generating...")}
             </div>
           )}
 
@@ -196,7 +196,7 @@ function WhatsAppWebNew() {
           {pairedPending && (qrCode || pairingCode) && (
             <div className="flex items-center justify-center gap-[8px] text-muted-foreground text-[14px]">
               <Spinner size={16} />
-              {t("Esperando vinculación...")}
+              {t("Waiting for pairing...")}
             </div>
           )}
         </form>
@@ -211,16 +211,16 @@ function WhatsAppWebNew() {
               !allowed || (method === "code" && !isValidPhoneNumber(phone))
             }
             disabledReason={
-              !allowed ? t("Requiere permisos de administrador") : undefined
+              !allowed ? t("Requires administrator permissions") : undefined
             }
             loading={start.isPending}
             onClick={beginPairing}
           >
-            {method === "qr" ? t("Generar código QR") : t("Obtener código")}
+            {method === "qr" ? t("Generate QR code") : t("Get code")}
           </Button>
         ) : (
           <Button type="button" className="destructive w-full" onClick={reset}>
-            {t("Cancelar")}
+            {t("Cancel")}
           </Button>
         )}
       </SectionFooter>

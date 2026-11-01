@@ -19,10 +19,10 @@ function overdueBy(dueAt: string | null, t: (s: string) => string): string {
   if (!dueAt) return "";
   const minutes = Math.round((Date.now() - new Date(dueAt).getTime()) / 60_000);
   if (minutes <= 0) {
-    return t("Vence en") + ` ${Math.abs(minutes)}m`;
+    return t("Due in") + ` ${Math.abs(minutes)}m`;
   }
-  if (minutes < 60) return t("Vencido hace") + ` ${minutes}m`;
-  return t("Vencido hace") + ` ${Math.round(minutes / 60)}h`;
+  if (minutes < 60) return t("Overdue by") + ` ${minutes}m`;
+  return t("Overdue by") + ` ${Math.round(minutes / 60)}h`;
 }
 
 function UnansweredLeads() {
@@ -31,12 +31,12 @@ function UnansweredLeads() {
 
   return (
     <>
-      <SectionHeader title={t("Leads sin respuesta")} />
+      <SectionHeader title={t("Unanswered leads")} />
 
       <SectionBody>
         {(leads ?? []).length === 0 && (
           <div className="py-[32px] text-center text-muted-foreground text-[14px]">
-            {t("No hay leads sin respuesta")}
+            {t("No unanswered leads")}
           </div>
         )}
         {(leads ?? []).map((lead) => {
@@ -47,7 +47,7 @@ function UnansweredLeads() {
           return (
             <SectionItem
               key={lead.id}
-              title={lead.contactName || t("Sin nombre")}
+              title={lead.contactName || t("No name")}
               description={
                 <span className="flex items-center gap-[4px]">
                   {isOverdue ? (
@@ -56,7 +56,7 @@ function UnansweredLeads() {
                     <Clock className="w-[14px] h-[14px] text-muted-foreground shrink-0" />
                   )}
                   {(lead.assigneeName
-                    ? `${t("Asignado a")} ${lead.assigneeName} · `
+                    ? `${t("Assigned to")} ${lead.assigneeName} · `
                     : "") + overdueBy(lead.first_response_due_at, t)}
                 </span>
               }

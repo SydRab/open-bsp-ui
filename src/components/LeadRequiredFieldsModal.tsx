@@ -43,7 +43,7 @@ export default function LeadRequiredFieldsModal({
       <div className="bg-background text-foreground rounded-xl w-[360px] p-[20px] flex flex-col gap-[16px]">
         <div className="flex items-center justify-between">
           <div className="text-[16px] font-medium">
-            {t("Faltan campos obligatorios")}
+            {t("Missing required fields")}
           </div>
           <button
             className="p-[4px] rounded-full hover:bg-muted"
@@ -54,7 +54,9 @@ export default function LeadRequiredFieldsModal({
         </div>
 
         <p className="text-[14px] text-muted-foreground">
-          {t("Esta etapa exige completar estos campos antes de mover el lead.")}
+          {t(
+            "This stage requires these fields to be filled in before moving the lead.",
+          )}
         </p>
 
         <form
@@ -88,7 +90,7 @@ export default function LeadRequiredFieldsModal({
           )}
 
           <Button type="submit" className="primary" loading={pending}>
-            {t("Guardar y mover")}
+            {t("Save and move")}
           </Button>
         </form>
       </div>

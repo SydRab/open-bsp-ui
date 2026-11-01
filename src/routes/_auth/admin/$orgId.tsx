@@ -36,10 +36,10 @@ export const Route = createFileRoute("/_auth/admin/$orgId")({
 });
 
 const SOURCE_LABELS: Record<string, string> = {
-  tier: "De su plan",
-  override: "Forzado por la plataforma",
-  kill_switch: "Pausado por la plataforma",
-  unrestricted: "Sin restricción",
+  tier: "From their plan",
+  override: "Forced by the platform",
+  kill_switch: "Paused by the platform",
+  unrestricted: "Unrestricted",
 };
 
 function TenantDetail() {
@@ -83,7 +83,7 @@ function TenantDetail() {
   if (!tenant) {
     return (
       <>
-        <SectionHeader title={t("Organización")} />
+        <SectionHeader title={t("Organization")} />
         <SectionBody>
           <div className="flex justify-center p-[16px]">
             <Spinner size={20} />
@@ -104,10 +104,10 @@ function TenantDetail() {
 
       <SectionBody className="gap-[20px]">
         {/* Status */}
-        <Section title={t("Estado")}>
+        <Section title={t("Status")}>
           <div className="flex items-center justify-between gap-[12px] px-[6px]">
             <span className="text-[15px]">
-              {tenant.status === "suspended" ? t("Suspendida") : t("Activa")}
+              {tenant.status === "suspended" ? t("Suspended") : t("Active")}
             </span>
             {tenant.status === "suspended" ? (
               <Button
@@ -116,7 +116,7 @@ function TenantDetail() {
                 loading={reactivate.isPending}
                 onClick={() => reactivate.mutate({ organizationId: orgId })}
               >
-                {t("Reactivar")}
+                {t("Reactivate")}
               </Button>
             ) : (
               <Button
@@ -125,13 +125,13 @@ function TenantDetail() {
                 loading={suspend.isPending}
                 onClick={() => {
                   const why = window.prompt(
-                    t("Motivo de la suspensión (opcional):"),
+                    t("Reason for suspending (optional):"),
                   );
                   if (why !== null)
                     suspend.mutate({ organizationId: orgId, reason: why });
                 }}
               >
-                {t("Suspender")}
+                {t("Suspend")}
               </Button>
             )}
           </div>
@@ -145,7 +145,7 @@ function TenantDetail() {
         {/* Plan */}
         <Section title={t("Plan")}>
           <SelectField
-            label={t("Nivel")}
+            label={t("Tier")}
             value={tenant.tier_id ?? ""}
             onChange={(tierId) =>
               setTier.mutate({ organizationId: orgId, tierId })
@@ -158,11 +158,11 @@ function TenantDetail() {
           />
           <div className="text-[13px] text-muted-foreground px-[6px]">
             {tenant.seats_cap == null
-              ? t("{used} miembros (sin límite)").replace(
+              ? t("{used} members (no limit)").replace(
                   "{used}",
                   String(tenant.seats_used),
                 )
-              : t("{used} de {cap} miembros")
+              : t("{used} of {cap} members")
                   .replace("{used}", String(tenant.seats_used))
                   .replace("{cap}", String(tenant.seats_cap))}
           </div>
@@ -180,7 +180,7 @@ function TenantDetail() {
               <span className="text-[15px]">
                 {tenant.pack_key} v{tenant.pack_version}
                 {outdated &&
-                  ` → v${tenant.latest_pack_version} ${t("disponible")}`}
+                  ` → v${tenant.latest_pack_version} ${t("available")}`}
               </span>
               {outdated && (
                 <Button
@@ -189,7 +189,7 @@ function TenantDetail() {
                   loading={upgradePack.isPending}
                   onClick={() => upgradePack.mutate({ organizationId: orgId })}
                 >
-                  {t("Actualizar")}
+                  {t("Update")}
                 </Button>
               )}
             </div>
@@ -202,24 +202,24 @@ function TenantDetail() {
         )}
 
         {/* Support access */}
-        <Section title={t("Acceso de soporte")}>
+        <Section title={t("Support access")}>
           <p className="text-muted-foreground text-[13px] px-[6px]">
             {t(
-              "Otorga tu propio acceso, con un motivo registrado, para ver la configuración y el registro de actividad de esta organización. Nunca da acceso a mensajes o contactos.",
+              "Grant yourself access, with a recorded reason, to view this organization's configuration and activity log. This never gives access to messages or contacts.",
             )}
           </p>
           <div className="flex flex-col gap-[10px] px-[6px]">
             <label>
-              <div className="label">{t("Motivo")}</div>
+              <div className="label">{t("Reason")}</div>
               <input
                 className="text"
-                placeholder={t("Ej. ticket #42")}
+                placeholder={t("E.g. ticket #42")}
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
               />
             </label>
             <label>
-              <div className="label">{t("Horas")}</div>
+              <div className="label">{t("Hours")}</div>
               <input
                 type="number"
                 className="text"
@@ -242,7 +242,7 @@ function TenantDetail() {
               }
             >
               <ShieldCheck className="w-[18px] h-[18px]" />
-              {t("Solicitar acceso")}
+              {t("Request access")}
             </Button>
             {grantAccess.error && (
               <div className="text-destructive text-[13px]">
@@ -256,7 +256,7 @@ function TenantDetail() {
               key={grant.id}
               className="h-auto! min-h-[56px] py-[8px]"
               title={grant.reason}
-              description={`${grant.admin_email} · ${formatTime(grant.granted_at)} → ${formatTime(grant.expires_at)}${grant.active ? "" : ` · ${t("expirado o revocado")}`}`}
+              description={`${grant.admin_email} · ${formatTime(grant.granted_at)} → ${formatTime(grant.expires_at)}${grant.active ? "" : ` · ${t("expired or revoked")}`}`}
               aside={
                 <div className="p-[8px]">
                   <ShieldCheck
@@ -267,7 +267,7 @@ function TenantDetail() {
               onClick={
                 grant.active
                   ? () => {
-                      if (window.confirm(t("¿Revocar este acceso?")))
+                      if (window.confirm(t("Revoke this access?")))
                         revokeAccess.mutate({
                           grantId: grant.id,
                           organizationId: orgId,
@@ -283,11 +283,11 @@ function TenantDetail() {
             override/clear actions themselves don't (immediate platform
             actions), but without the current state picking enabled/disabled
             blind isn't useful, so both live behind the same gate. */}
-        <Section title={t("Funciones")}>
+        <Section title={t("Features")}>
           {!hasActiveGrant && (
             <div className="text-muted-foreground text-[13px] px-[6px]">
               {t(
-                "Solicita acceso de soporte para ver y modificar las funciones de esta organización.",
+                "Request support access to view and change this organization's features.",
               )}
             </div>
           )}
@@ -307,7 +307,7 @@ function TenantDetail() {
                   <div className="text-[12px] text-muted-foreground">
                     {feature.enabled
                       ? t(SOURCE_LABELS[feature.source] ?? feature.source)
-                      : t("No incluida")}
+                      : t("Not included")}
                     {feature.override_reason && ` · ${feature.override_reason}`}
                   </div>
                 </div>
@@ -324,7 +324,7 @@ function TenantDetail() {
                         })
                       }
                     >
-                      {t("Quitar")}
+                      {t("Remove")}
                     </Button>
                   ) : (
                     <>
@@ -332,7 +332,7 @@ function TenantDetail() {
                         type="button"
                         loading={setFeatureOverride.isPending}
                         onClick={() => {
-                          const why = window.prompt(t("Motivo:"));
+                          const why = window.prompt(t("Reason:"));
                           if (why)
                             setFeatureOverride.mutate({
                               organizationId: orgId,
@@ -342,13 +342,13 @@ function TenantDetail() {
                             });
                         }}
                       >
-                        {t("Forzar on")}
+                        {t("Force on")}
                       </Button>
                       <Button
                         type="button"
                         loading={setFeatureOverride.isPending}
                         onClick={() => {
-                          const why = window.prompt(t("Motivo:"));
+                          const why = window.prompt(t("Reason:"));
                           if (why)
                             setFeatureOverride.mutate({
                               organizationId: orgId,
@@ -358,7 +358,7 @@ function TenantDetail() {
                             });
                         }}
                       >
-                        {t("Forzar off")}
+                        {t("Force off")}
                       </Button>
                     </>
                   )}
@@ -376,12 +376,10 @@ function TenantDetail() {
         </Section>
 
         {/* Audit log — same support-access gate as above. */}
-        <Section title={t("Registro de actividad")}>
+        <Section title={t("Activity log")}>
           {!hasActiveGrant && (
             <div className="text-muted-foreground text-[13px] px-[6px]">
-              {t(
-                "Solicita acceso de soporte para ver el registro de actividad.",
-              )}
+              {t("Request support access to view the activity log.")}
             </div>
           )}
           {hasActiveGrant && auditLog.isLoading && (

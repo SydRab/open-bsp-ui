@@ -15,10 +15,10 @@ export const Route = createFileRoute("/_auth/settings/plan/")({
 });
 
 const SOURCE_LABELS: Record<Feature["source"], string> = {
-  tier: "De tu plan",
-  override: "Activado para ti",
-  kill_switch: "Pausado por la plataforma",
-  unrestricted: "Sin restricción",
+  tier: "From your plan",
+  override: "Enabled for you",
+  kill_switch: "Paused by the platform",
+  unrestricted: "Unrestricted",
 };
 
 function PlanAndFeatures() {
@@ -34,7 +34,7 @@ function PlanAndFeatures() {
 
   return (
     <>
-      <SectionHeader title={t("Plan y funciones")} />
+      <SectionHeader title={t("Plan & features")} />
 
       <SectionBody className="gap-[20px]">
         {(loadingSubscription || loadingFeatures) && (
@@ -45,22 +45,22 @@ function PlanAndFeatures() {
 
         <div className="flex flex-col gap-[4px] px-[6px]">
           <div className="text-[14px] font-medium text-muted-foreground uppercase tracking-wide">
-            {t("Plan actual")}
+            {t("Current plan")}
           </div>
           <div className="text-[18px] font-medium">
-            {subscription?.tiers?.name ?? t("Sin plan")}
+            {subscription?.tiers?.name ?? t("No plan")}
           </div>
         </div>
 
         {seatsUsed !== undefined && (
           <div className="flex flex-col gap-[4px] px-[6px]">
             <div className="text-[14px] font-medium text-muted-foreground uppercase tracking-wide">
-              {t("Miembros")}
+              {t("Members")}
             </div>
             <div className="text-[15px]">
               {seatsCap == null
-                ? t("{used} (sin límite)").replace("{used}", String(seatsUsed))
-                : t("{used} de {cap}")
+                ? t("{used} (no limit)").replace("{used}", String(seatsUsed))
+                : t("{used} of {cap}")
                     .replace("{used}", String(seatsUsed))
                     .replace("{cap}", String(seatsCap))}
             </div>
@@ -69,7 +69,7 @@ function PlanAndFeatures() {
 
         <div className="flex flex-col gap-[4px] px-[6px]">
           <div className="text-[14px] font-medium text-muted-foreground uppercase tracking-wide">
-            {t("Funciones")}
+            {t("Features")}
           </div>
           <div className="flex flex-col">
             {features?.map((feature) => (
@@ -96,7 +96,7 @@ function FeatureRow({ feature }: { feature: Feature }) {
         )}
         {!feature.enabled && feature.unlocks_at_tier && (
           <div className="text-[12px] text-muted-foreground mt-[2px]">
-            {t("Disponible en el plan {tier}").replace(
+            {t("Available on the {tier} plan").replace(
               "{tier}",
               feature.unlocks_at_tier,
             )}
@@ -107,7 +107,7 @@ function FeatureRow({ feature }: { feature: Feature }) {
             {feature.override_reason}
             {feature.override_expires_at &&
               " · " +
-                t("hasta {date}").replace(
+                t("until {date}").replace(
                   "{date}",
                   new Date(feature.override_expires_at).toLocaleDateString(),
                 )}
@@ -122,7 +122,7 @@ function FeatureRow({ feature }: { feature: Feature }) {
             : "bg-accent text-muted-foreground")
         }
       >
-        {feature.enabled ? t(SOURCE_LABELS[feature.source]) : t("No incluida")}
+        {feature.enabled ? t(SOURCE_LABELS[feature.source]) : t("Not included")}
       </span>
     </div>
   );

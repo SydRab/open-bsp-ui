@@ -60,24 +60,24 @@ function OnboardInstagramCallback() {
       <div className="flex flex-col gap-4 w-[320px] text-center">
         {result.status === "working" && (
           <p className="text-muted-foreground">
-            {t("Conectando tu cuenta de Instagram...")}
+            {t("Connecting your Instagram account...")}
           </p>
         )}
 
         {result.status === "success" && (
           <div className="flex flex-col gap-2">
             <p className="text-primary font-medium text-[18px]">
-              {t("Tu cuenta de Instagram fue conectada exitosamente.")}
+              {t("Your Instagram account was connected successfully.")}
             </p>
             <p className="text-muted-foreground text-[14px]">
-              {t("Podés cerrar esta página.")}
+              {t("You can close this page.")}
             </p>
           </div>
         )}
 
         {result.status === "error" && (
           <p className="text-destructive font-medium">
-            {t("Error al conectar. Intentá de nuevo o contactá al proveedor.")}
+            {t("Connection error. Try again or contact the provider.")}
           </p>
         )}
       </div>

@@ -573,9 +573,9 @@ export default function ChatFooter() {
                 title={
                   noteMode
                     ? t(
-                        "Nota interna activada (clic para enviar un mensaje normal)",
+                        "Internal note mode on (click to send a normal message)",
                       )
-                    : t("Escribir una nota interna")
+                    : t("Write an internal note")
                 }
               >
                 <StickyNote className="w-[20px] h-[20px]" />
@@ -593,7 +593,7 @@ export default function ChatFooter() {
                       : " cursor-pointer hover:bg-accent")
                   }
                   onClick={() => toggle("cannedReplyPicker")}
-                  title={t("Respuestas rápidas")}
+                  title={t("Canned replies")}
                 >
                   <MessageSquareText className="w-[20px] h-[20px]" />
                 </button>
@@ -609,7 +609,7 @@ export default function ChatFooter() {
               <button
                 className="p-[8px] rounded-full cursor-pointer hover:bg-accent"
                 onClick={() => setTemplateDraft(activeConvId, null)}
-                title={t("Descartar plantilla")}
+                title={t("Discard template")}
               >
                 <X className="w-[24px] h-[24px]" />
               </button>
@@ -623,7 +623,7 @@ export default function ChatFooter() {
                     : " cursor-pointer hover:bg-accent")
                 }
                 onClick={() => fileInput.current?.click()}
-                title={t("Adjuntar")}
+                title={t("Attach")}
               >
                 <Plus className="w-[24px] h-[24px]" />
               </button>
@@ -709,10 +709,10 @@ export default function ChatFooter() {
                       ? undefined
                       : conv.service === "whatsapp"
                         ? t(
-                            "WhatsApp cierra la conversación a las 24 horas del último mensaje recibido. Para abrir la conversación debes utilizar una plantilla.",
+                            "WhatsApp closes the conversation 24 hours after the last message received. You must use a template to reopen the conversation.",
                           )
                         : t(
-                            "La conversación se cerró 24 horas después del último mensaje del contacto. Esperá a que te escriba de nuevo para responder.",
+                            "The conversation closed 24 hours after the contact's last message. Wait for them to write again before you can reply.",
                           )
                   }
                 />
@@ -731,33 +731,33 @@ export default function ChatFooter() {
                     }
                   >
                     {noteMode ? (
-                      <span>{t("Escribe una nota interna")}</span>
+                      <span>{t("Write an internal note")}</span>
                     ) : !inCSWindow ? (
                       conv.service === "whatsapp" ? (
                         <>
                           <span className="lg:hidden">
-                            {t("Conversación cerrada")}
+                            {t("Conversation closed")}
                           </span>
                           <span className="hidden lg:inline">
                             {t(
-                              "Conversación cerrada, abre la conversación con una plantilla",
+                              "Conversation closed, open the conversation with a template",
                             )}
                           </span>
                         </>
                       ) : (
-                        <span>{t("Conversación cerrada")}</span>
+                        <span>{t("Conversation closed")}</span>
                       )
                     ) : conv.service === "whatsapp" ||
                       conv.service === "instagram" ? (
                       <>
-                        <span className="lg:hidden">{t("Cerrará en")}</span>
+                        <span className="lg:hidden">{t("Will close in")}</span>
                         <span className="hidden lg:inline">
-                          {t("La conversación cerrará en")}
+                          {t("The conversation will close in")}
                         </span>{" "}
                         <span>{remaining}</span>
                       </>
                     ) : (
-                      <span>{t("Escribe un mensaje")}</span>
+                      <span>{t("Write a message")}</span>
                     )}
                   </div>
                 )}
@@ -795,10 +795,10 @@ export default function ChatFooter() {
             }}
             title={
               templateDraft
-                ? t("Enviar plantilla")
+                ? t("Send template")
                 : noteMode
-                  ? t("Guardar nota")
-                  : t("Enviar mensaje")
+                  ? t("Save note")
+                  : t("Send message")
             }
           >
             <svg className="w-[24px] h-[24px] transition text-primary-foreground">

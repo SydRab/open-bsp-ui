@@ -44,7 +44,7 @@ export default function AuditEntryList({
       )}
       {!isLoading && !error && (entries ?? []).length === 0 && (
         <div className="text-[13px] text-muted-foreground">
-          {t(emptyLabel ?? "Sin actividad todavía.")}
+          {t(emptyLabel ?? "No activity yet.")}
         </div>
       )}
       {(entries ?? []).map((entry) => (

@@ -27,50 +27,50 @@ export type AuditLookups = {
 
 /** The filter options of the Activity page: the part of the action before the dot. */
 export const AUDIT_AREAS = [
-  { value: "organization", label: "Organización" },
-  { value: "member", label: "Miembros" },
+  { value: "organization", label: "Organization" },
+  { value: "member", label: "Members" },
   { value: "role", label: "Roles" },
-  { value: "invitation", label: "Invitaciones" },
+  { value: "invitation", label: "Invitations" },
   { value: "pack", label: "Pack" },
-  { value: "setting", label: "Reglas y módulos" },
-  { value: "team", label: "Equipos" },
-  { value: "disclaimer", label: "Aviso legal" },
-  { value: "custom_field", label: "Campos personalizados" },
-  { value: "feature", label: "Plan y funciones" },
+  { value: "setting", label: "Rules & modules" },
+  { value: "team", label: "Teams" },
+  { value: "disclaimer", label: "Disclaimer" },
+  { value: "custom_field", label: "Custom fields" },
+  { value: "feature", label: "Plan & features" },
 ] as const;
 
 const FIELD_LABELS: Record<string, string> = {
-  name: "Nombre",
-  slug: "Identificador (slug)",
-  timezone: "Zona horaria",
-  locale: "Idioma",
-  legal_name: "Razón social",
-  address: "Dirección",
-  support_email: "Correo de soporte",
-  support_phone: "Teléfono de soporte",
-  website: "Sitio web",
-  registrations: "Números de registro",
+  name: "Name",
+  slug: "Identifier (slug)",
+  timezone: "Time zone",
+  locale: "Language",
+  legal_name: "Legal name",
+  address: "Address",
+  support_email: "Support email",
+  support_phone: "Support phone",
+  website: "Website",
+  registrations: "Registration numbers",
 };
 
 // Upstream tiers, for invitations made without a crm role.
 const TIER_LABELS: Record<string, string> = {
-  owner: "Propietario",
-  admin: "Administrador",
-  member: "Miembro",
+  owner: "Owner",
+  admin: "Administrator",
+  member: "Member",
 };
 
 const LEAD_SCOPE_LABELS: Record<string, string> = {
-  own: "Solo los suyos",
-  team: "Su equipo",
-  all: "Todos",
+  own: "Only their own",
+  team: "Their team",
+  all: "All",
 };
 
 // [crm] P3-07d/P3-08: how a reminder was actually delivered.
 const CHANNEL_LABELS: Record<string, string> = {
   whatsapp: "WhatsApp",
-  in_app: "en la app",
-  none: "sin plantilla aprobada",
-  skipped_past_due: "omitido (ya había pasado)",
+  in_app: "in-app",
+  none: "no approved template",
+  skipped_past_due: "skipped (already past)",
 };
 
 function fill(template: string, values: Record<string, string>) {
@@ -99,13 +99,13 @@ function field(details: Record<string, unknown>, side: "before" | "after") {
 export function describeActor(entry: AuditEntry, t: Translate): string {
   switch (entry.actor_type) {
     case "user":
-      return entry.actor_name ?? t("Usuario sin acceso");
+      return entry.actor_name ?? t("Former user");
     case "api_key":
-      return `${t("Clave API")} ${entry.actor_name ?? ""}`.trim();
+      return `${t("API Key")} ${entry.actor_name ?? ""}`.trim();
     case "service":
-      return t("Plataforma");
+      return t("Platform");
     default:
-      return t("Sistema");
+      return t("System");
   }
 }
 
@@ -129,32 +129,32 @@ export function describeAction(
   };
   const scope = (value: unknown) => {
     const v = text(value);
-    return v ? t(LEAD_SCOPE_LABELS[v] ?? v) : t("Según el rol");
+    return v ? t(LEAD_SCOPE_LABELS[v] ?? v) : t("Role default");
   };
-  const member = entry.target_name ?? t("un miembro");
+  const member = entry.target_name ?? t("a member");
   const values = (template: string, extra: Record<string, string> = {}) =>
     fill(t(template), { member, ...extra });
   // [crm] P3-07c
   const stageName = (id: unknown) => {
     const k = text(id);
-    return k ? (lookups.stageNames?.get(k) ?? t("una etapa")) : t("sin etapa");
+    return k ? (lookups.stageNames?.get(k) ?? t("a stage")) : t("no stage");
   };
   const qualityName = (id: unknown) => {
     const k = text(id);
     return k
-      ? (lookups.qualityNames?.get(k) ?? t("una calidad"))
-      : t("sin calificar");
+      ? (lookups.qualityNames?.get(k) ?? t("a quality"))
+      : t("unqualified");
   };
   const agentName = (id: unknown) => {
     const k = text(id);
-    return k ? (lookups.agentNames?.get(k) ?? t("alguien")) : t("nadie");
+    return k ? (lookups.agentNames?.get(k) ?? t("someone")) : t("nobody");
   };
 
   switch (entry.action) {
     case "organization.created":
-      return t("Creó la organización");
+      return t("Created the organization");
     case "organization.profile_updated":
-      return values("Cambió el perfil: {changes}", {
+      return values("Changed the profile: {changes}", {
         changes: Object.keys(after)
           .map((k) =>
             // Address and registrations are lists: name the field only.
@@ -166,120 +166,124 @@ export function describeAction(
       });
     case "organization.suspended":
       return d.reason
-        ? values("Suspendió la organización: {reason}", {
+        ? values("Suspended the organization: {reason}", {
             reason: text(d.reason),
           })
-        : t("Suspendió la organización");
+        : t("Suspended the organization");
     case "organization.reactivated":
-      return t("Reactivó la organización");
+      return t("Reactivated the organization");
     case "organization.deletion_requested":
-      return t("Solicitó eliminar la organización");
+      return t("Requested deletion of the organization");
     case "organization.deletion_cancelled":
-      return t("Canceló la eliminación de la organización");
+      return t("Cancelled the organization's deletion");
     case "organization.mfa_requirement_changed":
       return d.required
-        ? t("Exigió 2FA a propietarios y administradores")
-        : t("Dejó de exigir 2FA a propietarios y administradores");
+        ? t("Required 2FA for owners and admins")
+        : t("Stopped requiring 2FA for owners and admins");
 
     case "member.joined":
-      return values("{member} se unió a la organización");
+      return values("{member} joined the organization");
     case "member.deactivated":
-      return values("Desactivó a {member}");
+      return values("Deactivated {member}");
     case "member.reactivated":
-      return values("Reactivó a {member}");
+      return values("Reactivated {member}");
     case "member.role_changed":
       return before.role
-        ? values("Cambió el rol de {member}: {before} → {after}", {
+        ? values("Changed {member}'s role: {before} → {after}", {
             before: role(before.role),
             after: role(after.role),
           })
-        : values("Asignó a {member} el rol {after}", {
+        : values("Gave {member} the {after} role", {
             after: role(after.role),
           });
     case "member.lead_scope_changed":
-      return values("Cambió los leads que ve {member}: {before} → {after}", {
+      return values("Changed which leads {member} sees: {before} → {after}", {
         before: scope(before.lead_scope),
         after: scope(after.lead_scope),
       });
     case "member.permission_override_set":
       return values(
         d.granted
-          ? "Dio a {member} un permiso extra: {permission}"
-          : "Quitó a {member} un permiso: {permission}",
+          ? "Gave {member} an extra permission: {permission}"
+          : "Took a permission from {member}: {permission}",
         { permission: permission(d.permission) },
       );
     case "member.permission_override_removed":
-      return values("Devolvió a {member} el permiso de su rol: {permission}", {
+      return values("Reset {member} to their role's setting: {permission}", {
         permission: permission(d.permission),
       });
     case "member.number_access_granted":
-      return values("Dio a {member} acceso a {address}", {
+      return values("Gave {member} access to {address}", {
         address: text(d.address),
       });
     case "member.number_access_revoked":
-      return values("Quitó a {member} el acceso a {address}", {
+      return values("Removed {member}'s access to {address}", {
         address: text(d.address),
       });
 
     case "role.permission_granted":
-      return values("Activó en {role}: {permission}", {
+      return values("Turned on for {role}: {permission}", {
         role: entry.target_name ? t(entry.target_name) : role(d.role),
         permission: permission(d.permission),
       });
     case "role.permission_revoked":
-      return values("Desactivó en {role}: {permission}", {
+      return values("Turned off for {role}: {permission}", {
         role: entry.target_name ? t(entry.target_name) : role(d.role),
         permission: permission(d.permission),
       });
 
     case "invitation.created":
-      return values("Invitó a {email} como {role}", {
+      return values("Invited {email} as {role}", {
         email: text(d.email),
         role: d.role
           ? role(d.role)
           : t(TIER_LABELS[text(d.tier)] ?? text(d.tier)),
       });
     case "invitation.accepted":
-      return values("{email} aceptó la invitación", { email: text(d.email) });
+      return values("{email} accepted the invitation", {
+        email: text(d.email),
+      });
     case "invitation.rejected":
-      return values("{email} rechazó la invitación", { email: text(d.email) });
+      return values("{email} declined the invitation", {
+        email: text(d.email),
+      });
     case "invitation.revoked":
-      return values("Revocó la invitación de {email}", {
+      return values("Revoked {email}'s invitation", {
         email: text(d.email),
       });
 
     case "pack.applied":
-      return values("Aplicó el pack {pack} v{version}", {
+      return values("Applied the {pack} pack v{version}", {
         pack: text(d.pack),
         version: text(d.version),
       });
     case "pack.upgraded":
-      return values("Actualizó el pack {pack}: v{before} → v{after}", {
+      return values("Upgraded the {pack} pack: v{before} → v{after}", {
         pack: text(d.pack),
         before: text(before.version),
         after: text(after.version),
       });
     case "pack.item_updated":
-      return values("Editó {key} del pack", { key: text(d.key) });
+      return values("Edited pack item {key}", { key: text(d.key) });
     case "pack.item_reset":
-      return values("Restableció {key} del pack", { key: text(d.key) });
+      return values("Reset pack item {key}", { key: text(d.key) });
 
     case "custom_field.created":
-      return values("Creó el campo {field}", {
+      return values("Created the field {field}", {
         field: text(d.label) || text(entry.target_id),
       });
     case "custom_field.updated":
-      return values("Editó el campo {field}", {
+      return values("Edited the field {field}", {
         field:
           text(after.label && (after.label as Record<string, unknown>).en) ||
           text(entry.target_id),
       });
     case "custom_field.archived":
-      return values("Archivó el campo {field}", {
+      return values("Archived the field {field}", {
         field: text(entry.target_id),
       });
     case "custom_field.restored":
-      return values("Restauró el campo {field}", {
+      return values("Restored the field {field}", {
         field: text(entry.target_id),
       });
 
@@ -289,24 +293,27 @@ export function describeAction(
           text(entry.target_id),
       );
       return d.enabled
-        ? values("Activó {feature} para esta organización", { feature: name })
-        : values("Desactivó {feature} para esta organización", {
+        ? values("Enabled {feature} for this organization", { feature: name })
+        : values("Disabled {feature} for this organization", {
             feature: name,
           });
     }
     case "feature.override_cleared":
-      return values("Quitó la excepción de {feature}; se usa la del plan", {
-        feature: t(
-          lookups.featureNames.get(entry.target_id ?? "") ??
-            text(entry.target_id),
-        ),
-      });
+      return values(
+        "Removed the {feature} override; the plan's default applies",
+        {
+          feature: t(
+            lookups.featureNames.get(entry.target_id ?? "") ??
+              text(entry.target_id),
+          ),
+        },
+      );
 
     case "disclaimer.updated":
       return values(
-        "Cambió el aviso {kind} ({locale}) a la versión {version}: «{after}»",
+        "Changed the {kind} disclaimer ({locale}) to version {version}: “{after}”",
         {
-          kind: d.kind === "full" ? t("completo") : t("corto"),
+          kind: d.kind === "full" ? t("full") : t("short"),
           locale: text(d.locale).toUpperCase(),
           version: text(d.version),
           after: text(d.after),
@@ -318,38 +325,38 @@ export function describeAction(
       const name = t(lookups.settingNames.get(text(d.key)) ?? text(d.key));
       const scope =
         d.scope === "team"
-          ? ` (${t("equipo")})`
+          ? ` (${t("team")})`
           : d.scope === "user"
             ? ` (${t("personal")})`
             : "";
       return entry.action === "setting.reset"
-        ? values("Restableció {setting}", { setting: name + scope })
-        : values("Cambió {setting}: {before} → {after}", {
+        ? values("Reset {setting}", { setting: name + scope })
+        : values("Changed {setting}: {before} → {after}", {
             setting: name + scope,
             // No before: the value came from a lower layer (pack or default).
             before:
               d.before === undefined
-                ? t("predeterminado")
+                ? t("default")
                 : formatSettingValue(d.before, t),
             after: formatSettingValue(d.after, t),
           });
     }
 
     case "team.created":
-      return values("Creó el equipo {team}", { team: text(d.name) });
+      return values("Created the team {team}", { team: text(d.name) });
     case "team.renamed":
-      return values("Renombró el equipo {before} → {after}", {
+      return values("Renamed the team {before} → {after}", {
         before: text(before.name),
         after: text(after.name),
       });
     case "team.deleted":
-      return values("Eliminó el equipo {team}", { team: text(d.name) });
+      return values("Deleted the team {team}", { team: text(d.name) });
     case "team.member_added":
-      return values("Añadió a {member} al equipo {team}", {
+      return values("Added {member} to the team {team}", {
         team: text(d.team),
       });
     case "team.member_removed":
-      return values("Quitó a {member} del equipo {team}", {
+      return values("Removed {member} from the team {team}", {
         team: text(d.team),
       });
 
@@ -358,53 +365,55 @@ export function describeAction(
     // the general Activity page also benefits (it fell back to the raw
     // action string before).
     case "lead.created":
-      return values("Se creó el lead ({source})", { source: text(d.source) });
+      return values("The lead was created ({source})", {
+        source: text(d.source),
+      });
     case "lead.reopened":
-      return t("Se reabrió el lead");
+      return t("The lead was reopened");
     case "lead.stage_changed":
-      return values("Cambió de etapa: {stage}", {
+      return values("Stage changed: {stage}", {
         stage: t(stageName(d.stage_id)),
       });
     case "lead.quality_changed":
-      return values("Cambió la calidad: {quality}", {
+      return values("Quality changed: {quality}", {
         quality: t(qualityName(d.quality_id)),
       });
     case "lead.status_changed":
-      return values("Cambió el estado: {before} → {after}", {
+      return values("Status changed: {before} → {after}", {
         before: text(d.from_status),
         after: text(d.to_status),
       });
     case "lead.deal_value_changed":
       return d.deal_value
-        ? values("Puso el valor en {value}", { value: text(d.deal_value) })
-        : t("Quitó el valor del lead");
+        ? values("Set the deal value to {value}", { value: text(d.deal_value) })
+        : t("Cleared the deal value");
     case "lead.assigned":
-      return values("Se asignó a {agent}", { agent: agentName(d.agent_id) });
+      return values("Assigned to {agent}", { agent: agentName(d.agent_id) });
     case "lead.reassigned":
-      return values("Se reasignó: {before} → {after}", {
+      return values("Reassigned: {before} → {after}", {
         before: agentName(d.from_agent_id),
         after: agentName(d.agent_id),
       });
     case "lead.unassigned":
-      return t("Se quitó la asignación");
+      return t("Assignment removed");
     case "lead.first_responded":
-      return values("Primera respuesta en {minutes} min", {
+      return values("First response in {minutes} min", {
         minutes: text(d.minutes_to_respond),
       });
     case "lead.sla_breached":
-      return t("Venció el plazo de primera respuesta");
+      return t("First-response SLA breached");
     case "lead.escalated_to_manager":
-      return t("Se avisó a los gerentes por falta de respuesta");
+      return t("Managers were notified for lack of response");
     case "lead.auto_reassigned_sla":
-      return values("Reasignado automáticamente (estaba con {agent})", {
+      return values("Auto-reassigned (was with {agent})", {
         agent: agentName(d.from_agent_id),
       });
     case "lead.qualification_started":
-      return t("Empezó la calificación");
+      return t("Qualification started");
     case "lead.answer_recorded":
-      return values("Respondió: {field}", { field: text(d.field) });
+      return values("Answered: {field}", { field: text(d.field) });
     case "lead.qualification_completed":
-      return values("Terminó la calificación (puntaje {score})", {
+      return values("Qualification finished (score {score})", {
         score: text(d.score),
       });
 
@@ -412,41 +421,41 @@ export function describeAction(
     // here -- same gap P3-07c's own comment above already fixed once for
     // an earlier batch of lead actions.
     case "lead.task_created":
-      return values("Creó la tarea: {title}", { title: text(d.title) });
+      return values("Created the task: {title}", { title: text(d.title) });
     case "lead.task_completed":
-      return values("Completó la tarea: {title}", { title: text(d.title) });
+      return values("Completed the task: {title}", { title: text(d.title) });
     case "lead.task_reopened":
-      return values("Reabrió la tarea: {title}", { title: text(d.title) });
+      return values("Reopened the task: {title}", { title: text(d.title) });
     case "lead.task_reminder_sent":
-      return values("Envió el recordatorio de la tarea ({channel})", {
+      return values("Sent the task reminder ({channel})", {
         channel: t(CHANNEL_LABELS[text(d.channel)] ?? text(d.channel)),
       });
 
     // [crm] P3-07e
     case "lead.note_created":
-      return t("Agregó una nota");
+      return t("Added a note");
     case "lead.note_updated":
-      return t("Editó una nota");
+      return t("Edited a note");
     case "lead.note_deleted":
-      return t("Eliminó una nota");
+      return t("Deleted a note");
 
     // [crm] P3-08
     case "lead.trial_offered":
-      return values("Ofreció horarios de clase de prueba ({count})", {
+      return values("Offered trial-class slots ({count})", {
         count: text(d.slot_count),
       });
     case "lead.trial_booked":
-      return values("Reservó la clase de prueba: {slot}", {
+      return values("Booked the trial class: {slot}", {
         slot: text(d.slot_start),
       });
     case "lead.trial_rescheduled":
-      return values("Reprogramó la clase de prueba: {slot}", {
+      return values("Rescheduled the trial class: {slot}", {
         slot: text(d.slot_start),
       });
     case "lead.trial_cancelled":
-      return t("Canceló la reserva de la clase de prueba");
+      return t("Cancelled the trial-class booking");
     case "lead.trial_reminder_sent":
-      return values("Envió el recordatorio de la clase de prueba ({channel})", {
+      return values("Sent the trial-class reminder ({channel})", {
         channel: t(CHANNEL_LABELS[text(d.channel)] ?? text(d.channel)),
       });
 

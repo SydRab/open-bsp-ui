@@ -27,7 +27,7 @@ function NewOrganization() {
 
   return (
     <>
-      <SectionHeader title={t("Nueva organización")} closeButton={true} />
+      <SectionHeader title={t("New organization")} closeButton={true} />
 
       <SectionBody>
         <form
@@ -43,15 +43,15 @@ function NewOrganization() {
         >
           <p>
             {t(
-              "Tu organización es el espacio de trabajo donde colaboras con tu equipo.",
+              "Your organization is the workspace where you collaborate with your team.",
             )}
           </p>
 
           <label>
-            <div className="label">{t("Nombre")}</div>
+            <div className="label">{t("Name")}</div>
             <input
               className="text"
-              placeholder={t("Nombre de la organización")}
+              placeholder={t("Organization name")}
               {...register("name", { required: true })}
             />
           </label>
@@ -66,7 +66,7 @@ function NewOrganization() {
           loading={createOrg.isPending}
           className="primary"
         >
-          {createOrg.isPending ? "..." : t("Crear")}
+          {createOrg.isPending ? "..." : t("Create")}
         </Button>
       </SectionFooter>
     </>

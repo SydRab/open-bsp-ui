@@ -139,23 +139,23 @@ function AddAgent() {
 
   return (
     <>
-      <SectionHeader title={t("Agregar agente")} />
+      <SectionHeader title={t("Add agent")} />
 
       <SectionBody>
         <form id="create-agent-form" onSubmit={handleSubmit(onSubmit)}>
           <fieldset disabled={!isAdmin} className="contents">
             <p>
               {t(
-                "Configura un agente de IA que responderá automáticamente a tus conversaciones.",
+                "Set up an AI agent that will automatically respond to your conversations.",
               )}
             </p>
 
             <label>
-              <div className="label">{t("Nombre")}</div>
+              <div className="label">{t("Name")}</div>
               <input
                 type="text"
                 className="text"
-                placeholder={t("Nombre del agente")}
+                placeholder={t("Agent name")}
                 {...register("name", { required: true })}
               />
             </label>
@@ -163,10 +163,10 @@ function AddAgent() {
             <SelectField
               name="extra.mode"
               control={control}
-              label={t("Estado")}
+              label={t("Status")}
               options={[
-                { value: "active", label: t("Activo") },
-                { value: "inactive", label: t("Inactivo") },
+                { value: "active", label: t("Active") },
+                { value: "inactive", label: t("Inactive") },
               ]}
             />
 
@@ -175,8 +175,8 @@ function AddAgent() {
             <TextAreaField
               name="extra.instructions"
               control={control}
-              label={t("Instrucciones")}
-              placeholder={t("Eres un asistente útil...")}
+              label={t("Instructions")}
+              placeholder={t("You are a helpful assistant...")}
             />
 
             {/* Tools Section */}
@@ -188,8 +188,8 @@ function AddAgent() {
 
             {/* AI Section */}
             <SectionField
-              label={t("Modelo de IA")}
-              description={model || t("Ninguno")}
+              label={t("AI model")}
+              description={model || t("None")}
             >
               <SelectField
                 value={provider}
@@ -208,13 +208,13 @@ function AddAgent() {
                     setValue("extra.api_url", "", { shouldDirty: true });
                   }
                 }}
-                label={t("Proveedor")}
+                label={t("Provider")}
                 options={[
                   { value: "openai", label: "OpenAI" },
                   { value: "anthropic", label: "Anthropic" },
                   { value: "groq", label: "Groq" },
                   { value: "google", label: "Google" },
-                  { value: "custom", label: t("Personalizado") },
+                  { value: "custom", label: t("Custom") },
                 ]}
               />
 
@@ -222,7 +222,7 @@ function AddAgent() {
                 name="extra.protocol"
                 control={control}
                 modalClassName="bottom-0"
-                label={t("Protocolo")}
+                label={t("Protocol")}
                 options={protocols[provider as keyof typeof protocols].map(
                   (p) => ({
                     value: p,
@@ -244,11 +244,11 @@ function AddAgent() {
               )}
 
               <label>
-                <div className="label">{t("Clave API")}</div>
+                <div className="label">{t("API Key")}</div>
                 <input
                   type="text"
                   className="text"
-                  placeholder={t("Clave API del proveedor")}
+                  placeholder={t("Provider API Key")}
                   {...register("extra.api_key")}
                 />
               </label>
@@ -257,14 +257,14 @@ function AddAgent() {
                 <div className="instructions">
                   <p>
                     {t(
-                      "Usar una clave API propia no consume créditos locales y permite usar cualquier modelo.",
+                      "Using your own API key does not consume local credits and allows you to use any model.",
                     )}
                   </p>
                   <p>
                     <strong>
                       {apiKeyInstructions[provider].free
-                        ? t("Obtené una clave gratuita:")
-                        : t("Obtené una clave:")}
+                        ? t("Get a free key:")
+                        : t("Get a key:")}
                     </strong>{" "}
                     <a
                       href={apiKeyInstructions[provider].url}
@@ -281,20 +281,18 @@ function AddAgent() {
               )}
 
               <label>
-                <div className="label">{t("Modelo")}</div>
+                <div className="label">{t("Model")}</div>
                 <input
                   type="text"
                   className="text"
-                  placeholder={t("Nombre del modelo")}
+                  placeholder={t("Model name")}
                   {...register("extra.model")}
                 />
               </label>
 
               {provider !== "custom" && creditModels[provider] && (
                 <div className="instructions">
-                  <p>
-                    {t("Los siguientes modelos funcionan con créditos de IA:")}
-                  </p>
+                  <p>{t("The following models work with AI credits:")}</p>
                   <ul>
                     {creditModels[provider].map((m) => (
                       <li key={m}>
@@ -306,7 +304,7 @@ function AddAgent() {
               )}
 
               <label>
-                <div className="label">{t("Mensajes máximos")}</div>
+                <div className="label">{t("Maximum messages")}</div>
                 <input
                   type="number"
                   className="text"
@@ -317,7 +315,7 @@ function AddAgent() {
               </label>
 
               <label>
-                <div className="label">{t("Temperatura")}</div>
+                <div className="label">{t("Temperature")}</div>
                 <input
                   type="number"
                   className="text"
@@ -333,7 +331,7 @@ function AddAgent() {
                 <div className="instructions">
                   <p>
                     {t(
-                      "Se envían los siguientes encabezados HTTP con cada solicitud:",
+                      "The following HTTP headers are sent with each request:",
                     )}
                   </p>
                   <ul>
@@ -370,10 +368,10 @@ function AddAgent() {
           disabled={!isAdmin}
           invalid={!isValid || !isDirty}
           loading={createAgent.isPending}
-          disabledReason={t("Requiere permisos de administrador")}
+          disabledReason={t("Requires administrator permissions")}
           className="primary"
         >
-          {t("Crear")}
+          {t("Create")}
         </Button>
       </SectionFooter>
     </>

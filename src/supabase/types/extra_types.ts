@@ -283,7 +283,7 @@ export type ToolConfig =
 
 export type AIAgentExtra = {
   /**
-   * The persona — "presupuestador metalúrgico" — not an access-control role.
+   * The persona — e.g. "steel fabrication estimator" — not an access-control role.
    * It shared the `extra.role` key with the human one until that moved to a
    * column; this is the half that stayed.
    */

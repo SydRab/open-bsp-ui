@@ -28,7 +28,7 @@ export default function SearchBar({
       >
         <Search className="text-muted-foreground w-[16px] h-[16px] stroke-[3px] shrink-0" />
         <input
-          placeholder={placeholder ?? t("Buscar")}
+          placeholder={placeholder ?? t("Search")}
           className={`bg-transparent border-none outline-none w-full h-full mx-[12px] placeholder:text-muted-foreground ${isSmall ? "text-[14px]" : "text-[15px]"}`}
           value={value}
           onChange={(e) => onChange(e.target.value)}

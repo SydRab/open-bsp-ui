@@ -35,7 +35,7 @@ export const Route = createFileRoute("/_auth/contacts/import")({
   component: ContactsImport,
 });
 
-const DEFAULT_OPTED_IN_VALUES = "si,sí,yes,true,1,opted_in";
+const DEFAULT_OPTED_IN_VALUES = "yes,true,1,opted_in";
 
 type ColumnTarget =
   | "ignore"
@@ -84,16 +84,16 @@ function ContactsImport() {
     setFileError(null);
     const reader = new FileReader();
     reader.onload = () => {
-      const text = String(reader.result ?? "");
+      const text = typeof reader.result === "string" ? reader.result : "";
       const parsed = parseCsv(text);
       if (parsed.length === 0) {
-        setFileError(t("El archivo está vacío."));
+        setFileError(t("The file is empty."));
         return;
       }
       if (parsed.length - 1 > IMPORT_MAX_ROWS) {
         setFileError(
           t(
-            "Demasiadas filas (máximo {max}). Dividí el archivo e importá en partes.",
+            "Too many rows (maximum {max}). Split the file and import it in parts.",
           ).replace("{max}", String(IMPORT_MAX_ROWS)),
         );
         return;
@@ -102,7 +102,7 @@ function ContactsImport() {
       setColumnTargets(parsed[0].map(() => "ignore"));
       setStep("map");
     };
-    reader.onerror = () => setFileError(t("No se pudo leer el archivo."));
+    reader.onerror = () => setFileError(t("The file could not be read."));
     reader.readAsText(file);
   }
 
@@ -209,19 +209,19 @@ function ContactsImport() {
 
   return (
     <>
-      <SectionHeader title={t("Importar CSV")} />
+      <SectionHeader title={t("Import CSV")} />
 
       <SectionBody>
         {step === "upload" && (
           <div className="flex flex-col gap-[16px] py-[16px]">
             <div className="text-[14px] text-muted-foreground">
               {t(
-                "Importá una lista de contactos desde un archivo CSV. En el siguiente paso vas a poder elegir qué columna es cada cosa.",
+                "Import a contact list from a CSV file. In the next step you'll be able to choose what each column is.",
               )}
             </div>
 
             <label>
-              <div className="label">{t("Cuenta")}</div>
+              <div className="label">{t("Account")}</div>
               <select
                 className="text"
                 value={chosenKey ?? (account ? accountKey(account) : "")}
@@ -237,7 +237,7 @@ function ContactsImport() {
             </label>
 
             <label>
-              <div className="label">{t("Archivo CSV")}</div>
+              <div className="label">{t("CSV file")}</div>
               <input
                 ref={fileInputRef}
                 type="file"
@@ -256,9 +256,10 @@ function ContactsImport() {
         {step === "map" && (
           <div className="flex flex-col gap-[16px] py-[16px]">
             <div className="text-[14px] text-muted-foreground">
-              {t(
-                "{count} filas encontradas. Elegí qué es cada columna.",
-              ).replace("{count}", String(dataRows.length))}
+              {t("{count} rows found. Choose what each column is.").replace(
+                "{count}",
+                String(dataRows.length),
+              )}
             </div>
 
             <div className="flex flex-col gap-[12px]">
@@ -266,7 +267,7 @@ function ContactsImport() {
                 <div key={colIndex} className="flex items-center gap-[12px]">
                   <div className="flex-1 text-[14px] truncate" title={header}>
                     {header ||
-                      t("(columna {n})").replace("{n}", String(colIndex + 1))}
+                      t("(column {n})").replace("{n}", String(colIndex + 1))}
                   </div>
                   <select
                     className="text w-[220px]"
@@ -279,11 +280,11 @@ function ContactsImport() {
                       )
                     }
                   >
-                    <option value="ignore">{t("Ignorar")}</option>
-                    <option value="address">{t("Teléfono")}</option>
-                    <option value="name">{t("Nombre")}</option>
-                    <option value="tags">{t("Etiquetas")}</option>
-                    <option value="consent">{t("Consentimiento")}</option>
+                    <option value="ignore">{t("Ignore")}</option>
+                    <option value="address">{t("Phone")}</option>
+                    <option value="name">{t("Name")}</option>
+                    <option value="tags">{t("Tags")}</option>
+                    <option value="consent">{t("Consent")}</option>
                     {contactFields.map((f) => (
                       <option
                         key={f.key}
@@ -302,15 +303,15 @@ function ContactsImport() {
             </div>
 
             {addressColumnIndex === -1 && (
-              <FieldError error={t("Elegí qué columna es el teléfono.")} />
+              <FieldError
+                error={t("Choose which column is the phone number.")}
+              />
             )}
 
             {hasConsentColumn && (
               <label>
                 <div className="label">
-                  {t(
-                    'Valores que cuentan como "opted-in" (separados por coma)',
-                  )}
+                  {t('Values that count as "opted-in" (comma-separated)')}
                 </div>
                 <input
                   type="text"
@@ -330,7 +331,7 @@ function ContactsImport() {
                 />
                 <span className="text-[14px]">
                   {t(
-                    "Marcar todos los contactos de este archivo como opted-in (consentimiento otorgado)",
+                    "Mark every contact in this file as opted-in (consent given)",
                   )}
                 </span>
               </label>
@@ -345,14 +346,14 @@ function ContactsImport() {
               />
               <span className="text-[14px]">
                 {t(
-                  "Confirmo que esta lista fue obtenida legalmente y que estoy autorizado a contactar a estas personas por WhatsApp.",
+                  "I confirm this list was obtained lawfully and that I'm authorized to contact these people over WhatsApp.",
                 )}
               </span>
             </label>
 
             <div className="text-[13px] text-muted-foreground">
               {t(
-                "{valid} filas listas para importar, {invalid} inválidas (sin teléfono válido).",
+                "{valid} rows ready to import, {invalid} invalid (no valid phone number).",
               )
                 .replace("{valid}", String(preview.rows.length))
                 .replace("{invalid}", String(preview.invalid))}
@@ -364,7 +365,7 @@ function ContactsImport() {
           <div className="flex flex-col gap-[12px] py-[16px]">
             <div className="text-[14px]">
               {t(
-                "{created} creados, {updated} actualizados, {errors} con error.",
+                "{created} created, {updated} updated, {errors} with an error.",
               )
                 .replace("{created}", String(created))
                 .replace("{updated}", String(updated))
@@ -374,7 +375,7 @@ function ContactsImport() {
               <div className="flex flex-col gap-[4px]">
                 {errors.map((r) => (
                   <div key={r.index} className="text-[13px] text-destructive">
-                    {t("Fila {n}: {error}")
+                    {t("Row {n}: {error}")
                       .replace("{n}", String(r.index + 2))
                       .replace("{error}", r.error ?? "")}
                   </div>
@@ -392,7 +393,7 @@ function ContactsImport() {
               className="secondary flex-1"
               onClick={() => setStep("upload")}
             >
-              {t("Atrás")}
+              {t("Previous")}
             </Button>
             <Button
               className="primary flex-1"
@@ -401,10 +402,10 @@ function ContactsImport() {
               onClick={handleSubmit}
             >
               {importContacts.isPending
-                ? t("Importando {done}/{total}...")
+                ? t("Importing {done}/{total}...")
                     .replace("{done}", String(results.length))
                     .replace("{total}", String(preview.rows.length))
-                : t("Importar")}
+                : t("Import")}
             </Button>
           </div>
         )}
@@ -415,7 +416,7 @@ function ContactsImport() {
               navigate({ to: "/contacts", hash: (prevHash) => prevHash! })
             }
           >
-            {t("Listo")}
+            {t("Done")}
           </Button>
         )}
       </SectionFooter>

@@ -109,7 +109,7 @@ function LeadCard({
   const { translate: t } = useTranslation();
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({ id: lead.id });
-  const contactName = lead.contactName || t("Sin nombre");
+  const contactName = lead.contactName || t("No name");
 
   return (
     <div
@@ -239,7 +239,7 @@ function Column({
       }
     >
       <div className="px-[10px] py-[8px] text-[13px] font-medium text-foreground flex items-center justify-between">
-        <span className="truncate">{stage ? stage.name : t("Sin etapa")}</span>
+        <span className="truncate">{stage ? stage.name : t("No stage")}</span>
         <span className="text-muted-foreground text-[12px]">
           {leads.length}
         </span>
@@ -399,7 +399,7 @@ function PipelineBoard() {
     if (blocked) {
       setBulkError(
         t(
-          "Uno o más leads seleccionados les falta un campo obligatorio para esa etapa -- muévelos uno por uno para completarlos.",
+          "One or more selected leads are missing a required field for that stage -- move them one at a time to fill it in.",
         ),
       );
       return;
@@ -424,7 +424,7 @@ function PipelineBoard() {
           value={assigneeFilter}
           onChange={(e) => setAssigneeFilter(e.target.value)}
         >
-          <option value="">{t("Todos los asignados")}</option>
+          <option value="">{t("All assignees")}</option>
           {assignees.map(([id, name]) => (
             <option key={id} value={id}>
               {name}
@@ -436,7 +436,7 @@ function PipelineBoard() {
           value={qualityFilter}
           onChange={(e) => setQualityFilter(e.target.value)}
         >
-          <option value="">{t("Toda calidad")}</option>
+          <option value="">{t("All quality")}</option>
           {(qualities ?? []).map((q) => (
             <option key={q.id} value={q.id}>
               {q.name}
@@ -445,11 +445,11 @@ function PipelineBoard() {
         </select>
         <LinkButton
           to="/leads/unanswered"
-          title={t("Leads sin respuesta")}
+          title={t("Unanswered leads")}
           className="ml-auto flex items-center gap-[4px] text-[13px] text-muted-foreground px-[8px] py-[4px] rounded-lg hover:bg-muted"
         >
           <AlarmClockCheck className="w-[16px] h-[16px]" />
-          {t("Leads sin respuesta")}
+          {t("Unanswered leads")}
         </LinkButton>
       </div>
 
@@ -488,14 +488,14 @@ function PipelineBoard() {
       {selected.size > 0 && (
         <div className="flex items-center gap-[8px] px-[10px] py-[8px] border-t border-border bg-muted/40">
           <span className="text-[13px] text-muted-foreground shrink-0">
-            {selected.size} {t("seleccionados")}
+            {selected.size} {t("selected")}
           </span>
           <select
             className="text-[13px] bg-background border border-border rounded-lg px-[8px] py-[4px] min-w-0"
             value={bulkStageId}
             onChange={(e) => setBulkStageId(e.target.value)}
           >
-            <option value="">{t("Sin etapa")}</option>
+            <option value="">{t("No stage")}</option>
             {(stages ?? []).map((stage) => (
               <option key={stage.id} value={stage.id}>
                 {stage.name}
@@ -508,7 +508,7 @@ function PipelineBoard() {
             loading={bulkSetStage.isPending}
             onClick={handleBulkMove}
           >
-            {t("Mover")}
+            {t("Move")}
           </Button>
           <button
             type="button"
@@ -518,7 +518,7 @@ function PipelineBoard() {
               setBulkError(null);
             }}
           >
-            {t("Limpiar")}
+            {t("Clear")}
           </button>
         </div>
       )}

@@ -84,7 +84,7 @@ export default function SelectField<T extends FieldValues>(
   ) => {
     const getDisplayLabel = () => {
       if (multiple && Array.isArray(value)) {
-        if (value.length === 0) return placeholder || t("Seleccionar") + "...";
+        if (value.length === 0) return placeholder || t("Select") + "...";
         const selectedLabels = options
           .filter((o) => value.includes(o.value))
           .map((o) => o.label);
@@ -93,10 +93,10 @@ export default function SelectField<T extends FieldValues>(
         }
         const first5 = selectedLabels.slice(0, 5).join(", ");
         const remaining = selectedLabels.length - 5;
-        return `${first5} ${t("y")} ${remaining} ${t("más")}...`;
+        return `${first5} ${t("and")} ${remaining} ${t("more")}...`;
       }
       const selectedOption = options.find((o) => o.value === value);
-      return selectedOption?.label || placeholder || t("Seleccionar") + "...";
+      return selectedOption?.label || placeholder || t("Select") + "...";
     };
 
     const hasSelection = multiple
@@ -134,7 +134,7 @@ export default function SelectField<T extends FieldValues>(
             <div className="header items-center truncate">
               <button
                 className="p-[8px] rounded-full hover:bg-muted mr-[8px] ml-[-8px]"
-                title={t("Volver")}
+                title={t("Back")}
                 onClick={() => setIsOpen(false)}
               >
                 <ArrowLeft className="w-[24px] h-[24px]" />

@@ -67,10 +67,10 @@ function ActivityLog() {
   if (!permissionsLoading && !can("audit.view")) {
     return (
       <>
-        <SectionHeader title={t("Registro de actividad")} />
+        <SectionHeader title={t("Activity log")} />
         <SectionBody>
           <div className="p-[16px] text-muted-foreground">
-            {t("No tienes permiso para ver el registro de actividad.")}
+            {t("You don't have permission to see the activity log.")}
           </div>
         </SectionBody>
       </>
@@ -79,16 +79,16 @@ function ActivityLog() {
 
   return (
     <>
-      <SectionHeader title={t("Registro de actividad")} />
+      <SectionHeader title={t("Activity log")} />
 
       <SectionBody>
         <div className="flex flex-col gap-[12px] px-[6px] pb-[8px]">
           <SelectField
-            label={t("Área")}
+            label={t("Area")}
             value={filters.area}
             onChange={(area) => setFilters({ ...filters, area })}
             options={[
-              { value: "", label: t("Todas") },
+              { value: "", label: t("All") },
               ...AUDIT_AREAS.map((a) => ({
                 value: a.value,
                 label: t(a.label),
@@ -96,23 +96,23 @@ function ActivityLog() {
             ]}
           />
           <SelectField
-            label={t("Persona")}
+            label={t("Person")}
             value={filters.actor}
             onChange={(actor) => setFilters({ ...filters, actor })}
             options={[
-              { value: "", label: t("Todas") },
+              { value: "", label: t("All") },
               ...people.map((a) => ({ value: a.id, label: a.name })),
             ]}
           />
           <SelectField
-            label={t("Periodo")}
+            label={t("Period")}
             value={filters.days}
             onChange={(days) => setFilters({ ...filters, days })}
             options={[
-              { value: "7", label: t("Últimos 7 días") },
-              { value: "30", label: t("Últimos 30 días") },
-              { value: "90", label: t("Últimos 90 días") },
-              { value: "", label: t("Todo") },
+              { value: "7", label: t("Last 7 days") },
+              { value: "30", label: t("Last 30 days") },
+              { value: "90", label: t("Last 90 days") },
+              { value: "", label: t("All time") },
             ]}
           />
         </div>
@@ -129,7 +129,7 @@ function ActivityLog() {
 
         {!log.isLoading && !log.error && entries.length === 0 && (
           <div className="p-[16px] text-muted-foreground">
-            {t("No hay actividad en este periodo.")}
+            {t("No activity in this period.")}
           </div>
         )}
 
@@ -161,7 +161,7 @@ function ActivityLog() {
             loading={log.isFetchingNextPage}
             onClick={() => void log.fetchNextPage()}
           >
-            {t("Cargar más")}
+            {t("Load more")}
           </Button>
         </SectionFooter>
       )}

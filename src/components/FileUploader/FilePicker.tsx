@@ -67,7 +67,7 @@ const FilePicker = (pickerProps: Props) => {
           <p className="ant-upload-drag-icon">
             <UploadOutlined />
           </p>
-          <p className="ant-upload-text">Arrastra el archivo aquí.</p>
+          <p className="ant-upload-text">Drag the file here.</p>
         </Dragger>
       </div>
     )

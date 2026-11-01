@@ -46,7 +46,7 @@ export default function SectionField({
           <div className="header items-center truncate shrink-0">
             <button
               className="p-[8px] rounded-full hover:bg-muted mr-[8px] ml-[-8px]"
-              title={t("Volver")}
+              title={t("Back")}
               onClick={() => setIsOpen(false)}
             >
               <ArrowLeft className="w-[24px] h-[24px]" />

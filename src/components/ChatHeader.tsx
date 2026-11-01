@@ -72,7 +72,7 @@ export default function Header() {
       {/* Back button */}
       <button
         className="mr-4 md:hidden"
-        title={t("Volver")}
+        title={t("Back")}
         onClick={() => navigate({ hash: undefined })}
       >
         <ArrowLeft className="w-[24px] h-[24px] text-foreground" />
@@ -92,7 +92,7 @@ export default function Header() {
           {displayName}
         </div>
         <div className="text-[13px] text-muted-foreground truncate">
-          {isGroup && t("Grupo")}
+          {isGroup && t("Group")}
           {(service === "whatsapp" || service === "whatsapp-web") &&
             peer &&
             formatPhoneNumber(peer)}
@@ -116,7 +116,7 @@ export default function Header() {
         <div className="options flex justify-end w-full">
           <button
             className="p-[8px] ml-[10px] rounded-full active:bg-gray-icon-bg hover:bg-muted"
-            title={t("Información del contacto")}
+            title={t("Contact info")}
             onClick={() => toggle("contactPanel")}
           >
             <Info className="w-[22px] h-[22px] text-foreground" />

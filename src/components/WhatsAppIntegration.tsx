@@ -46,14 +46,12 @@ export default function WhatsAppIntegration({
     return (
       <div className="flex flex-col gap-2">
         <p className="text-muted-foreground text-sm">
-          {t(
-            "Modo de prueba: no se abrirá Facebook ni se conectará un número real.",
-          )}
+          {t("Test mode: this won't open Facebook or connect a real number.")}
         </p>
         <Button
           disabled={!orgId || !allowed}
           disabledReason={
-            !allowed ? t("Requiere permisos de administrador") : undefined
+            !allowed ? t("Requires administrator permissions") : undefined
           }
           loading={loading}
           className="primary w-full"
@@ -66,12 +64,12 @@ export default function WhatsAppIntegration({
             )
           }
         >
-          {t("Simular conexión exitosa")}
+          {t("Simulate successful connection")}
         </Button>
         <Button
           disabled={!orgId || !allowed}
           disabledReason={
-            !allowed ? t("Requiere permisos de administrador") : undefined
+            !allowed ? t("Requires administrator permissions") : undefined
           }
           loading={loading}
           className="secondary w-full"
@@ -84,14 +82,14 @@ export default function WhatsAppIntegration({
             )
           }
         >
-          {t("Simular error de conexión")}
+          {t("Simulate connection error")}
         </Button>
       </div>
     );
   }
 
   const sdkErrorMessage = t(
-    "No se pudo cargar el SDK de Facebook. Desactivá la protección contra rastreo o el bloqueador de anuncios para este sitio, o probá con otro navegador.",
+    "Couldn't load the Facebook SDK. Disable tracking protection or your ad blocker for this site, or try another browser.",
   );
 
   return (
@@ -105,7 +103,7 @@ export default function WhatsAppIntegration({
           sdkFailed
             ? sdkErrorMessage
             : !allowed
-              ? t("Requiere permisos de administrador")
+              ? t("Requires administrator permissions")
               : undefined
         }
         loading={loading}
@@ -118,7 +116,7 @@ export default function WhatsAppIntegration({
           )
         }
       >
-        {t("Continuar con Facebook")}
+        {t("Continue with Facebook")}
       </Button>
     </div>
   );

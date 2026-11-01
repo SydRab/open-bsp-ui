@@ -139,7 +139,7 @@ function FieldsEditor({ setting, disabled, saving, onSave }: Props) {
       {!disabled && dirty && (
         <div>
           <Button type="button" loading={saving} onClick={() => onSave(draft)}>
-            {t("Guardar")}
+            {t("Save")}
           </Button>
         </div>
       )}
@@ -159,12 +159,12 @@ function ListEditor({ setting, disabled, saving, onSave }: Props) {
         className="text min-h-[96px]"
         disabled={disabled}
         value={draft}
-        placeholder={t("Una por línea")}
+        placeholder={t("One per line")}
         onChange={(e) => setDraft(e.target.value)}
       />
       {required.length > 0 && (
         <div className="text-[12px] text-muted-foreground">
-          {t("Siempre incluidas:")} {required.join(", ")}
+          {t("Always included:")} {required.join(", ")}
         </div>
       )}
       {!disabled && draft !== initial && (
@@ -181,7 +181,7 @@ function ListEditor({ setting, disabled, saving, onSave }: Props) {
               )
             }
           >
-            {t("Guardar")}
+            {t("Save")}
           </Button>
         </div>
       )}

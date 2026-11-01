@@ -36,16 +36,16 @@ function Security() {
 
   return (
     <>
-      <SectionHeader title={t("Seguridad")} />
+      <SectionHeader title={t("Security")} />
 
       <SectionBody className="gap-[24px]">
         <div className="flex flex-col gap-[8px] px-[6px]">
           <div className="text-[14px] font-medium text-muted-foreground uppercase tracking-wide">
-            {t("Verificación en dos pasos")}
+            {t("Two-factor authentication")}
           </div>
           <p className="text-[13px] text-muted-foreground">
             {t(
-              "Con una app de autenticación (Google Authenticator, Authy, 1Password...), además de tu contraseña.",
+              "With an authenticator app (Google Authenticator, Authy, 1Password...), in addition to your password.",
             )}
           </p>
 
@@ -60,7 +60,7 @@ function Security() {
               <div className="flex items-center gap-[10px]">
                 <Fingerprint className="w-[20px] h-[20px] text-primary" />
                 <span className="text-[15px]">
-                  {t("Verificación en dos pasos activada")}
+                  {t("Two-factor authentication enabled")}
                 </span>
               </div>
               <RemoveFactorButton factorId={verified.id} />
@@ -73,19 +73,17 @@ function Security() {
         {isOwner && profile && (
           <div className="flex flex-col gap-[8px] px-[6px]">
             <div className="text-[14px] font-medium text-muted-foreground uppercase tracking-wide">
-              {t("Para esta organización")}
+              {t("For this organization")}
             </div>
             <label className="flex items-center justify-between gap-[16px] py-[4px]">
               <div className="min-w-0">
                 <div className="text-[15px]">
-                  {t(
-                    "Exigir verificación en dos pasos a propietarios y administradores",
-                  )}
+                  {t("Require two-factor authentication for owners and admins")}
                 </div>
                 {!verified && !profile.require_mfa_for_admins && (
                   <div className="text-[12px] text-muted-foreground mt-[2px]">
                     {t(
-                      "Activa la tuya primero — la plataforma no te deja bloquearte a ti mismo.",
+                      "Enable your own first — the platform won't let you lock yourself out.",
                     )}
                   </div>
                 )}
@@ -123,7 +121,7 @@ function EnrollTotp() {
           loading={enroll.isPending}
           onClick={() => enroll.mutate()}
         >
-          {t("Activar verificación en dos pasos")}
+          {t("Enable two-factor authentication")}
         </Button>
         {enroll.error && (
           <div className="text-destructive text-[13px] mt-[8px]">
@@ -138,12 +136,12 @@ function EnrollTotp() {
     <div className="flex flex-col gap-[12px]">
       <p className="text-[13px] text-muted-foreground">
         {t(
-          "Escanea este código con tu app de autenticación, o ingresa la clave manualmente.",
+          "Scan this code with your authenticator app, or enter the key manually.",
         )}
       </p>
       <img
         src={`data:image/svg+xml;utf-8,${encodeURIComponent(enroll.data.totp.qr_code)}`}
-        alt={t("Código QR")}
+        alt={t("QR code")}
         className="w-[180px] h-[180px] self-center"
       />
       <div className="font-mono text-[13px] text-center break-all text-muted-foreground">
@@ -157,7 +155,7 @@ function EnrollTotp() {
         }}
       >
         <label>
-          <div className="label">{t("Código de verificación")}</div>
+          <div className="label">{t("Verification code")}</div>
           <input
             className="text"
             inputMode="numeric"
@@ -178,7 +176,7 @@ function EnrollTotp() {
             invalid={code.trim().length < 6}
             loading={verify.isPending}
           >
-            {t("Confirmar")}
+            {t("Confirm")}
           </Button>
         </div>
       </form>
@@ -194,13 +192,13 @@ function RemoveFactorButton({ factorId }: { factorId: string }) {
     <button
       type="button"
       className="p-[8px] rounded-full hover:bg-muted text-muted-foreground disabled:opacity-50"
-      title={t("Quitar")}
+      title={t("Remove")}
       disabled={unenroll.isPending}
       onClick={() => {
         if (
           window.confirm(
             t(
-              "¿Quitar la verificación en dos pasos? Si alguna organización la exige para tu rol, perderás acceso a sus funciones de administración hasta que la vuelvas a activar.",
+              "Remove two-factor authentication? If any organization requires it for your role, you'll lose access to its admin features until you turn it back on.",
             ),
           )
         )

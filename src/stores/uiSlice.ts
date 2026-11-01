@@ -21,10 +21,10 @@ export function isArchived(
 }
 
 export const Filters = {
-  ALL: "todas",
-  UNREAD: "pendientes",
+  ALL: "all",
+  UNREAD: "pending",
   H24: "24h",
-  ARCHIVED: "archivadas",
+  ARCHIVED: "archived",
 } as const;
 
 export type Filters = (typeof Filters)[keyof typeof Filters];
@@ -39,15 +39,15 @@ export const filters: {
     ownAgentId?: string | null,
   ) => boolean;
 } = {
-  todas: (_conv, msg, extra) => !isArchived(extra, msg),
-  pendientes: (conv, msg, extra, ownAgentId) =>
+  all: (_conv, msg, extra) => !isArchived(extra, msg),
+  pending: (conv, msg, extra, ownAgentId) =>
     !isArchived(extra, msg) &&
     !!msg &&
     isIncoming(msg, ownAgentId, isTeamChat(conv)),
   "24h": (_conv, msg, extra) =>
     !isArchived(extra, msg) &&
     dayjs(msg?.timestamp || 0).isAfter(dayjs().subtract(1, "day")),
-  archivadas: (_conv, msg, extra) => isArchived(extra, msg),
+  archived: (_conv, msg, extra) => isArchived(extra, msg),
 } as const;
 
 export type TemplateDraft = {
@@ -122,7 +122,7 @@ export const createUISlice: StateCreator<Partial<AppState>> = (
   activeOrgId: null,
   activeConvId: null,
   user: null,
-  filter: "todas" as keyof typeof filters,
+  filter: "all" as keyof typeof filters,
   searchPattern: "",
   isLoading: false,
   language: detectDefaultLanguage(),

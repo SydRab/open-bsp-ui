@@ -33,10 +33,10 @@ function TemplatesIndex() {
 
   return (
     <>
-      <SectionHeader title={t("Plantillas")} />
+      <SectionHeader title={t("Templates")} />
       <SectionBody>
         <SectionItem
-          title={t("Crear plantilla")}
+          title={t("Create template")}
           aside={
             <div className="p-[8px] bg-primary/10 rounded-full">
               <Plus className="w-[24px] h-[24px] text-primary" />
@@ -52,10 +52,8 @@ function TemplatesIndex() {
         />
 
         <SectionItem
-          title={t("Sincronizar con Meta")}
-          description={
-            syncTemplates.isPending ? t("Sincronizando...") : undefined
-          }
+          title={t("Sync with Meta")}
+          description={syncTemplates.isPending ? t("Syncing...") : undefined}
           aside={
             <div className="p-[8px]">
               {syncTemplates.isPending ? (
@@ -69,13 +67,13 @@ function TemplatesIndex() {
         />
 
         <SectionItem
-          title={t("Enviar plantillas del paquete")}
+          title={t("Submit pack templates")}
           description={
             submitPackTemplates.isSuccess
               ? t(
-                  "Enviando en segundo plano. Las plantillas van a aparecer en la lista a medida que se creen.",
+                  "Sending in the background. Templates will appear in the list as they're created.",
                 )
-              : t("Crea las plantillas sugeridas para tu rubro")
+              : t("Create the templates suggested for your field")
           }
           aside={
             <div className="p-[8px]">
@@ -112,7 +110,7 @@ function TemplatesIndex() {
                 {template.quality_score &&
                   template.quality_score !== "UNKNOWN" && (
                     <span className="text-xs text-muted-foreground capitalize">
-                      {t("Calidad")}: {template.quality_score.toLowerCase()}
+                      {t("Quality")}: {template.quality_score.toLowerCase()}
                     </span>
                   )}
               </div>
@@ -134,7 +132,7 @@ function TemplatesIndex() {
 
         {!isLoading && templates?.length === 0 && (
           <div className="p-8 text-center text-muted-foreground text-sm">
-            {t("No hay plantillas disponibles.")}
+            {t("No templates available.")}
           </div>
         )}
       </SectionBody>

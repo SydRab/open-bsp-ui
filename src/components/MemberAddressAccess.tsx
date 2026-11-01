@@ -42,7 +42,7 @@ export default function MemberAddressAccess({
   return (
     <div className="flex flex-col gap-[8px] mt-[16px]">
       <div className="flex items-center justify-between">
-        <div className="label mb-0">{t("Restringir acceso a números")}</div>
+        <div className="label mb-0">{t("Restrict access to numbers")}</div>
         <Switch
           checked={restricted}
           disabled={disabled}
@@ -79,7 +79,7 @@ export default function MemberAddressAccess({
       {warnSelfLockout && (
         <div className="text-[13px] text-destructive">
           {t(
-            "Este miembro tiene un rol de administración. Restringir su acceso aplica igual -- no hay excepción para administradores.",
+            "This member has an admin-level role. Restricting their access applies just the same -- there's no exception for admins.",
           )}
         </div>
       )}

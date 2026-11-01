@@ -70,12 +70,12 @@ function EditOrganization() {
   return (
     <>
       <SectionHeader
-        title={t("Editar organización")}
+        title={t("Edit organization")}
         onDelete={() => {
           if (
             !window.confirm(
               t(
-                "La organización dejará de estar accesible de inmediato y se eliminará definitivamente en 30 días. Un propietario puede cancelarlo antes. ¿Continuar?",
+                "The organization will be inaccessible immediately and permanently deleted in 30 days. An owner can cancel before then. Continue?",
               ),
             )
           )
@@ -88,7 +88,7 @@ function EditOrganization() {
           });
         }}
         deleteDisabled={!canDelete}
-        deleteDisabledReason={t("Requiere permisos de propietario")}
+        deleteDisabledReason={t("Requires owner permissions")}
         deleteLoading={deleteOrg.isPending}
       />
 
@@ -98,10 +98,10 @@ function EditOrganization() {
           onSubmit={handleSubmit((data) => updateOrg.mutate(data))}
         >
           <label>
-            <div className="label">{t("Nombre")}</div>
+            <div className="label">{t("Name")}</div>
             <input
               className="text"
-              placeholder={t("Nombre de la organización")}
+              placeholder={t("Organization name")}
               disabled={!isAdmin}
               {...register("name", { required: true })}
             />
@@ -110,10 +110,10 @@ function EditOrganization() {
           <SelectField
             control={control}
             name="extra.error_messages_direction"
-            label={t("Mensajes de error")}
+            label={t("Error messages")}
             options={[
-              { value: "internal", label: t("Solo en la UI") },
-              { value: "outgoing", label: t("Visible desde WhatsApp") },
+              { value: "internal", label: t("UI only") },
+              { value: "outgoing", label: t("Visible from WhatsApp") },
             ]}
             disabled={!isAdmin}
           />
@@ -135,10 +135,10 @@ function EditOrganization() {
           disabled={!isAdmin}
           invalid={!isValid || !isDirty}
           loading={updateOrg.isPending}
-          disabledReason={t("Requiere permisos de administrador")}
+          disabledReason={t("Requires administrator permissions")}
           className="primary"
         >
-          {t("Actualizar")}
+          {t("Update")}
         </Button>
       </SectionFooter>
     </>

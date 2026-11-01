@@ -31,11 +31,11 @@ export default function DisplayNameSection({
   return (
     <>
       <label>
-        <div className="label">{t("Nombre verificado")}</div>
+        <div className="label">{t("Verified name")}</div>
         <input
           type="text"
           className="text"
-          value={extra?.verified_name || t("Sin nombre")}
+          value={extra?.verified_name || t("No name")}
           readOnly
         />
       </label>
@@ -43,8 +43,7 @@ export default function DisplayNameSection({
       {(status === "PENDING" || status === "DEFERRED") && (
         <div className="instructions">
           <p>
-            {t("Cambio de nombre en revisión")}: "
-            {extra?.requested_verified_name}"
+            {t("Name change under review")}: "{extra?.requested_verified_name}"
           </p>
         </div>
       )}
@@ -52,8 +51,7 @@ export default function DisplayNameSection({
       {status === "REJECTED" && (
         <div className="instructions">
           <p className="text-destructive font-medium">
-            {t("Se rechazó el cambio de nombre a")} "
-            {extra?.requested_verified_name}"
+            {t("Rejected name change to")} "{extra?.requested_verified_name}"
             {extra?.name_rejection_reason
               ? ` (${extra.name_rejection_reason})`
               : ""}
@@ -65,7 +63,7 @@ export default function DisplayNameSection({
         <div className="instructions">
           <p className="text-primary font-medium">
             {t(
-              "Se aprobó el nuevo nombre. Volvé a registrar el número para aplicarlo.",
+              "The new name was approved. Re-register the number to apply it.",
             )}
           </p>
           {reregistering ? (
@@ -73,7 +71,7 @@ export default function DisplayNameSection({
               <input
                 type="password"
                 className="text"
-                placeholder={t("PIN de verificación en dos pasos")}
+                placeholder={t("Two-step verification PIN")}
                 value={pin}
                 onChange={(e) => setPin(e.target.value)}
               />
@@ -90,7 +88,7 @@ export default function DisplayNameSection({
                   })
                 }
               >
-                {t("Confirmar")}
+                {t("Confirm")}
               </Button>
             </div>
           ) : (
@@ -98,7 +96,7 @@ export default function DisplayNameSection({
               className="secondary"
               onClick={() => setReregistering(true)}
             >
-              {t("Volver a registrar")}
+              {t("Re-register")}
             </Button>
           )}
         </div>
@@ -109,7 +107,7 @@ export default function DisplayNameSection({
           <input
             type="text"
             className="text"
-            placeholder={t("Nuevo nombre")}
+            placeholder={t("New name")}
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
           />
@@ -126,7 +124,7 @@ export default function DisplayNameSection({
               })
             }
           >
-            {t("Enviar")}
+            {t("Submit")}
           </Button>
         </div>
       ) : (
@@ -135,7 +133,7 @@ export default function DisplayNameSection({
           className="text-[13px] text-primary hover:underline mb-[16px]"
           onClick={() => setEditing(true)}
         >
-          {t("Solicitar cambio de nombre")}
+          {t("Request a name change")}
         </button>
       )}
     </>

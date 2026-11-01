@@ -10,16 +10,16 @@ import { useTranslation } from "@/hooks/useTranslation";
 import type { FieldDefinition, FieldOption, FieldType } from "@/queries/useCrm";
 
 export const FIELD_TYPE_LABELS: Record<FieldType, string> = {
-  text: "Texto",
-  long_text: "Texto largo",
-  number: "Número",
-  date: "Fecha",
-  boolean: "Sí / no",
-  select: "Una opción",
-  multi_select: "Varias opciones",
-  email: "Correo",
-  phone: "Teléfono",
-  url: "Sitio web",
+  text: "Text",
+  long_text: "Long text",
+  number: "Number",
+  date: "Date",
+  boolean: "Yes / no",
+  select: "Single choice",
+  multi_select: "Multiple choice",
+  email: "Email",
+  phone: "Phone",
+  url: "Website",
 };
 
 const CHOICE_TYPES: FieldType[] = ["select", "multi_select"];
@@ -83,7 +83,7 @@ export default function CustomFieldForm({
       }}
     >
       <label>
-        <div className="label">{t("Nombre (inglés)")}</div>
+        <div className="label">{t("Name (English)")}</div>
         <input
           className="text"
           disabled={!canManage}
@@ -98,7 +98,7 @@ export default function CustomFieldForm({
         />
       </label>
       <label>
-        <div className="label">{t("Nombre (hindi)")}</div>
+        <div className="label">{t("Name (Hindi)")}</div>
         <input
           className="text"
           disabled={!canManage}
@@ -113,7 +113,7 @@ export default function CustomFieldForm({
       </label>
 
       <label>
-        <div className="label">{t("Clave")}</div>
+        <div className="label">{t("Key")}</div>
         <input
           className="text font-mono"
           disabled={!isNew || !canManage}
@@ -126,14 +126,14 @@ export default function CustomFieldForm({
         {isNew && (
           <div className="text-[12px] text-muted-foreground mt-[4px]">
             {t(
-              "Se usa en plantillas, p. ej. {{contact.clave}}. No se puede cambiar después.",
+              "Used in templates, e.g. {{contact.key}}. It can't be changed later.",
             )}
           </div>
         )}
       </label>
 
       <label>
-        <div className="label">{t("Tipo")}</div>
+        <div className="label">{t("Type")}</div>
         <select
           className="text"
           disabled={!isNew || !canManage}
@@ -161,7 +161,7 @@ export default function CustomFieldForm({
 
       <label className="flex items-center justify-between gap-[16px]">
         <span className="text-[15px]">
-          {t("Obligatorio al guardar el contacto")}
+          {t("Required when saving the contact")}
         </span>
         <Switch
           checked={!!field.required}
@@ -172,7 +172,7 @@ export default function CustomFieldForm({
 
       {isChoice && (
         <div className="flex flex-col gap-[8px]">
-          <div className="label">{t("Opciones")}</div>
+          <div className="label">{t("Options")}</div>
           {options.map((o, index) => (
             <div
               key={index}
@@ -183,7 +183,7 @@ export default function CustomFieldForm({
             >
               <input
                 className="text grow"
-                placeholder={t("Opción (inglés)")}
+                placeholder={t("Option (English)")}
                 disabled={!canManage}
                 value={o.label.en}
                 onChange={(e) =>
@@ -195,7 +195,7 @@ export default function CustomFieldForm({
               />
               <input
                 className="text grow"
-                placeholder={t("Opción (hindi)")}
+                placeholder={t("Option (Hindi)")}
                 disabled={!canManage}
                 value={o.label.hi ?? ""}
                 onChange={(e) =>
@@ -210,7 +210,7 @@ export default function CustomFieldForm({
                   <button
                     type="button"
                     className="cursor-pointer text-muted-foreground"
-                    title={o.archived ? t("Restaurar") : t("Archivar")}
+                    title={o.archived ? t("Restore") : t("Archive")}
                     onClick={() =>
                       setOption(index, { ...o, archived: !o.archived })
                     }
@@ -225,7 +225,7 @@ export default function CustomFieldForm({
                   <button
                     type="button"
                     className="cursor-pointer text-muted-foreground text-[18px] leading-none"
-                    title={t("Quitar")}
+                    title={t("Remove")}
                     onClick={() =>
                       setField({
                         ...field,
@@ -250,7 +250,7 @@ export default function CustomFieldForm({
               }
             >
               <Plus className="w-[16px] h-[16px]" />
-              {t("Añadir opción")}
+              {t("Add option")}
             </button>
           )}
         </div>
@@ -261,7 +261,7 @@ export default function CustomFieldForm({
       {canManage && (
         <div>
           <Button type="submit" className="primary" loading={saving}>
-            {isNew ? t("Crear campo") : t("Guardar campo")}
+            {isNew ? t("Create field") : t("Save field")}
           </Button>
         </div>
       )}

@@ -57,19 +57,19 @@ function AuthConfirm() {
       {!valid || failed ? (
         <>
           <div className="text-[18px]">
-            {t("Este enlace no es válido o ya caducó.")}
+            {t("This link is invalid or has expired.")}
           </div>
           <div className="text-muted-foreground">
-            {t("Pide a quien te invitó que te envíe una nueva invitación.")}
+            {t("Ask whoever invited you to send a new invitation.")}
           </div>
           <Link to="/login" className="text-primary font-bold">
-            {t("Ir a iniciar sesión")}
+            {t("Go to sign in")}
           </Link>
         </>
       ) : (
         <>
           <Spinner size={24} />
-          <div className="text-muted-foreground">{t("Entrando…")}</div>
+          <div className="text-muted-foreground">{t("Signing you in…")}</div>
         </>
       )}
     </div>

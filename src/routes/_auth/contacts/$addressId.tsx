@@ -76,7 +76,7 @@ function ContactDetail() {
     entry && (
       <>
         <SectionHeader
-          title={name || t("Sin nombre")}
+          title={name || t("No name")}
           onDelete={
             synced
               ? undefined
@@ -106,19 +106,19 @@ function ContactDetail() {
           >
             <label>
               <div className="label">
-                {t("Nombre")} {synced ? "(" + t("Sincronizado") + ")" : ""}
+                {t("Name")} {synced ? "(" + t("Synced") + ")" : ""}
               </div>
               <input
                 type="text"
                 className="text"
-                placeholder={t("Nombre del contacto")}
+                placeholder={t("Contact name")}
                 readOnly={synced}
                 {...register("name")}
               />
             </label>
 
             <label>
-              <div className="label">{t("Teléfono")}</div>
+              <div className="label">{t("Phone")}</div>
               <input
                 type="tel"
                 className="text"
@@ -133,7 +133,7 @@ function ContactDetail() {
             </label>
 
             <label>
-              <div className="label">{t("Cuenta")}</div>
+              <div className="label">{t("Account")}</div>
               <input
                 type="text"
                 className="text"
@@ -187,7 +187,7 @@ function ContactDetail() {
               loading={updateAddress.isPending}
               className="primary"
             >
-              {t("Actualizar")}
+              {t("Update")}
             </Button>
           </SectionFooter>
         )}

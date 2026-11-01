@@ -39,7 +39,7 @@ function EditField() {
           {field.fromPack && (
             <p className="text-[13px] text-muted-foreground">
               {t(
-                "Campo del pack: tus cambios se conservan cuando el pack se actualiza.",
+                "Pack field: your changes are kept when the pack is upgraded.",
               )}
             </p>
           )}
@@ -67,7 +67,7 @@ function EditField() {
               archive.mutate({ id: field.id, archived: !archived })
             }
           >
-            {archived ? t("Restaurar campo") : t("Archivar campo")}
+            {archived ? t("Restore field") : t("Archive field")}
           </Button>
         </SectionFooter>
       )}

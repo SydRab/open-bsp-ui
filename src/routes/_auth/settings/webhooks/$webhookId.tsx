@@ -41,7 +41,7 @@ function EditWebhook() {
     webhook && (
       <>
         <SectionHeader
-          title={t("Editar webhook")}
+          title={t("Edit webhook")}
           onDelete={() =>
             deleteWebhook.mutate(webhookId, {
               onSuccess: () =>
@@ -49,7 +49,7 @@ function EditWebhook() {
             })
           }
           deleteDisabled={!isOwner}
-          deleteDisabledReason={t("Requiere permisos de propietario")}
+          deleteDisabledReason={t("Requires owner permissions")}
           deleteLoading={deleteWebhook.isPending}
         />
 
@@ -68,7 +68,7 @@ function EditWebhook() {
               <input
                 type="url"
                 className="text"
-                placeholder={t("https://ejemplo.com/webhook")}
+                placeholder={t("https://example.com/webhook")}
                 {...register("url", { required: true })}
               />
             </label>
@@ -76,17 +76,17 @@ function EditWebhook() {
             <SelectField
               name="table_name"
               control={control}
-              label={t("Tabla")}
+              label={t("Table")}
               options={[
-                { value: "messages", label: t("Mensajes") },
-                { value: "conversations", label: t("Conversaciones") },
-                { value: "organizations_addresses", label: t("Cuentas") },
-                { value: "contacts", label: t("Contactos") },
+                { value: "messages", label: t("Messages") },
+                { value: "conversations", label: t("Conversations") },
+                { value: "organizations_addresses", label: t("Accounts") },
+                { value: "contacts", label: t("Contacts") },
                 {
                   value: "contacts_addresses",
-                  label: t("Direcciones de contacto"),
+                  label: t("Contact addresses"),
                 },
-                { value: "logs", label: t("Registros") },
+                { value: "logs", label: t("Logs") },
               ]}
               required
             />
@@ -94,20 +94,20 @@ function EditWebhook() {
             <SelectField
               name="operations"
               control={control}
-              label={t("Operaciones")}
+              label={t("Operations")}
               multiple
               options={[
-                { value: "insert", label: t("Insertar") },
-                { value: "update", label: t("Actualizar") },
+                { value: "insert", label: t("Insert") },
+                { value: "update", label: t("Update") },
               ]}
             />
 
             <label>
-              <div className="label">{t("Token (opcional)")}</div>
+              <div className="label">{t("Token (optional)")}</div>
               <input
                 className="text"
                 type="text"
-                placeholder={t("Token de autenticación")}
+                placeholder={t("Authentication token")}
                 {...register("token")}
               />
             </label>
@@ -121,10 +121,10 @@ function EditWebhook() {
             disabled={!isOwner}
             invalid={!isValid || !isDirty}
             loading={updateWebhook.isPending}
-            disabledReason={t("Requiere permisos de propietario")}
+            disabledReason={t("Requires owner permissions")}
             className="primary"
           >
-            {t("Actualizar")}
+            {t("Update")}
           </Button>
         </SectionFooter>
       </>

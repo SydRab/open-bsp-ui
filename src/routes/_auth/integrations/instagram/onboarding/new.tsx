@@ -36,7 +36,7 @@ function NewOnboardingToken() {
 
   return (
     <>
-      <SectionHeader title={t("Generar enlace")} />
+      <SectionHeader title={t("Generate link")} />
 
       <SectionBody>
         <form
@@ -61,16 +61,16 @@ function NewOnboardingToken() {
           <fieldset disabled={!isAdmin} className="contents">
             <p className="text-muted-foreground text-[14px]">
               {t(
-                "Generá un enlace para que un tercero conecte su cuenta de Instagram a tu organización. No necesita tener cuenta en Open BSP ni ser miembro de tu organización.",
+                "Generate a link so a third party can connect their Instagram account to your organization. They don't need an Open BSP account or to be a member of your organization.",
               )}
             </p>
 
             <label>
-              <div className="label">{t("Nombre")}</div>
+              <div className="label">{t("Name")}</div>
               <input
                 type="text"
                 className="text"
-                placeholder={t("Nombre del enlace")}
+                placeholder={t("Link name")}
                 {...register("name", { required: true })}
               />
             </label>
@@ -78,12 +78,12 @@ function NewOnboardingToken() {
             <SelectField
               name="expires_in_days"
               control={control}
-              label={t("Expiración")}
+              label={t("Expiration")}
               options={[
-                { value: "1", label: t("1 día") },
-                { value: "3", label: t("3 días") },
-                { value: "7", label: t("7 días") },
-                { value: "30", label: t("30 días") },
+                { value: "1", label: t("1 day") },
+                { value: "3", label: t("3 days") },
+                { value: "7", label: t("7 days") },
+                { value: "30", label: t("30 days") },
               ]}
               required
             />
@@ -97,10 +97,10 @@ function NewOnboardingToken() {
           type="submit"
           disabled={!isAdmin}
           loading={createToken.isPending}
-          disabledReason={t("Requiere permisos de administrador")}
+          disabledReason={t("Requires administrator permissions")}
           className="primary"
         >
-          {t("Generar")}
+          {t("Generate")}
         </Button>
       </SectionFooter>
     </>

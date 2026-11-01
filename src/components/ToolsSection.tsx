@@ -255,11 +255,11 @@ export default function ToolsSection<T extends FieldValues & ToolsForm>(props: {
         onClick={() => setIsOpen(true)}
       >
         <div className="flex flex-col gap-[2px]">
-          <span className="text-foreground">{t("Herramientas")}</span>
+          <span className="text-foreground">{t("Tools")}</span>
           <span className="text-muted-foreground text-[14px]">
             {allTools.length > 0
-              ? `${allTools.length} ${allTools.length === 1 ? t("herramienta") : t("herramientas")}`
-              : t("Ninguna")}
+              ? `${allTools.length} ${allTools.length === 1 ? t("tool") : t("tools")}`
+              : t("None")}
           </span>
         </div>
         <ChevronRight className="w-[20px] h-[20px] text-muted-foreground shrink-0" />
@@ -272,18 +272,18 @@ export default function ToolsSection<T extends FieldValues & ToolsForm>(props: {
             <button
               type="button"
               className="p-[8px] rounded-full hover:bg-muted mr-[8px] ml-[-8px]"
-              title={t("Volver")}
+              title={t("Back")}
               onClick={handleBack}
             >
               <ArrowLeft className="w-[24px] h-[24px]" />
             </button>
-            <div className="text-[16px]">{t("Herramientas")}</div>
+            <div className="text-[16px]">{t("Tools")}</div>
           </div>
 
           <SectionBody>
             {/* Add button */}
             <SectionItem
-              title={t("Agregar herramienta")}
+              title={t("Add tool")}
               aside={
                 <div className="p-[8px] bg-primary/10 rounded-full">
                   <Plus className="w-[24px] h-[24px] text-primary" />
@@ -296,8 +296,8 @@ export default function ToolsSection<T extends FieldValues & ToolsForm>(props: {
             {googleTools.map((tool) => (
               <SectionItem
                 key={tool.id}
-                title={tool.label || t("Sin nombre")}
-                description={tool.config.url || t("Sin URL")}
+                title={tool.label || t("No name")}
+                description={tool.config.url || t("No URL")}
                 aside={
                   <div className="p-[8px] bg-muted rounded-full">
                     {tool.config.product === "calendar" ? (
@@ -317,8 +317,8 @@ export default function ToolsSection<T extends FieldValues & ToolsForm>(props: {
             {openbspTools.map((tool) => (
               <SectionItem
                 key={tool.id}
-                title={tool.label || t("Sin nombre")}
-                description={tool.config.url || t("Sin URL")}
+                title={tool.label || t("No name")}
+                description={tool.config.url || t("No URL")}
                 aside={
                   <div className="p-[8px] bg-muted rounded-full">
                     <MessageSquare className="w-[24px] h-[24px] text-muted-foreground" />
@@ -334,8 +334,8 @@ export default function ToolsSection<T extends FieldValues & ToolsForm>(props: {
             {mcpTools.map((tool) => (
               <SectionItem
                 key={tool.id}
-                title={tool.label || t("Sin nombre")}
-                description={tool.config.url || t("Sin URL")}
+                title={tool.label || t("No name")}
+                description={tool.config.url || t("No URL")}
                 aside={
                   <div className="p-[8px] bg-muted rounded-full">
                     <Server className="w-[24px] h-[24px] text-muted-foreground" />
@@ -349,8 +349,8 @@ export default function ToolsSection<T extends FieldValues & ToolsForm>(props: {
             {httpTools.map((tool) => (
               <SectionItem
                 key={tool.id}
-                title={tool.label || t("Sin nombre")}
-                description={tool.config.url || t("Sin URL base")}
+                title={tool.label || t("No name")}
+                description={tool.config.url || t("No base URL")}
                 aside={
                   <div className="p-[8px] bg-muted rounded-full">
                     <Globe className="w-[24px] h-[24px] text-muted-foreground" />
@@ -372,7 +372,7 @@ export default function ToolsSection<T extends FieldValues & ToolsForm>(props: {
               return (
                 <SectionItem
                   key={tool.id}
-                  title={tool.label || t("Sin nombre")}
+                  title={tool.label || t("No name")}
                   description={desc}
                   aside={
                     <div className="p-[8px] bg-muted rounded-full">
@@ -393,9 +393,9 @@ export default function ToolsSection<T extends FieldValues & ToolsForm>(props: {
               {/* Calculator */}
               <label className="flex items-center gap-[12px] cursor-pointer justify-between">
                 <div className="flex flex-col gap-[2px]">
-                  <div className="text-foreground">{t("Calculadora")}</div>
+                  <div className="text-foreground">{t("Calculator")}</div>
                   <p className="text-muted-foreground text-[14px]">
-                    {t("Evita errores de cálculo en LLMs")}
+                    {t("Prevents calculation errors in LLMs")}
                   </p>
                 </div>
                 <Switch
@@ -547,8 +547,8 @@ function MCPClientEditor({
           className="p-[8px] rounded-full hover:bg-muted mr-[8px] ml-[-8px] disabled:opacity-30 disabled:hover:bg-transparent"
           title={
             canGoBack
-              ? t("Volver")
-              : t("Volver") + " - " + t("Completa los campos requeridos")
+              ? t("Back")
+              : t("Back") + " - " + t("Complete the required fields")
           }
           onClick={handleBack}
           disabled={!canGoBack}
@@ -556,13 +556,13 @@ function MCPClientEditor({
           <ArrowLeft className="w-[24px] h-[24px]" />
         </button>
         <div className="text-[16px]">
-          {label ? t("Editar cliente MCP") : t("Agregar cliente MCP")}
+          {label ? t("Edit MCP client") : t("Add MCP client")}
         </div>
 
         <button
           type="button"
           className="p-[8px] rounded-full hover:bg-muted ml-auto"
-          title={t("Eliminar")}
+          title={t("Delete")}
           onClick={onDelete}
         >
           <Trash2 className="w-[24px] h-[24px]" />
@@ -571,11 +571,11 @@ function MCPClientEditor({
 
       <SectionBody className="gap-[24px] pl-[10px]">
         <label>
-          <div className="label">{t("Nombre")}</div>
+          <div className="label">{t("Name")}</div>
           <input
             type="text"
             className="text"
-            placeholder={t("Mi cliente MCP")}
+            placeholder={t("My MCP client")}
             maxLength={32}
             {...register(`extra.tools.${index}.label`, {
               required: true,
@@ -598,7 +598,7 @@ function MCPClientEditor({
 
         <label>
           <div className="label">
-            {t("Token")} ({t("opcional")})
+            {t("Token")} ({t("optional")})
           </div>
           <input
             type="text"
@@ -609,9 +609,7 @@ function MCPClientEditor({
         </label>
 
         <div className="instructions">
-          <p>
-            {t("Se envían los siguientes encabezados HTTP con cada solicitud:")}
-          </p>
+          <p>{t("The following HTTP headers are sent with each request:")}</p>
           <ul>
             <li>
               <code>organization-id</code>
@@ -682,8 +680,8 @@ function HTTPClientEditor({
           className="p-[8px] rounded-full hover:bg-muted mr-[8px] ml-[-8px] disabled:opacity-30 disabled:hover:bg-transparent"
           title={
             canGoBack
-              ? t("Volver")
-              : t("Volver") + " - " + t("Completa los campos requeridos")
+              ? t("Back")
+              : t("Back") + " - " + t("Complete the required fields")
           }
           onClick={handleBack}
           disabled={!canGoBack}
@@ -691,13 +689,13 @@ function HTTPClientEditor({
           <ArrowLeft className="w-[24px] h-[24px]" />
         </button>
         <div className="text-[16px]">
-          {label ? t("Editar cliente HTTP") : t("Agregar cliente HTTP")}
+          {label ? t("Edit HTTP client") : t("Add HTTP client")}
         </div>
 
         <button
           type="button"
           className="p-[8px] rounded-full hover:bg-muted ml-auto"
-          title={t("Eliminar")}
+          title={t("Delete")}
           onClick={onDelete}
         >
           <Trash2 className="w-[24px] h-[24px]" />
@@ -706,11 +704,11 @@ function HTTPClientEditor({
 
       <SectionBody className="gap-[24px] pl-[10px]">
         <label>
-          <div className="label">{t("Nombre")}</div>
+          <div className="label">{t("Name")}</div>
           <input
             type="text"
             className="text"
-            placeholder={t("Mi cliente HTTP")}
+            placeholder={t("My HTTP client")}
             maxLength={32}
             {...register(`extra.tools.${index}.label`, {
               required: true,
@@ -722,7 +720,7 @@ function HTTPClientEditor({
         <SelectField
           name={`extra.tools.${index}.config.methods`}
           control={control}
-          label={t("Métodos")}
+          label={t("Methods")}
           multiple
           options={[
             { value: "GET", label: "GET" },
@@ -735,7 +733,7 @@ function HTTPClientEditor({
 
         <label>
           <div className="label">
-            {t("URL")} ({t("opcional")})
+            {t("URL")} ({t("optional")})
           </div>
           <input
             type="url"
@@ -746,13 +744,13 @@ function HTTPClientEditor({
         </label>
         <p>
           {t(
-            "Si termina en /*, solo se permiten URLs que comiencen con esa base. De lo contrario, debe coincidir exactamente.",
+            "If it ends in /*, only URLs starting with that base are allowed. Otherwise, it must match exactly.",
           )}
         </p>
 
         <label>
           <div className="label">
-            {t("Token")} ({t("opcional")})
+            {t("Token")} ({t("optional")})
           </div>
           <input
             type="text"
@@ -763,9 +761,7 @@ function HTTPClientEditor({
         </label>
 
         <div className="instructions">
-          <p>
-            {t("Se envían los siguientes encabezados HTTP con cada solicitud:")}
-          </p>
+          <p>{t("The following HTTP headers are sent with each request:")}</p>
           <ul>
             <li>
               <code>organization-id</code>
@@ -865,8 +861,8 @@ function SQLClientEditor({
           className="p-[8px] rounded-full hover:bg-muted mr-[8px] ml-[-8px] disabled:opacity-30 disabled:hover:bg-transparent"
           title={
             canGoBack
-              ? t("Volver")
-              : t("Volver") + " - " + t("Completa los campos requeridos")
+              ? t("Back")
+              : t("Back") + " - " + t("Complete the required fields")
           }
           onClick={handleBack}
           disabled={!canGoBack}
@@ -874,13 +870,13 @@ function SQLClientEditor({
           <ArrowLeft className="w-[24px] h-[24px]" />
         </button>
         <div className="text-[16px]">
-          {label ? t("Editar cliente SQL") : t("Agregar cliente SQL")}
+          {label ? t("Edit SQL client") : t("Add SQL client")}
         </div>
 
         <button
           type="button"
           className="p-[8px] rounded-full hover:bg-muted ml-auto"
-          title={t("Eliminar")}
+          title={t("Delete")}
           onClick={onDelete}
         >
           <Trash2 className="w-[24px] h-[24px]" />
@@ -889,11 +885,11 @@ function SQLClientEditor({
 
       <SectionBody className="gap-[24px] pl-[10px]">
         <label>
-          <div className="label">{t("Nombre")}</div>
+          <div className="label">{t("Name")}</div>
           <input
             type="text"
             className="text"
-            placeholder={t("Mi base de datos")}
+            placeholder={t("My database")}
             maxLength={32}
             {...register(`extra.tools.${index}.label`, {
               required: true,
@@ -931,7 +927,7 @@ function SQLClientEditor({
 
             <label>
               <div className="label">
-                {t("Token")} ({t("opcional")})
+                {t("Token")} ({t("optional")})
               </div>
               <input
                 type="text"
@@ -960,7 +956,7 @@ function SQLClientEditor({
 
             <label>
               <div className="label">
-                {t("Puerto")} ({t("opcional")})
+                {t("Port")} ({t("optional")})
               </div>
               <input
                 type="number"
@@ -974,7 +970,7 @@ function SQLClientEditor({
 
             <label>
               <div className="label">
-                {t("Usuario")} ({t("opcional")})
+                {t("User")} ({t("optional")})
               </div>
               <input
                 type="text"
@@ -986,19 +982,19 @@ function SQLClientEditor({
 
             <label>
               <div className="label">
-                {t("Contraseña")} ({t("opcional")})
+                {t("Password")} ({t("optional")})
               </div>
               <input
                 type="text"
                 className="text"
-                placeholder={t("Contraseña")}
+                placeholder={t("Password")}
                 {...register(`extra.tools.${index}.config.password`)}
               />
             </label>
 
             <label>
               <div className="label">
-                {t("Base de datos")} ({t("opcional")})
+                {t("Database")} ({t("optional")})
               </div>
               <input
                 type="text"
@@ -1166,27 +1162,27 @@ function GoogleMCPClientEditor({
   const allowedToolsOptions =
     product === "calendar"
       ? [
-          { value: "list_calendars", label: t("Listar calendarios") },
-          { value: "list_events", label: t("Listar eventos") },
-          { value: "check_availability", label: t("Verificar disponibilidad") },
-          { value: "create_event", label: t("Crear evento") },
-          { value: "update_event", label: t("Actualizar evento") },
-          { value: "delete_event", label: t("Eliminar evento") },
+          { value: "list_calendars", label: t("List calendars") },
+          { value: "list_events", label: t("List events") },
+          { value: "check_availability", label: t("Check availability") },
+          { value: "create_event", label: t("Create event") },
+          { value: "update_event", label: t("Update event") },
+          { value: "delete_event", label: t("Delete event") },
         ]
       : [
           {
             value: "list_authorized_files",
-            label: t("Listar archivos autorizados"),
+            label: t("List authorized files"),
           },
-          { value: "get_spreadsheet", label: t("Obtener hoja de cálculo") },
-          { value: "get_sheet_schema", label: t("Obtener esquema de la hoja") },
-          { value: "describe_sheet", label: t("Describir hoja") },
-          { value: "search_rows", label: t("Buscar filas") },
-          { value: "read_sheet", label: t("Leer hoja") },
-          { value: "write_sheet", label: t("Escribir hoja") },
-          { value: "append_rows", label: t("Agregar filas") },
-          { value: "create_spreadsheet", label: t("Crear hoja de cálculo") },
-          { value: "semantic_search", label: t("Búsqueda semántica") },
+          { value: "get_spreadsheet", label: t("Get spreadsheet") },
+          { value: "get_sheet_schema", label: t("Get sheet schema") },
+          { value: "describe_sheet", label: t("Describe sheet") },
+          { value: "search_rows", label: t("Search rows") },
+          { value: "read_sheet", label: t("Read sheet") },
+          { value: "write_sheet", label: t("Write sheet") },
+          { value: "append_rows", label: t("Add rows") },
+          { value: "create_spreadsheet", label: t("Create spreadsheet") },
+          { value: "semantic_search", label: t("Semantic search") },
         ];
 
   return (
@@ -1197,8 +1193,8 @@ function GoogleMCPClientEditor({
           className="p-[8px] rounded-full hover:bg-muted mr-[8px] ml-[-8px] disabled:opacity-30 disabled:hover:bg-transparent"
           title={
             canGoBack
-              ? t("Volver")
-              : t("Volver") + " - " + t("Completa los campos requeridos")
+              ? t("Back")
+              : t("Back") + " - " + t("Complete the required fields")
           }
           onClick={handleBack}
           disabled={!canGoBack}
@@ -1212,7 +1208,7 @@ function GoogleMCPClientEditor({
         <button
           type="button"
           className="p-[8px] rounded-full hover:bg-muted ml-auto"
-          title={t("Eliminar")}
+          title={t("Delete")}
           onClick={onDelete}
         >
           <Trash2 className="w-[24px] h-[24px]" />
@@ -1221,14 +1217,12 @@ function GoogleMCPClientEditor({
 
       <SectionBody className="gap-[24px] pl-[10px]">
         <label>
-          <div className="label">{t("Nombre")}</div>
+          <div className="label">{t("Name")}</div>
           <input
             type="text"
             className="text"
             placeholder={
-              product === "calendar"
-                ? t("Mi calendario")
-                : t("Mi hoja de cálculo")
+              product === "calendar" ? t("My calendar") : t("My spreadsheet")
             }
             maxLength={32}
             {...register(`extra.tools.${index}.label`, {
@@ -1240,11 +1234,9 @@ function GoogleMCPClientEditor({
 
         <p>
           {t(
-            "Autoriza el acceso a tu cuenta de Google para que el agente pueda interactuar con",
+            "Authorize access to your Google account so the agent can interact with",
           )}{" "}
-          {product === "calendar"
-            ? t("tu calendario")
-            : t("tus hojas de cálculo")}
+          {product === "calendar" ? t("your calendar") : t("your spreadsheets")}
           .
         </p>
 
@@ -1254,7 +1246,7 @@ function GoogleMCPClientEditor({
           onClick={handleGetToken}
         >
           {token && <Check className="w-4 h-4" />}
-          {token ? email || t("Autorizado") : t("Autorizar")}
+          {token ? email || t("Authorized") : t("Authorize")}
         </button>
 
         {/* Hidden input to register field for setValue to work */}
@@ -1267,7 +1259,7 @@ function GoogleMCPClientEditor({
 
         {product === "sheets" && files.length > 0 && (
           <div>
-            <div className="label mb-2">{t("Archivos compartidos")}</div>
+            <div className="label mb-2">{t("Shared files")}</div>
             <div className="flex flex-wrap gap-2">
               {files.map((file, i) => (
                 <div
@@ -1285,10 +1277,10 @@ function GoogleMCPClientEditor({
         <SelectField
           name={`extra.tools.${index}.config.allowed_tools`}
           control={control}
-          label={t("Herramientas permitidas")}
+          label={t("Allowed tools")}
           multiple
           options={allowedToolsOptions}
-          placeholder={t("Ninguna")}
+          placeholder={t("None")}
           modalClassName="bottom-0"
         />
       </SectionBody>
@@ -1375,13 +1367,13 @@ function OpenBSPMCPClientEditor({
   };
 
   const allowedToolsOptions = [
-    { value: "list_conversations", label: t("Listar conversaciones") },
-    { value: "fetch_conversation", label: t("Obtener conversación") },
-    { value: "search_contacts", label: t("Buscar contactos") },
-    { value: "list_accounts", label: t("Listar cuentas") },
-    { value: "send_message", label: t("Enviar mensaje") },
-    { value: "list_templates", label: t("Listar plantillas") },
-    { value: "fetch_template", label: t("Obtener plantilla") },
+    { value: "list_conversations", label: t("List conversations") },
+    { value: "fetch_conversation", label: t("Get conversation") },
+    { value: "search_contacts", label: t("Search contacts") },
+    { value: "list_accounts", label: t("List accounts") },
+    { value: "send_message", label: t("Send message") },
+    { value: "list_templates", label: t("List templates") },
+    { value: "fetch_template", label: t("Get template") },
   ];
 
   return (
@@ -1392,8 +1384,8 @@ function OpenBSPMCPClientEditor({
           className="p-[8px] rounded-full hover:bg-muted mr-[8px] ml-[-8px] disabled:opacity-30 disabled:hover:bg-transparent"
           title={
             canGoBack
-              ? t("Volver")
-              : t("Volver") + " - " + t("Completa los campos requeridos")
+              ? t("Back")
+              : t("Back") + " - " + t("Complete the required fields")
           }
           onClick={handleBack}
           disabled={!canGoBack}
@@ -1405,7 +1397,7 @@ function OpenBSPMCPClientEditor({
         <button
           type="button"
           className="p-[8px] rounded-full hover:bg-muted ml-auto"
-          title={t("Eliminar")}
+          title={t("Delete")}
           onClick={onDelete}
         >
           <Trash2 className="w-[24px] h-[24px]" />
@@ -1414,7 +1406,7 @@ function OpenBSPMCPClientEditor({
 
       <SectionBody className="gap-[24px] pl-[10px]">
         <label>
-          <div className="label">{t("Nombre")}</div>
+          <div className="label">{t("Name")}</div>
           <input
             type="text"
             className="text"
@@ -1433,12 +1425,12 @@ function OpenBSPMCPClientEditor({
               <>
                 <Check className="w-[16px] h-[16px] text-primary" />
                 <span className="text-muted-foreground">
-                  {t("Autenticación configurada automáticamente")}
+                  {t("Authentication configured automatically")}
                 </span>
               </>
             ) : (
               <span className="text-muted-foreground">
-                {t("Configurando autenticación...")}
+                {t("Configuring authentication...")}
               </span>
             )}
           </div>
@@ -1455,7 +1447,7 @@ function OpenBSPMCPClientEditor({
               )}
             />
             <p className="text-muted-foreground text-[14px] mt-[4px]">
-              {t("Obtén una API key en Configuración > API Keys")}
+              {t("Get an API key in Settings > API Keys")}
             </p>
           </label>
         )}
@@ -1473,10 +1465,10 @@ function OpenBSPMCPClientEditor({
         <SelectField
           name={`extra.tools.${index}.config.allowed_tools`}
           control={control}
-          label={t("Herramientas permitidas")}
+          label={t("Allowed tools")}
           multiple
           options={allowedToolsOptions}
-          placeholder={t("Ninguna")}
+          placeholder={t("None")}
           modalClassName="bottom-0"
         />
       </SectionBody>
@@ -1508,18 +1500,18 @@ function NewToolSelection({
         <button
           type="button"
           className="p-[8px] rounded-full hover:bg-muted mr-[8px] ml-[-8px]"
-          title={t("Volver")}
+          title={t("Back")}
           onClick={onBack}
         >
           <ArrowLeft className="w-[24px] h-[24px]" />
         </button>
-        <div className="text-[16px]">{t("Agregar herramienta")}</div>
+        <div className="text-[16px]">{t("Add tool")}</div>
       </div>
 
       <SectionBody>
         <SectionItem
           title="WhatsApp"
-          description={t("Gestionar conversaciones de WhatsApp")}
+          description={t("Manage WhatsApp conversations")}
           aside={
             <div className="p-[8px] bg-muted rounded-full">
               <MessageSquare className="w-[24px] h-[24px] text-muted-foreground" />
@@ -1528,8 +1520,8 @@ function NewToolSelection({
           onClick={onAddOpenBSP}
         />
         <SectionItem
-          title={t("Cliente MCP")}
-          description={t("Conectar servidor MCP externo")}
+          title={t("MCP Client")}
+          description={t("Connect external MCP server")}
           aside={
             <div className="p-[8px] bg-muted rounded-full">
               <Server className="w-[24px] h-[24px] text-muted-foreground" />
@@ -1538,8 +1530,8 @@ function NewToolSelection({
           onClick={onAddMCP}
         />
         <SectionItem
-          title={t("Cliente HTTP")}
-          description={t("Realizar peticiones HTTP")}
+          title={t("HTTP Client")}
+          description={t("Make HTTP requests")}
           aside={
             <div className="p-[8px] bg-muted rounded-full">
               <Globe className="w-[24px] h-[24px] text-muted-foreground" />
@@ -1548,8 +1540,8 @@ function NewToolSelection({
           onClick={onAddHTTP}
         />
         <SectionItem
-          title={t("Cliente SQL")}
-          description={t("Consultar base de datos")}
+          title={t("SQL Client")}
+          description={t("Query database")}
           aside={
             <div className="p-[8px] bg-muted rounded-full">
               <Database className="w-[24px] h-[24px] text-muted-foreground" />
@@ -1559,7 +1551,7 @@ function NewToolSelection({
         />
         <SectionItem
           title={t("Google Calendar")}
-          description={t("Gestionar eventos y calendarios")}
+          description={t("Manage events and calendars")}
           aside={
             <div className="p-[8px] bg-muted rounded-full">
               <Calendar className="w-[24px] h-[24px] text-muted-foreground" />
@@ -1569,7 +1561,7 @@ function NewToolSelection({
         />
         <SectionItem
           title={t("Google Sheets")}
-          description={t("Leer y escribir hojas de cálculo")}
+          description={t("Read and write spreadsheets")}
           aside={
             <div className="p-[8px] bg-muted rounded-full">
               <FileSpreadsheet className="w-[24px] h-[24px] text-muted-foreground" />

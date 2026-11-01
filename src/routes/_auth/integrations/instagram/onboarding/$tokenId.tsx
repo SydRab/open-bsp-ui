@@ -35,11 +35,11 @@ function OnboardingTokenDetail() {
 
   function getStatusLabel() {
     if (!token) return "";
-    if (token.status === "used") return t("Usado");
+    if (token.status === "used") return t("Used");
     if (token.status === "expired" || new Date(token.expires_at) < new Date()) {
-      return t("Expirado");
+      return t("Expired");
     }
-    return t("Activo");
+    return t("Active");
   }
 
   function copyLink() {
@@ -64,21 +64,21 @@ function OnboardingTokenDetail() {
             })
           }
           deleteDisabled={!isAdmin}
-          deleteDisabledReason={t("Requiere permisos de administrador")}
+          deleteDisabledReason={t("Requires administrator permissions")}
           deleteLoading={deleteToken.isPending}
         />
 
         <SectionBody>
           <form>
             <label>
-              <div className="label">{t("Estado")}</div>
+              <div className="label">{t("Status")}</div>
               <div className="text-[16px] text-foreground">
                 {getStatusLabel()}
               </div>
             </label>
 
             <label>
-              <div className="label">{t("Expira")}</div>
+              <div className="label">{t("Expires")}</div>
               <div className="text-[16px] text-foreground">
                 {new Date(token.expires_at).toLocaleString()}
               </div>
@@ -86,7 +86,7 @@ function OnboardingTokenDetail() {
 
             {token.used_at && (
               <label>
-                <div className="label">{t("Usado")}</div>
+                <div className="label">{t("Used")}</div>
                 <div className="text-[16px] text-foreground">
                   {new Date(token.used_at).toLocaleString()}
                 </div>
@@ -94,7 +94,7 @@ function OnboardingTokenDetail() {
             )}
 
             <label>
-              <div className="label">{t("Enlace")}</div>
+              <div className="label">{t("Link")}</div>
               <div className="flex items-center gap-2">
                 <input
                   type="text"
@@ -106,7 +106,7 @@ function OnboardingTokenDetail() {
                   <button
                     type="button"
                     className="p-[8px] hover:bg-muted rounded-full shrink-0"
-                    title={t("Copiar enlace")}
+                    title={t("Copy link")}
                     onClick={copyLink}
                   >
                     {copied ? (

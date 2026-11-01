@@ -52,7 +52,7 @@ function OAuthCallback() {
 
   return (
     <div className="flex items-center justify-center p-8">
-      <p>{t("Autenticando...")}</p>
+      <p>{t("Authenticating...")}</p>
     </div>
   );
 }

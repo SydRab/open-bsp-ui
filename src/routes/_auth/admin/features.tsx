@@ -23,12 +23,12 @@ function FeatureKillSwitches() {
 
   return (
     <>
-      <SectionHeader title={t("Interruptores de función")} />
+      <SectionHeader title={t("Feature kill switches")} />
 
       <SectionBody>
         <p className="text-muted-foreground text-[13px] px-[6px] pb-[8px]">
           {t(
-            "Al activarlo, la función deja de estar disponible para todas las organizaciones, sin importar su plan.",
+            "Turning this on makes the feature unavailable to every organization, regardless of plan.",
           )}
         </p>
 

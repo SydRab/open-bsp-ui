@@ -17,7 +17,7 @@ function timeAgo(iso: string, t: (s: string) => string): string {
     0,
     Math.round((Date.now() - new Date(iso).getTime()) / 60_000),
   );
-  if (minutes < 1) return t("ahora");
+  if (minutes < 1) return t("now");
   if (minutes < 60) return `${minutes}m`;
   const hours = Math.round(minutes / 60);
   if (hours < 24) return `${hours}h`;
@@ -45,22 +45,19 @@ export default function NotificationBell() {
         <div className="w-[340px] max-h-[420px] overflow-y-auto bg-popover border border-border rounded-[8px] shadow-lg py-[4px]">
           <div className="flex items-center justify-between px-[12px] py-[8px]">
             <span className="text-[13px] font-semibold text-foreground">
-              {t("Notificaciones")}
+              {t("Notifications")}
             </span>
             {unreadCount > 0 && (
               <button
                 className="text-[12px] text-primary hover:underline"
                 onClick={() => markAllRead.mutate()}
               >
-                {t("Marcar todo como leído")}
+                {t("Mark all as read")}
               </button>
             )}
           </div>
           {(notifications ?? []).length === 0 ? (
-            <Empty
-              description={t("Sin notificaciones")}
-              className="py-[16px]"
-            />
+            <Empty description={t("No notifications")} className="py-[16px]" />
           ) : (
             (notifications ?? []).map((n) => (
               <div

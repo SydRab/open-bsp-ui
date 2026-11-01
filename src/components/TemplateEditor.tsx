@@ -277,7 +277,7 @@ export default function TemplateEditor({
           existingTemplate.rejection_reason && (
             <div className="instructions">
               <p className="text-destructive font-medium">
-                {t("Rechazada por Meta")}: {existingTemplate.rejection_reason}
+                {t("Rejected by Meta")}: {existingTemplate.rejection_reason}
               </p>
             </div>
           )}
@@ -287,20 +287,20 @@ export default function TemplateEditor({
           <SelectField<TemplateFormData>
             name="category"
             control={control}
-            label={t("Categoría")}
+            label={t("Category")}
             disabled={!!existingTemplate}
             options={[
-              { value: "MARKETING", label: t("Promoción") },
-              { value: "UTILITY", label: t("Utilidad") },
+              { value: "MARKETING", label: t("Marketing") },
+              { value: "UTILITY", label: t("Utility") },
             ]}
           />
           <p className="text-xs text-muted-foreground -mt-[8px]">
             {categoryValue === "MARKETING"
               ? t(
-                  "Promoción: ofertas, anuncios de nuevos lotes o cursos, contenido para reenganchar leads inactivos. Requiere opt-in y permite darse de baja.",
+                  "Marketing: offers, new-batch or course announcements, content to re-engage inactive leads. Requires opt-in and must allow unsubscribing.",
                 )
               : t(
-                  "Utilidad: confirmaciones, recordatorios y avisos sobre algo que la persona ya solicitó (clase, pago, trámite). Elegir mal la categoría puede hacer que Meta la rechace.",
+                  "Utility: confirmations, reminders and notices about something the person already requested (a class, a payment, a procedure). Picking the wrong category can get it rejected by Meta.",
                 )}
           </p>
 
@@ -308,7 +308,7 @@ export default function TemplateEditor({
           <SelectField<TemplateFormData>
             name="language"
             control={control}
-            label={t("Idioma")}
+            label={t("Language")}
             disabled={!!existingTemplate}
             options={[
               { value: "es", label: "Español" },
@@ -319,14 +319,14 @@ export default function TemplateEditor({
 
           {/* Name */}
           <label>
-            <div className="label">{t("Nombre")}</div>
+            <div className="label">{t("Name")}</div>
             <input
               type="text"
               className="text"
-              placeholder={t("nombre_de_plantilla")}
+              placeholder={t("template_name")}
               disabled={!!existingTemplate}
               {...register("name", {
-                required: t("El nombre es obligatorio"),
+                required: t("The name is required"),
                 onChange: (e: ChangeEvent<HTMLInputElement>) => {
                   e.target.value = e.target.value.replace(/ /g, "_");
                 },
@@ -339,15 +339,15 @@ export default function TemplateEditor({
           <div className="flex flex-col">
             <label>
               <div className="label">
-                {t("Encabezado")} ({t("opcional")})
+                {t("Header")} ({t("optional")})
               </div>
               <input
                 type="text"
                 className="text"
-                placeholder={t("Oferta para {{1}}")}
+                placeholder={t("Offer for {{1}}")}
                 maxLength={60}
                 {...register("header", {
-                  maxLength: { value: 60, message: t("Máximo 60 caracteres") },
+                  maxLength: { value: 60, message: t("Maximum 60 characters") },
                 })}
                 ref={(e) => {
                   register("header").ref(e);
@@ -377,7 +377,7 @@ export default function TemplateEditor({
                 }}
               >
                 <PlusIcon className="w-[16px] h-[16px]" />
-                {t("Agregar variable")}
+                {t("Add variable")}
               </button>
             )}
           </div>
@@ -385,16 +385,16 @@ export default function TemplateEditor({
           {headerText?.includes("{{1}}") && (
             <label>
               <div className="label">
-                {t("Variable de encabezado")} {"{{1}}"}
+                {t("Header variable")} {"{{1}}"}
               </div>
               <input
                 type="text"
                 className="text"
-                placeholder={t("Ejemplo: Juan, #1234...")}
+                placeholder={t("Example: John, #1234...")}
                 {...register("headerVariable", {
                   validate: (value) =>
                     headerText?.includes("{{1}}") && !value
-                      ? t("Ingresá un ejemplo para la variable")
+                      ? t("Enter an example for the variable")
                       : true,
                 })}
               />
@@ -405,24 +405,24 @@ export default function TemplateEditor({
           {/* Body */}
           <div className="flex flex-col">
             <label>
-              <div className="label">{t("Cuerpo")}</div>
+              <div className="label">{t("Body")}</div>
               <textarea
                 className="text"
                 rows={4}
                 maxLength={1024}
-                placeholder={t("Hola {{1}}, tu pedido está listo.")}
+                placeholder={t("Hello {{1}}, your order is ready.")}
                 {...register("body", {
-                  required: t("El cuerpo es obligatorio"),
+                  required: t("The body is required"),
                   maxLength: {
                     value: 1024,
-                    message: t("Máximo 1024 caracteres"),
+                    message: t("Maximum 1024 characters"),
                   },
                   validate: (value) => {
                     const trimmed = value.trim();
                     if (/^\{\{\d+\}\}/.test(trimmed))
-                      return t("El cuerpo no puede empezar con una variable");
+                      return t("The body cannot start with a variable");
                     if (/\{\{\d+\}\}$/.test(trimmed))
-                      return t("El cuerpo no puede terminar con una variable");
+                      return t("The body cannot end with a variable");
                     return true;
                   },
                 })}
@@ -460,7 +460,7 @@ export default function TemplateEditor({
               }}
             >
               <PlusIcon className="w-[16px] h-[16px]" />
-              {t("Agregar variable")}
+              {t("Add variable")}
             </button>
           </div>
 
@@ -471,10 +471,10 @@ export default function TemplateEditor({
               <input
                 type="text"
                 className="text"
-                placeholder={t("Ejemplo: Juan, #1234...")}
+                placeholder={t("Example: John, #1234...")}
                 {...register(`bodyVariables.${idx}.value`, {
                   validate: (value) =>
-                    !value ? t("Ingresá un ejemplo para la variable") : true,
+                    !value ? t("Enter an example for the variable") : true,
                 })}
               />
               <FieldError error={errors.bodyVariables?.[idx]?.value} />
@@ -484,22 +484,22 @@ export default function TemplateEditor({
           {/* Footer */}
           <label>
             <div className="label">
-              {t("Pie")} ({t("opcional")})
+              {t("Footer")} ({t("optional")})
             </div>
             <input
               type="text"
               className="text"
-              placeholder={t("Texto del pie")}
+              placeholder={t("Footer text")}
               maxLength={60}
               {...register("footer", {
-                maxLength: { value: 60, message: t("Máximo 60 caracteres") },
+                maxLength: { value: 60, message: t("Maximum 60 characters") },
               })}
             />
           </label>
 
           {/* Preview */}
           <label>
-            <div className="label">{t("Previsualización")}</div>
+            <div className="label">{t("Preview")}</div>
             <div className="py-[12px] bg-chat relative rounded-[7.5px] [&>div>div]:!px-0 [&>div>div>div]:!max-w-[85%]">
               <TemplatePreview editMode template={previewTemplate} />
             </div>
@@ -515,7 +515,7 @@ export default function TemplateEditor({
           loading={isPending}
           className="primary"
         >
-          {t("Enviar a revisión")}
+          {t("Submit for review")}
         </Button>
       </SectionFooter>
     </>

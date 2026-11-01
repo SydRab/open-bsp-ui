@@ -24,9 +24,9 @@ function Conversations() {
   const { data: invitationRoles } = useMyInvitationRoles();
 
   const roles: Record<string, string> = {
-    owner: t("Propietario"),
-    admin: t("Administrador"),
-    member: t("Miembro"),
+    owner: t("Owner"),
+    admin: t("Administrator"),
+    member: t("Member"),
   };
 
   const handleInvitationAction = (
@@ -50,13 +50,11 @@ function Conversations() {
                 // min-h, not h: it has to override SectionItem's own h-[72px],
                 // and min-height beats height whatever order the two land in.
                 className="min-h-[112px]"
-                title={
-                  invitation.organization_name || t("Invitación pendiente")
-                }
+                title={invitation.organization_name || t("Pending invitation")}
                 description={
                   <div className="flex flex-col gap-[6px] w-full">
                     <p>
-                      {t("Te invitaron como")}{" "}
+                      {t("You were invited as")}{" "}
                       {invitationRoles?.get(invitation.id)
                         ? t(invitationRoles.get(invitation.id)!)
                         : roles[invitation.role || "member"]}
@@ -72,7 +70,7 @@ function Conversations() {
                             }
                             className="font-bold text-primary/90 hover:text-primary cursor-pointer"
                           >
-                            {t("Aceptar")}
+                            {t("Accept")}
                           </button>
                           <button
                             onClick={() =>
@@ -80,7 +78,7 @@ function Conversations() {
                             }
                             className="font-bold text-muted-foreground/90 hover:text-muted-foreground cursor-pointer"
                           >
-                            {t("Rechazar")}
+                            {t("Reject")}
                           </button>
                         </>
                       )}

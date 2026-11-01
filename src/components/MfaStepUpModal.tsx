@@ -28,7 +28,7 @@ export default function MfaStepUpModal({
       <div className="bg-background text-foreground rounded-xl w-[320px] p-[20px] flex flex-col gap-[16px]">
         <div className="flex items-center justify-between">
           <div className="text-[16px] font-medium">
-            {t("Verificar en dos pasos")}
+            {t("Two-factor verification")}
           </div>
           <button
             className="p-[4px] rounded-full hover:bg-muted"
@@ -40,7 +40,7 @@ export default function MfaStepUpModal({
 
         {isLoading && (
           <div className="text-[14px] text-muted-foreground">
-            {t("Cargando...")}
+            {t("Loading...")}
           </div>
         )}
 
@@ -48,7 +48,7 @@ export default function MfaStepUpModal({
           <>
             <p className="text-[14px] text-muted-foreground">
               {t(
-                "Esta organización exige verificación en dos pasos para propietarios y administradores, y todavía no la activaste.",
+                "This organization requires two-factor authentication for owners and admins, and you haven't turned it on yet.",
               )}
             </p>
             <Button
@@ -62,7 +62,7 @@ export default function MfaStepUpModal({
                 });
               }}
             >
-              {t("Configurar ahora")}
+              {t("Set up now")}
             </Button>
           </>
         )}
@@ -79,7 +79,7 @@ export default function MfaStepUpModal({
           >
             <label>
               <div className="label">
-                {t("Código de tu aplicación de autenticación")}
+                {t("Code from your authenticator app")}
               </div>
               <input
                 className="text"
@@ -102,7 +102,7 @@ export default function MfaStepUpModal({
                 invalid={code.trim().length < 6}
                 loading={verify.isPending}
               >
-                {t("Verificar")}
+                {t("Verify")}
               </Button>
             </div>
           </form>

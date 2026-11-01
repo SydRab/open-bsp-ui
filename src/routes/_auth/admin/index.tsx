@@ -16,8 +16,8 @@ export const Route = createFileRoute("/_auth/admin/")({
 });
 
 const STATUS_LABELS: Record<string, string> = {
-  active: "Activa",
-  suspended: "Suspendida",
+  active: "Active",
+  suspended: "Suspended",
 };
 
 function TenantList() {
@@ -33,15 +33,15 @@ function TenantList() {
 
   return (
     <>
-      <SectionHeader title={t("Panel de administración")} />
+      <SectionHeader title={t("Admin console")} />
 
       <SectionBody>
         <div className="px-[6px] pb-[8px]">
           <label>
-            <div className="label">{t("Buscar")}</div>
+            <div className="label">{t("Search")}</div>
             <input
               className="text"
-              placeholder={t("Nombre o slug de la organización")}
+              placeholder={t("Organization name or slug")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -49,7 +49,7 @@ function TenantList() {
         </div>
 
         <SectionItem
-          title={t("Administradores de la plataforma")}
+          title={t("Platform admins")}
           aside={
             <div className="p-[8px]">
               <ShieldUser className="w-[24px] h-[24px] text-muted-foreground" />
@@ -61,7 +61,7 @@ function TenantList() {
         />
 
         <SectionItem
-          title={t("Interruptores de función")}
+          title={t("Feature kill switches")}
           aside={
             <div className="p-[8px]">
               <ToggleLeft className="w-[24px] h-[24px] text-muted-foreground" />
@@ -73,7 +73,7 @@ function TenantList() {
         />
 
         <SectionItem
-          title={t("Registro de actividad de la plataforma")}
+          title={t("Platform activity log")}
           aside={
             <div className="p-[8px]">
               <History className="w-[24px] h-[24px] text-muted-foreground" />
@@ -96,7 +96,7 @@ function TenantList() {
 
         {!isLoading && !error && tenants?.length === 0 && (
           <div className="p-[16px] text-muted-foreground">
-            {t("No se encontraron organizaciones.")}
+            {t("No organizations found.")}
           </div>
         )}
 
@@ -104,7 +104,7 @@ function TenantList() {
           <SectionItem
             key={tenant.organization_id}
             title={tenant.name}
-            description={`${tenant.tier_name ?? t("Sin plan")} · ${t(STATUS_LABELS[tenant.status] ?? tenant.status)} · ${tenant.seats_used}${tenant.seats_cap != null ? `/${tenant.seats_cap}` : ""} ${t("miembros")}`}
+            description={`${tenant.tier_name ?? t("No plan")} · ${t(STATUS_LABELS[tenant.status] ?? tenant.status)} · ${tenant.seats_used}${tenant.seats_cap != null ? `/${tenant.seats_cap}` : ""} ${t("members")}`}
             aside={
               <div className="p-[8px]">
                 <Building2 className="w-[24px] h-[24px] text-muted-foreground" />

@@ -20,7 +20,7 @@ export default function BrandingForm() {
   return (
     <div className="flex flex-col gap-[16px]">
       <div className="text-[16px] text-muted-foreground">
-        {t("Identidad de marca")}
+        {t("Brand identity")}
       </div>
 
       <BrandingField
@@ -110,7 +110,7 @@ function BrandingField({
             loading={saving}
             onClick={() => onSave(draft.trim())}
           >
-            {t("Guardar")}
+            {t("Save")}
           </Button>
         </div>
       )}

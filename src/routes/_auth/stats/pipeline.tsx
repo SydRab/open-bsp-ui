@@ -40,11 +40,11 @@ const STATUS_ORDER = [
 ] as const;
 
 const STATUS_LABELS: Record<string, string> = {
-  open: "Abierto",
-  qualified: "Calificado",
-  unqualified: "No calificado",
-  converted: "Convertido",
-  dropped: "Perdido",
+  open: "Open",
+  qualified: "Qualified",
+  unqualified: "Unqualified",
+  converted: "Converted",
+  dropped: "Dropped",
 };
 
 const STATUS_COLOR_VAR: Record<string, string> = {
@@ -56,9 +56,9 @@ const STATUS_COLOR_VAR: Record<string, string> = {
 };
 
 const SOURCE_LABELS: Record<string, string> = {
-  ctwa_ad: "Anuncio",
-  ctwa_post: "Publicación",
-  organic: "Orgánico",
+  ctwa_ad: "Ad",
+  ctwa_post: "Post",
+  organic: "Organic",
   manual: "Manual",
 };
 
@@ -127,13 +127,13 @@ function PipelineReports() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-[12px]">
         <div className="rounded-xl border border-border p-[12px]">
           <div className="text-[12px] text-muted-foreground">
-            {t("Leads totales")}
+            {t("Total leads")}
           </div>
           <div className="text-[22px] font-medium">{totalLeads}</div>
         </div>
         <div className="rounded-xl border border-border p-[12px]">
           <div className="text-[12px] text-muted-foreground">
-            {t("Tasa de conversión")}
+            {t("Conversion rate")}
           </div>
           <div className="text-[22px] font-medium">
             {conversionRate.toFixed(1)}%
@@ -141,13 +141,13 @@ function PipelineReports() {
         </div>
         <div className="rounded-xl border border-border p-[12px]">
           <div className="text-[12px] text-muted-foreground">
-            {t("Leads perdidos")}
+            {t("Dropped leads")}
           </div>
           <div className="text-[22px] font-medium">{droppedCount}</div>
         </div>
         <div className="rounded-xl border border-border p-[12px]">
           <div className="text-[12px] text-muted-foreground">
-            {t("Valor ganado")}
+            {t("Value won")}
           </div>
           <div className="text-[22px] font-medium">
             {formatCurrency(totalDealValue)}
@@ -157,7 +157,7 @@ function PipelineReports() {
 
       <div className="flex flex-col gap-[8px]">
         <div className="text-[14px] font-medium text-muted-foreground uppercase tracking-wide">
-          {t("Embudo")}
+          {t("Funnel")}
         </div>
         <ResponsiveContainer width="100%" height={220}>
           <BarChart
@@ -199,11 +199,11 @@ function PipelineReports() {
 
       <div className="flex flex-col gap-[8px]">
         <div className="text-[14px] font-medium text-muted-foreground uppercase tracking-wide">
-          {t("Origen de los leads")}
+          {t("Lead sources")}
         </div>
         {sourceTotals.length === 0 ? (
           <div className="text-[13px] text-muted-foreground">
-            {t("Sin datos")}
+            {t("No data")}
           </div>
         ) : (
           <ResponsiveContainer
@@ -251,20 +251,20 @@ function PipelineReports() {
       {adRows.length > 0 && (
         <div className="flex flex-col gap-[8px]">
           <div className="text-[14px] font-medium text-muted-foreground uppercase tracking-wide">
-            {t("Rendimiento por anuncio")}
+            {t("Ad performance")}
           </div>
           <table className="w-full text-[13px]">
             <thead>
               <tr className="text-muted-foreground text-left border-b border-border">
-                <th className="py-[6px] font-normal">{t("Anuncio")}</th>
+                <th className="py-[6px] font-normal">{t("Ad")}</th>
                 <th className="py-[6px] font-normal text-right">
                   {t("Leads")}
                 </th>
                 <th className="py-[6px] font-normal text-right">
-                  {t("Convertidos")}
+                  {t("Converted")}
                 </th>
                 <th className="py-[6px] font-normal text-right">
-                  {t("Valor ganado")}
+                  {t("Value won")}
                 </th>
               </tr>
             </thead>

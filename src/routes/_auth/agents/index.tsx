@@ -20,17 +20,17 @@ function ListAgents() {
   const isAdmin = ["admin", "owner"].includes(currentAgent?.role || "");
 
   const modeLabels: Record<string, string | JSX.Element> = {
-    active: <span className="text-primary">{t("Activo")}</span>,
-    inactive: t("Inactivo"),
+    active: <span className="text-primary">{t("Active")}</span>,
+    inactive: t("Inactive"),
   };
 
   return (
     <>
-      <SectionHeader title={t("Agentes")} />
+      <SectionHeader title={t("Agents")} />
 
       <SectionBody>
         <SectionItem
-          title={t("Agregar agente")}
+          title={t("Add agent")}
           aside={
             <div className="p-[8px] bg-primary/10 rounded-full">
               <Plus className="w-[24px] h-[24px] text-primary" />
@@ -43,7 +43,7 @@ function ListAgents() {
             })
           }
           disabled={!isAdmin}
-          disabledReason={t("Requiere permisos de administrador")}
+          disabledReason={t("Requires administrator permissions")}
         />
         {agents
           ?.filter((a) => a.user_id === null)

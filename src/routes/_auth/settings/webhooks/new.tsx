@@ -34,7 +34,7 @@ function AddWebhook() {
 
   return (
     <>
-      <SectionHeader title={t("Agregar webhook")} />
+      <SectionHeader title={t("Add webhook")} />
 
       <SectionBody>
         <form
@@ -52,7 +52,7 @@ function AddWebhook() {
           <fieldset disabled={!isOwner} className="contents">
             <p>
               {t(
-                "Los webhooks notifican a tu servidor cuando ocurren eventos. Selecciona la tabla y operaciones que quieres monitorear.",
+                "Webhooks notify your server when events occur. Select the table and operations you want to monitor.",
               )}
             </p>
 
@@ -61,7 +61,7 @@ function AddWebhook() {
               <input
                 type="url"
                 className="text"
-                placeholder={t("https://ejemplo.com/webhook")}
+                placeholder={t("https://example.com/webhook")}
                 {...register("url", { required: true })}
               />
             </label>
@@ -69,17 +69,17 @@ function AddWebhook() {
             <SelectField
               name="table_name"
               control={control}
-              label={t("Tabla")}
+              label={t("Table")}
               options={[
-                { value: "messages", label: t("Mensajes") },
-                { value: "conversations", label: t("Conversaciones") },
-                { value: "organizations_addresses", label: t("Cuentas") },
-                { value: "contacts", label: t("Contactos") },
+                { value: "messages", label: t("Messages") },
+                { value: "conversations", label: t("Conversations") },
+                { value: "organizations_addresses", label: t("Accounts") },
+                { value: "contacts", label: t("Contacts") },
                 {
                   value: "contacts_addresses",
-                  label: t("Direcciones de contacto"),
+                  label: t("Contact addresses"),
                 },
-                { value: "logs", label: t("Registros") },
+                { value: "logs", label: t("Logs") },
               ]}
               required
             />
@@ -87,20 +87,20 @@ function AddWebhook() {
             <SelectField
               name="operations"
               control={control}
-              label={t("Operaciones")}
+              label={t("Operations")}
               multiple
               options={[
-                { value: "insert", label: t("Insertar") },
-                { value: "update", label: t("Actualizar") },
+                { value: "insert", label: t("Insert") },
+                { value: "update", label: t("Update") },
               ]}
             />
 
             <label>
-              <div className="label">{t("Token (opcional)")}</div>
+              <div className="label">{t("Token (optional)")}</div>
               <input
                 className="text"
                 type="text"
-                placeholder={t("Token de autenticación")}
+                placeholder={t("Authentication token")}
                 {...register("token")}
               />
             </label>
@@ -115,10 +115,10 @@ function AddWebhook() {
           disabled={!isOwner}
           invalid={!isValid || !isDirty}
           loading={createWebhook.isPending}
-          disabledReason={t("Requiere permisos de propietario")}
+          disabledReason={t("Requires owner permissions")}
           className="primary"
         >
-          {t("Crear")}
+          {t("Create")}
         </Button>
       </SectionFooter>
     </>

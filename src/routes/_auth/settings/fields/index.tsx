@@ -17,8 +17,8 @@ export const Route = createFileRoute("/_auth/settings/fields/")({
 });
 
 const ENTITIES = [
-  { key: "contact", label: "Contactos" },
-  { key: "deal", label: "Oportunidades" },
+  { key: "contact", label: "Contacts" },
+  { key: "deal", label: "Deals" },
 ] as const;
 
 function ListFields() {
@@ -29,7 +29,7 @@ function ListFields() {
 
   return (
     <>
-      <SectionHeader title={t("Campos personalizados")} />
+      <SectionHeader title={t("Custom fields")} />
 
       <SectionBody className="gap-[20px]">
         {ENTITIES.map((entity) => {
@@ -48,10 +48,8 @@ function ListFields() {
               {rows.length === 0 && (
                 <div className="text-[13px] text-muted-foreground px-[6px]">
                   {entity.key === "deal"
-                    ? t(
-                        "Las oportunidades llegan con el embudo de ventas (fase 3).",
-                      )
-                    : t("Sin campos todavía.")}
+                    ? t("Deals arrive with the sales pipeline (phase 3).")
+                    : t("No fields yet.")}
                 </div>
               )}
               {rows.map((f) => (
@@ -61,9 +59,9 @@ function ListFields() {
                   title={f.definition.label.en}
                   description={[
                     t(FIELD_TYPE_LABELS[f.definition.type]),
-                    f.definition.required ? t("obligatorio") : null,
-                    f.definition.archived ? t("archivado") : null,
-                    f.fromPack ? t("del pack") : t("propio"),
+                    f.definition.required ? t("required") : null,
+                    f.definition.archived ? t("archived") : null,
+                    f.fromPack ? t("from pack") : t("your own"),
                   ]
                     .filter(Boolean)
                     .join(" · ")}
@@ -103,7 +101,7 @@ function ListFields() {
             }
           >
             <ListPlus className="w-[18px] h-[18px]" />
-            {t("Nuevo campo")}
+            {t("New field")}
           </Button>
         </SectionFooter>
       )}

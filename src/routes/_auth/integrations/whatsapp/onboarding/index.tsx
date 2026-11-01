@@ -25,19 +25,19 @@ function OnboardingIndex() {
     status: string;
     expires_at: string;
   }): string | JSX.Element {
-    if (token.status === "used") return t("Usado");
+    if (token.status === "used") return t("Used");
     if (token.status === "expired" || new Date(token.expires_at) < new Date())
-      return t("Expirado");
-    return <span className="text-primary">{t("Activo")}</span>;
+      return t("Expired");
+    return <span className="text-primary">{t("Active")}</span>;
   }
 
   return (
     <>
-      <SectionHeader title={t("Enlaces de onboarding")} />
+      <SectionHeader title={t("Onboarding links")} />
 
       <SectionBody>
         <SectionItem
-          title={t("Generar enlace")}
+          title={t("Generate link")}
           aside={
             <div className="p-[8px] bg-primary/10 rounded-full">
               <Plus className="w-[24px] h-[24px] text-primary" />
@@ -50,7 +50,7 @@ function OnboardingIndex() {
             })
           }
           disabled={!isAdmin}
-          disabledReason={t("Requiere permisos de administrador")}
+          disabledReason={t("Requires administrator permissions")}
         />
         {tokens?.map((token) => (
           <SectionItem
@@ -65,7 +65,7 @@ function OnboardingIndex() {
               <span>
                 {getStatus(token)}
                 {" · "}
-                {t("Expira")} {new Date(token.expires_at).toLocaleDateString()}
+                {t("Expires")} {new Date(token.expires_at).toLocaleDateString()}
               </span>
             }
             onClick={() =>

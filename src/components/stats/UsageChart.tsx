@@ -32,7 +32,7 @@ export default function UsageChart({
   if (!data.length) {
     return (
       <div className="flex items-center justify-center h-[160px] text-muted-foreground text-[13px]">
-        {t("Sin datos")}
+        {t("No data")}
       </div>
     );
   }

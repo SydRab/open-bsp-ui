@@ -16,17 +16,17 @@ export const Route = createFileRoute("/_auth/admin/audit")({
 });
 
 const ACTION_LABELS: Record<string, string> = {
-  "organization.suspended": "Organización suspendida",
-  "organization.reactivated": "Organización reactivada",
-  "organization.tier_changed": "Plan cambiado",
-  "organization.pack_upgraded": "Paquete actualizado",
-  "feature.override_set": "Función forzada para una organización",
-  "feature.override_cleared": "Anulación de función eliminada",
-  "feature.kill_switch_changed": "Interruptor de función cambiado",
-  "platform_admin.granted": "Acceso de administrador otorgado",
-  "platform_admin.revoked": "Acceso de administrador revocado",
-  "support_access.granted": "Acceso de soporte otorgado",
-  "support_access.revoked": "Acceso de soporte revocado",
+  "organization.suspended": "Organization suspended",
+  "organization.reactivated": "Organization reactivated",
+  "organization.tier_changed": "Plan changed",
+  "organization.pack_upgraded": "Pack upgraded",
+  "feature.override_set": "Feature forced for an organization",
+  "feature.override_cleared": "Feature override removed",
+  "feature.kill_switch_changed": "Feature kill switch changed",
+  "platform_admin.granted": "Admin access granted",
+  "platform_admin.revoked": "Admin access revoked",
+  "support_access.granted": "Support access granted",
+  "support_access.revoked": "Support access revoked",
 };
 
 function PlatformAuditLog() {
@@ -41,7 +41,7 @@ function PlatformAuditLog() {
 
   return (
     <>
-      <SectionHeader title={t("Registro de actividad de la plataforma")} />
+      <SectionHeader title={t("Platform activity log")} />
 
       <SectionBody>
         {isLoading && (
@@ -56,7 +56,7 @@ function PlatformAuditLog() {
 
         {!isLoading && !error && entries?.length === 0 && (
           <div className="p-[16px] text-muted-foreground">
-            {t("No hay actividad registrada.")}
+            {t("No activity recorded yet.")}
           </div>
         )}
 

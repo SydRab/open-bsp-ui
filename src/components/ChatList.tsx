@@ -95,7 +95,7 @@ const ChatList = () => {
         </div>
       ) : (
         <div className="h-full flex items-center justify-center flex-col text-foreground text-[15px] mt-[-24px]">
-          {t("Nada por aquí")}
+          {t("Nothing here")}
           {(searchPattern || filterName !== Filters.ALL) && (
             <button
               className="text-[13px] text-primary"
@@ -104,7 +104,7 @@ const ChatList = () => {
                 setFilterName(Filters.ALL);
               }}
             >
-              {t("remover filtros...")}
+              {t("remove filters...")}
             </button>
           )}
         </div>

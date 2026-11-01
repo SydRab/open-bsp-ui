@@ -40,7 +40,7 @@ function Login() {
     });
 
     if (error) {
-      setMessage(t("¡Credenciales inválidas!"));
+      setMessage(t("Invalid credentials!"));
     } else {
       setEmail("");
       setPassword("");
@@ -59,7 +59,7 @@ function Login() {
           className="primary bg-blue-500 hover:bg-blue-400 text-white w-full border-none"
           onClick={() => handleLogInWithOauth("google")}
         >
-          <GoogleOutlined /> {t("Continuar con Google")}
+          <GoogleOutlined /> {t("Continue with Google")}
         </button>
 
         <button
@@ -67,7 +67,7 @@ function Login() {
           className="primary bg-gray-900 hover:bg-gray-800 text-white w-full border-none"
           onClick={() => handleLogInWithOauth("github")}
         >
-          <GithubOutlined /> {t("Continuar con GitHub")}
+          <GithubOutlined /> {t("Continue with GitHub")}
         </button>
 
         <div
@@ -79,7 +79,7 @@ function Login() {
           className={`login-form ${showEmail ? "" : "hidden"}`}
         >
           <label>
-            <div className="label">{t("Correo electrónico")}</div>
+            <div className="label">{t("Email")}</div>
             <input
               className="text"
               placeholder="gori@gmail.com"
@@ -90,7 +90,7 @@ function Login() {
           </label>
 
           <label>
-            <div className="label">{t("Contraseña")}</div>
+            <div className="label">{t("Password")}</div>
             <input
               className="text"
               placeholder="******"
@@ -107,7 +107,7 @@ function Login() {
           )}
 
           <button type="submit" className="primary w-full mt-[16px]">
-            {t("Entrar")}
+            {t("Log in")}
           </button>
         </form>
       </div>

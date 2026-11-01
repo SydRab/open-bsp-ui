@@ -31,12 +31,12 @@ function SettingsIndex() {
 
   return (
     <>
-      <SectionHeader title={t("Preferencias")} />
+      <SectionHeader title={t("Settings")} />
 
       <SectionBody className="gap-4">
         <div className="flex flex-col">
           <SectionItem
-            title={t("Organización")}
+            title={t("Organization")}
             aside={
               <div className="p-[8px]">
                 <Building2 className="w-[24px] h-[24px] text-muted-foreground" />
@@ -50,7 +50,7 @@ function SettingsIndex() {
             }
           />
           <SectionItem
-            title={t("Miembros")}
+            title={t("Members")}
             aside={
               <div className="p-[8px]">
                 <Users className="w-[24px] h-[24px] text-muted-foreground" />
@@ -65,7 +65,7 @@ function SettingsIndex() {
           />
           {/* [crm] Security / 2FA (P1-11) */}
           <SectionItem
-            title={t("Seguridad")}
+            title={t("Security")}
             aside={
               <div className="p-[8px]">
                 <Fingerprint className="w-[24px] h-[24px] text-muted-foreground" />
@@ -80,7 +80,7 @@ function SettingsIndex() {
           />
           {/* [crm] Roles & permissions (P1-02) */}
           <SectionItem
-            title={t("Roles y permisos")}
+            title={t("Roles & permissions")}
             aside={
               <div className="p-[8px]">
                 <ShieldCheck className="w-[24px] h-[24px] text-muted-foreground" />
@@ -95,7 +95,7 @@ function SettingsIndex() {
           />
           {/* [crm] Rules & modules (P1-04) */}
           <SectionItem
-            title={t("Reglas y módulos")}
+            title={t("Rules & modules")}
             aside={
               <div className="p-[8px]">
                 <SlidersHorizontal className="w-[24px] h-[24px] text-muted-foreground" />
@@ -110,7 +110,7 @@ function SettingsIndex() {
           />
           {/* [crm] Plan & features (P1-09) */}
           <SectionItem
-            title={t("Plan y funciones")}
+            title={t("Plan & features")}
             aside={
               <div className="p-[8px]">
                 <Gem className="w-[24px] h-[24px] text-muted-foreground" />
@@ -125,7 +125,7 @@ function SettingsIndex() {
           />
           {/* [crm] Custom fields (P1-06) */}
           <SectionItem
-            title={t("Campos personalizados")}
+            title={t("Custom fields")}
             aside={
               <div className="p-[8px]">
                 <TextCursorInput className="w-[24px] h-[24px] text-muted-foreground" />
@@ -158,7 +158,7 @@ function SettingsIndex() {
           {/* [crm] P3-09: conversion feedback to Meta -- mapping config + delivery log */}
           {can("organization.manage") && (
             <SectionItem
-              title={t("Conversiones")}
+              title={t("Conversions")}
               aside={
                 <div className="p-[8px]">
                   <Target className="w-[24px] h-[24px] text-muted-foreground" />
@@ -174,7 +174,7 @@ function SettingsIndex() {
           )}
           {/* [crm] Disclaimer (P1-07) */}
           <SectionItem
-            title={t("Aviso legal")}
+            title={t("Disclaimer")}
             aside={
               <div className="p-[8px]">
                 <ScrollText className="w-[24px] h-[24px] text-muted-foreground" />
@@ -190,7 +190,7 @@ function SettingsIndex() {
           {/* [crm] Activity log (P1-08) */}
           {can("audit.view") && (
             <SectionItem
-              title={t("Registro de actividad")}
+              title={t("Activity log")}
               aside={
                 <div className="p-[8px]">
                   <History className="w-[24px] h-[24px] text-muted-foreground" />
@@ -219,7 +219,7 @@ function SettingsIndex() {
             }
           />
           <SectionItem
-            title={t("Claves API")}
+            title={t("API Keys")}
             aside={
               <div className="p-[8px]">
                 <Key className="w-[24px] h-[24px] text-muted-foreground" />

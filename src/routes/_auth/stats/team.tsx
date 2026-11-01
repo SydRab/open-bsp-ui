@@ -45,7 +45,7 @@ function TeamReports() {
     assignedCount > 0 ? (breachedCount / assignedCount) * 100 : 0;
 
   const agentName = (id: string) =>
-    agents?.find((a) => a.id === id)?.name ?? t("un miembro");
+    agents?.find((a) => a.id === id)?.name ?? t("a member");
 
   const rows = [...(leaderboard ?? [])].sort(
     (a, b) =>
@@ -60,13 +60,13 @@ function TeamReports() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-[12px]">
         <div className="rounded-xl border border-border p-[12px]">
           <div className="text-[12px] text-muted-foreground">
-            {t("Leads asignados")}
+            {t("Leads assigned")}
           </div>
           <div className="text-[22px] font-medium">{assignedCount}</div>
         </div>
         <div className="rounded-xl border border-border p-[12px]">
           <div className="text-[12px] text-muted-foreground">
-            {t("Tiempo de respuesta promedio")}
+            {t("Avg response time")}
           </div>
           <div className="text-[22px] font-medium">
             {formatMinutes(summary?.avg_response_minutes ?? null, t)}
@@ -74,13 +74,13 @@ function TeamReports() {
         </div>
         <div className="rounded-xl border border-border p-[12px]">
           <div className="text-[12px] text-muted-foreground">
-            {t("Respondidos")}
+            {t("Responded")}
           </div>
           <div className="text-[22px] font-medium">{respondedCount}</div>
         </div>
         <div className="rounded-xl border border-border p-[12px]">
           <div className="text-[12px] text-muted-foreground">
-            {t("Fuera de plazo")}
+            {t("Overdue")}
           </div>
           <div className="text-[22px] font-medium">
             {breachRate.toFixed(1)}%
@@ -90,31 +90,31 @@ function TeamReports() {
 
       <div className="flex flex-col gap-[8px]">
         <div className="text-[14px] font-medium text-muted-foreground uppercase tracking-wide">
-          {t("Tabla de clasificación")}
+          {t("Leaderboard")}
         </div>
         {rows.length === 0 ? (
           <div className="text-[13px] text-muted-foreground">
-            {t("Sin datos")}
+            {t("No data")}
           </div>
         ) : (
           <table className="w-full text-[13px]">
             <thead>
               <tr className="text-muted-foreground text-left border-b border-border">
-                <th className="py-[6px] font-normal">{t("Miembro")}</th>
+                <th className="py-[6px] font-normal">{t("Member")}</th>
                 <th className="py-[6px] font-normal text-right">
                   {t("Leads")}
                 </th>
                 <th className="py-[6px] font-normal text-right">
-                  {t("Convertidos")}
+                  {t("Converted")}
                 </th>
                 <th className="py-[6px] font-normal text-right">
-                  {t("Valor ganado")}
+                  {t("Value won")}
                 </th>
                 <th className="py-[6px] font-normal text-right">
-                  {t("Tiempo de respuesta promedio")}
+                  {t("Avg response time")}
                 </th>
                 <th className="py-[6px] font-normal text-right">
-                  {t("Fuera de plazo")}
+                  {t("Overdue")}
                 </th>
               </tr>
             </thead>

@@ -14,8 +14,8 @@ import {
 } from "@/queries/useCrm";
 
 const SOURCE_TYPE_LABELS: Record<string, string> = {
-  ad: "Anuncio",
-  post: "Publicación",
+  ad: "Ad",
+  post: "Post",
 };
 
 export default function ContactActivity({
@@ -56,12 +56,12 @@ export default function ContactActivity({
   return (
     <div className="flex flex-col gap-[8px] mt-[16px]">
       <div className="text-[14px] font-medium text-muted-foreground uppercase tracking-wide">
-        {t("Actividad")}
+        {t("Activity")}
       </div>
 
       {referral?.source_type && (
         <div className="text-[13px] text-muted-foreground">
-          {t("Llegó desde")}:{" "}
+          {t("Came from")}:{" "}
           {t(SOURCE_TYPE_LABELS[referral.source_type] ?? referral.source_type)}
           {referral.headline ? ` — ${referral.headline}` : ""}
         </div>
@@ -76,11 +76,11 @@ export default function ContactActivity({
         />
       ) : leadId ? (
         <div className="text-[13px] text-muted-foreground">
-          {t("No tienes permiso para ver el historial de este lead.")}
+          {t("You don't have permission to see this lead's history.")}
         </div>
       ) : (
         <div className="text-[13px] text-muted-foreground">
-          {t("Sin lead todavía -- no hay más actividad que mostrar.")}
+          {t("No lead yet -- nothing more to show.")}
         </div>
       )}
     </div>

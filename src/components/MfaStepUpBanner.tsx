@@ -20,14 +20,14 @@ export default function MfaStepUpBanner() {
         <ShieldAlert className="w-[18px] h-[18px] shrink-0" />
         <div className="grow min-w-0">
           {t(
-            "Esta organización exige verificación en dos pasos para tu rol. Verifícate para ver y usar las funciones de administración.",
+            "This organization requires two-factor authentication for your role. Verify to see and use admin features.",
           )}
         </div>
         <button
           className="shrink-0 underline font-medium"
           onClick={() => setOpen(true)}
         >
-          {t("Verificar")}
+          {t("Verify")}
         </button>
       </div>
       {open && (

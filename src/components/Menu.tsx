@@ -80,7 +80,7 @@ export default function Menu() {
         {can("conversations.view") && (
           <LinkButton
             to="/conversations"
-            title={t("Mensajes")}
+            title={t("Messages")}
             isActive={pathname.startsWith("/conversations")}
             className="mt-[10px]"
           >
@@ -92,7 +92,7 @@ export default function Menu() {
         {can("ai_agents.manage") && (
           <LinkButton
             to="/agents"
-            title={t("Agentes")}
+            title={t("Agents")}
             isActive={pathname.startsWith("/agents")}
             className="mt-[10px]"
           >
@@ -119,7 +119,7 @@ export default function Menu() {
         {can("contacts.view") && (
           <LinkButton
             to="/contacts"
-            title={t("Contactos")}
+            title={t("Contacts")}
             isActive={pathname.startsWith("/contacts")}
             className="mt-[10px]"
           >
@@ -131,7 +131,7 @@ export default function Menu() {
         {can("integrations.manage") && (
           <LinkButton
             to="/integrations"
-            title={t("Integraciones")}
+            title={t("Integrations")}
             isActive={pathname.startsWith("/integrations")}
             className="mt-[10px]"
           >
@@ -143,7 +143,7 @@ export default function Menu() {
         {can("reports.view") && (
           <LinkButton
             to="/stats"
-            title={t("Estadísticas")}
+            title={t("Statistics")}
             isActive={pathname.startsWith("/stats")}
             className="mt-[10px]"
           >
@@ -158,7 +158,7 @@ export default function Menu() {
         {isPlatformAdmin && (
           <LinkButton
             to="/admin"
-            title={t("Panel de administración")}
+            title={t("Admin console")}
             isActive={pathname.startsWith("/admin")}
           >
             <ShieldUser className="w-[20px] h-[20px] stroke-[2]" />
@@ -168,7 +168,7 @@ export default function Menu() {
         {/* Settings button */}
         <LinkButton
           to="/settings"
-          title={t("Preferencias")}
+          title={t("Settings")}
           isActive={pathname.startsWith("/settings")}
           className="mt-[10px]"
         >
@@ -199,7 +199,7 @@ export default function Menu() {
                   })) || []),
                   {
                     key: "new_org",
-                    label: t("Nueva organización"),
+                    label: t("New organization"),
                     icon: <Plus className="w-[16px] h-[16px]" />,
                     onClick: () =>
                       navigate({
@@ -212,7 +212,7 @@ export default function Menu() {
               { type: "divider" },
               {
                 key: "lang",
-                label: t("Idioma"),
+                label: t("Language"),
                 icon: <Languages className="w-[16px] h-[16px]" />,
                 children: (["es", "en", "pt", "sw", "fr", "hi"] as const).map(
                   (lang) => ({
@@ -236,7 +236,7 @@ export default function Menu() {
               { type: "divider" },
               {
                 key: "logout",
-                label: t("Cerrar sesión"),
+                label: t("Logout"),
                 icon: <LogOut className="w-[16px] h-[16px]" />,
                 onClick: () => {
                   void supabase.auth.signOut();

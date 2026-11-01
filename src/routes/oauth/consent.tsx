@@ -73,7 +73,7 @@ function OAuthConsent() {
       setSubmitting(false);
       setMessage(
         t(
-          "Algo salió mal. La autorización puede haber expirado — inicia la conexión nuevamente desde tu cliente de IA.",
+          "Something went wrong. The authorization may have expired — start the connection again from your AI client.",
         ),
       );
       return;
@@ -98,13 +98,13 @@ function OAuthConsent() {
         {invalid && (
           <div className="text-center">
             {t(
-              "Este enlace de autorización no es válido o expiró — inicia la conexión nuevamente desde tu cliente de IA.",
+              "This authorization link is invalid or expired — start the connection again from your AI client.",
             )}
           </div>
         )}
 
         {!invalid && !details && (
-          <div className="text-center">{t("Cargando...")}</div>
+          <div className="text-center">{t("Loading...")}</div>
         )}
 
         {!invalid && details && (
@@ -112,12 +112,12 @@ function OAuthConsent() {
             <div className="text-center">
               <span className="font-bold">{details.client.client_name}</span>{" "}
               {t(
-                "quiere conectarse a OpenBSP como tú. Podrá actuar en tu nombre, dentro de tus permisos.",
+                "wants to connect to OpenBSP as you. It will be able to act on your behalf, within your permissions.",
               )}
               {host && (
                 <>
                   {" "}
-                  {t("Al permitir, volverás a")}{" "}
+                  {t("After you allow, you'll return to")}{" "}
                   <span className="font-bold">{host}</span>.
                 </>
               )}
@@ -126,10 +126,9 @@ function OAuthConsent() {
             {!trusted && (
               <div className="border border-destructive text-destructive rounded-md p-3 text-sm">
                 {t(
-                  "⚠️ Aplicación no reconocida. Continúa solo si tú iniciaste esta conexión",
+                  "⚠️ Unrecognized app. Only continue if you started this connection yourself",
                 )}
-                {host ? ` (${host}).` : "."}{" "}
-                {t("Si no fue así, elige Denegar.")}
+                {host ? ` (${host}).` : "."} {t("If you didn't, choose Deny.")}
               </div>
             )}
 
@@ -139,7 +138,7 @@ function OAuthConsent() {
               disabled={submitting}
               onClick={() => decide("approve")}
             >
-              {t("Permitir")}
+              {t("Allow")}
             </button>
 
             <button
@@ -148,7 +147,7 @@ function OAuthConsent() {
               disabled={submitting}
               onClick={() => decide("deny")}
             >
-              {t("Denegar")}
+              {t("Deny")}
             </button>
 
             {message && (
@@ -158,7 +157,7 @@ function OAuthConsent() {
             )}
 
             <div className="text-center text-sm opacity-60">
-              {t("Conectado como")} {details.user.email}
+              {t("Signed in as")} {details.user.email}
             </div>
           </>
         )}

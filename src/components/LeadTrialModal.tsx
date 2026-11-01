@@ -47,7 +47,7 @@ export default function LeadTrialModal({
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40">
       <div className="bg-background text-foreground rounded-xl w-[380px] max-h-[75vh] p-[20px] flex flex-col gap-[12px]">
         <div className="flex items-center justify-between shrink-0">
-          <div className="text-[16px] font-medium">{t("Clase de prueba")}</div>
+          <div className="text-[16px] font-medium">{t("Trial class")}</div>
           <button
             className="p-[4px] rounded-full hover:bg-muted"
             onClick={onClose}
@@ -59,7 +59,7 @@ export default function LeadTrialModal({
         {templateApproved === false && (
           <div className="text-[12px] text-muted-foreground bg-muted rounded-lg p-[8px]">
             {t(
-              "Los recordatorios por WhatsApp necesitan una plantilla aprobada -- revisa Plantillas de mensajes.",
+              "WhatsApp reminders need an approved template -- check Message templates.",
             )}
           </div>
         )}
@@ -71,19 +71,19 @@ export default function LeadTrialModal({
                 {formatSlot(booking.slot_start)}
               </div>
               <div className="text-[12px] text-muted-foreground">
-                {t("Reservada")}
+                {t("Booked")}
               </div>
             </div>
           ) : (
             <div className="text-[13px] text-muted-foreground">
-              {t("Sin clase de prueba reservada.")}
+              {t("No trial class booked yet.")}
             </div>
           )}
 
           {(slots ?? []).length === 0 && (
             <div className="text-[12px] text-muted-foreground">
               {t(
-                "No hay horarios disponibles -- configura el horario de prueba en Reglas y módulos.",
+                "No slots available -- set up the trial schedule in Rules & modules.",
               )}
             </div>
           )}
@@ -95,10 +95,10 @@ export default function LeadTrialModal({
             value={slotStart}
             onChange={(e) => setSlotStart(e.target.value)}
           >
-            <option value="">{t("Elegir horario")}</option>
+            <option value="">{t("Choose a time")}</option>
             {(slots ?? []).map((slot) => (
               <option key={slot.slot_start} value={slot.slot_start}>
-                {formatSlot(slot.slot_start)} · {slot.seats_left} {t("cupos")}
+                {formatSlot(slot.slot_start)} · {slot.seats_left} {t("seats")}
               </option>
             ))}
           </select>
@@ -120,7 +120,7 @@ export default function LeadTrialModal({
                 );
               }}
             >
-              {booking ? t("Reprogramar") : t("Reservar")}
+              {booking ? t("Reschedule") : t("Book")}
             </Button>
             {booking && (
               <Button
@@ -128,7 +128,7 @@ export default function LeadTrialModal({
                 loading={cancel.isPending}
                 onClick={() => cancel.mutate({ id: booking.id, leadId })}
               >
-                {t("Cancelar reserva")}
+                {t("Cancel booking")}
               </Button>
             )}
           </div>

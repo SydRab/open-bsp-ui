@@ -22,7 +22,7 @@ export default function Header() {
         <LinkButton
           to="/conversations/new"
           className="ml-[10px]"
-          title={t("Nueva conversación")}
+          title={t("New conversation")}
         >
           <MessageSquarePlus className="w-[24px] h-[24px] text-foreground" />
         </LinkButton>

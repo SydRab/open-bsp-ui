@@ -58,36 +58,36 @@ function InstagramNew() {
 
   return (
     <>
-      <SectionHeader title={t("Conectar Instagram")} />
+      <SectionHeader title={t("Connect Instagram")} />
 
       <SectionBody>
         <div className="instructions">
           <p>
             {t(
-              "Para conectar Instagram a la plataforma, iniciá sesión con la cuenta de Instagram profesional (empresa o creador) que querés conectar.",
+              "To connect Instagram to the platform, log in with the professional Instagram account (business or creator) you want to connect.",
             )}
           </p>
           <ul>
             <li>
               {t(
-                "La cuenta debe ser profesional (empresa o creador) y tener los mensajes habilitados.",
+                "The account must be professional (business or creator) and have messaging enabled.",
               )}
             </li>
             <li>
               {t(
-                "Vas a ser redirigido a Instagram para autorizar y luego volverás a la plataforma.",
+                "You will be redirected to Instagram to authorize and then return to the platform.",
               )}
             </li>
           </ul>
           {error && (
             <p className="text-destructive font-medium">
-              {t("No se pudo conectar la cuenta de Instagram.")}
+              {t("The Instagram account could not be connected.")}
             </p>
           )}
         </div>
 
         <label>
-          <div className="label">{t("Cuenta")}</div>
+          <div className="label">{t("Account")}</div>
           <ScopeToggle value={scope} onChange={setScope} isAdmin={isAdmin} />
         </label>
       </SectionBody>
@@ -96,11 +96,11 @@ function InstagramNew() {
         <Button
           loading={loading}
           disabled={!allowed}
-          disabledReason={t("Requiere permisos de administrador")}
+          disabledReason={t("Requires administrator permissions")}
           className="primary bg-[#E1306C] hover:bg-[#E1306C]/90 text-white w-full"
           onClick={connect}
         >
-          {t("Continuar con Instagram")}
+          {t("Continue with Instagram")}
         </Button>
       </SectionFooter>
     </>

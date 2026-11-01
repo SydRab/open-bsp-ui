@@ -30,36 +30,36 @@ function WhatsAppNew() {
 
   return (
     <>
-      <SectionHeader title={t("Conectar WhatsApp")} />
+      <SectionHeader title={t("Connect WhatsApp")} />
 
       <SectionBody>
         <form>
           <div className="instructions">
             <p>
               {t(
-                "Para conectar WhatsApp a la plataforma, iniciá sesión en tu cuenta de Meta y seguí el proceso de registro.",
+                "To connect WhatsApp to the platform, sign in to your Meta account and follow the registration process.",
               )}
             </p>
 
             <p>
-              <strong>{t("Requisitos importantes")}</strong>
+              <strong>{t("Important requirements")}</strong>
             </p>
             <ul>
               <li>
                 {t(
-                  "Si usás la app WhatsApp Business, podés conectar tu número actual y seguir usando la app.",
+                  "If you use the WhatsApp Business app, you can connect your current number and continue using the app.",
                 )}
               </li>
               <li>
                 {t(
-                  "Si no usás la app, el número a conectar no debe estar activo en otra cuenta de WhatsApp.",
+                  "If you don't use the app, the number to connect must not be active on another WhatsApp account.",
                 )}
               </li>
             </ul>
           </div>
 
           <label>
-            <div className="label">{t("Número")}</div>
+            <div className="label">{t("Number")}</div>
             <ScopeToggle value={scope} onChange={setScope} isAdmin={isAdmin} />
           </label>
 
@@ -68,9 +68,7 @@ function WhatsAppNew() {
             className="text-primary text-sm font-medium cursor-pointer self-start"
             onClick={() => setShowAdvanced((v) => !v)}
           >
-            {showAdvanced
-              ? t("Ocultar opciones avanzadas")
-              : t("Opciones avanzadas")}
+            {showAdvanced ? t("Hide advanced options") : t("Advanced options")}
           </button>
 
           {showAdvanced && (
@@ -78,14 +76,14 @@ function WhatsAppNew() {
               <div className="instructions">
                 <p>
                   {t(
-                    "Sobrescribir la URL de callback es útil para evadir OpenBSP y recibir los webhooks crudos en el endpoint que indiques. OpenBSP seguirá recibiendo los eventos de cuenta y plantillas (no se pueden redirigir), pero no recibirá los mensajes.",
+                    "Overriding the callback URL is useful to bypass OpenBSP and receive raw webhooks at the endpoint you specify. OpenBSP will keep receiving account and template events (these cannot be redirected), but it will not receive any messages.",
                   )}
                 </p>
               </div>
 
               <label>
                 <div className="label">
-                  {t("URL de callback")} ({t("opcional")})
+                  {t("Callback URL")} ({t("optional")})
                 </div>
                 <input
                   type="url"
@@ -98,7 +96,7 @@ function WhatsAppNew() {
 
               <label>
                 <div className="label">
-                  {t("Verify token")} ({t("opcional")})
+                  {t("Verify token")} ({t("optional")})
                 </div>
                 <input
                   type="text"

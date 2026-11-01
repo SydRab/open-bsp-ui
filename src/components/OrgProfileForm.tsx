@@ -65,10 +65,10 @@ export default function OrgProfileForm() {
       className="flex flex-col gap-[16px]"
       onSubmit={handleSubmit((data) => updateProfile.mutate(data))}
     >
-      <div className="text-[16px] text-muted-foreground">{t("Perfil")}</div>
+      <div className="text-[16px] text-muted-foreground">{t("Profile")}</div>
 
       <label>
-        <div className="label">{t("Identificador (slug)")}</div>
+        <div className="label">{t("Identifier (slug)")}</div>
         <input
           className="text"
           disabled={!canManage}
@@ -82,7 +82,7 @@ export default function OrgProfileForm() {
         {errors.slug && (
           <div className="text-destructive text-[13px] mt-[4px]">
             {t(
-              "De 3 a 48 letras minúsculas, números o guiones; sin guion al inicio ni al final.",
+              "3 to 48 lowercase letters, digits or hyphens; no hyphen at the start or end.",
             )}
           </div>
         )}
@@ -91,7 +91,7 @@ export default function OrgProfileForm() {
       <SelectField
         control={control}
         name="timezone"
-        label={t("Zona horaria")}
+        label={t("Time zone")}
         options={timezones.map((tz) => ({ value: tz, label: tz }))}
         disabled={!canManage}
       />
@@ -99,7 +99,7 @@ export default function OrgProfileForm() {
       <SelectField
         control={control}
         name="locale"
-        label={t("Idioma")}
+        label={t("Language")}
         options={[
           { value: "en", label: "English" },
           { value: "hi", label: "हिंदी (Hindi)" },
@@ -112,7 +112,7 @@ export default function OrgProfileForm() {
           {updateProfile.error.message.includes(
             "organization_profiles_slug_key",
           )
-            ? t("Ese identificador ya está en uso.")
+            ? t("That identifier is already taken.")
             : updateProfile.error.message}
         </div>
       )}
@@ -124,12 +124,10 @@ export default function OrgProfileForm() {
           disabled={!canManage}
           invalid={!isValid || !isDirty}
           loading={updateProfile.isPending}
-          disabledReason={t(
-            "Requiere el permiso para gestionar la organización",
-          )}
+          disabledReason={t("Requires permission to manage the organization")}
           className="primary"
         >
-          {t("Guardar perfil")}
+          {t("Save profile")}
         </Button>
       </div>
     </form>

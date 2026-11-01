@@ -30,10 +30,10 @@ function notificationBody(
   }
 
   if (content && typeof content === "object" && content.type === "file") {
-    return t("📎 Archivo multimedia");
+    return t("📎 Media attachment");
   }
 
-  return t("Nuevo mensaje");
+  return t("New message");
 }
 
 export const useRealtimeSubscription = () => {
@@ -141,7 +141,7 @@ export const useRealtimeSubscription = () => {
           document.title = `(${unseenCount.current}) ${baseTitle.current}`;
 
           const notification = new Notification(
-            conversation?.name || conversation?.address || t("Nuevo mensaje"),
+            conversation?.name || conversation?.address || t("New message"),
             {
               body: notificationBody(message.content, t),
               icon: "/logo.png",

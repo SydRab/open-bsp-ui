@@ -19,18 +19,18 @@ function ListApiKeys() {
   const isOwner = currentAgent?.role === "owner";
 
   const roles: Record<string, string> = {
-    owner: t("Propietario"),
-    admin: t("Administrador"),
-    member: t("Miembro"),
+    owner: t("Owner"),
+    admin: t("Administrator"),
+    member: t("Member"),
   };
 
   return (
     <>
-      <SectionHeader title={t("Claves API")} />
+      <SectionHeader title={t("API Keys")} />
 
       <SectionBody>
         <SectionItem
-          title={t("Generar clave API")}
+          title={t("Generate API Key")}
           aside={
             <div className="p-[8px] bg-primary/10 rounded-full">
               <Plus className="w-[24px] h-[24px] text-primary" />
@@ -43,7 +43,7 @@ function ListApiKeys() {
             })
           }
           disabled={!isOwner}
-          disabledReason={t("Requiere permisos de propietario")}
+          disabledReason={t("Requires owner permissions")}
         />
         {apiKeys?.map((apiKey) => (
           <SectionItem

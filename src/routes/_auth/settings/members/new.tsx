@@ -42,7 +42,7 @@ function AddMember() {
 
   return (
     <>
-      <SectionHeader title={t("Agregar miembro")} />
+      <SectionHeader title={t("Add member")} />
 
       <SectionBody>
         <form
@@ -55,7 +55,7 @@ function AddMember() {
                   if (result?.email_delivery === "failed") {
                     window.alert(
                       t(
-                        "La invitación se creó, pero no se pudo enviar el correo. La persona la verá al iniciar sesión.",
+                        "The invitation was created, but the email could not be sent. The person will see it when they sign in.",
                       ),
                     );
                   }
@@ -72,7 +72,7 @@ function AddMember() {
             <SelectField
               name="role_key"
               control={control}
-              label={t("Rol")}
+              label={t("Role")}
               options={options.map((r) => ({
                 value: r.key,
                 label: t(r.name),
@@ -87,11 +87,11 @@ function AddMember() {
             )}
 
             <label>
-              <div className="label">{t("Correo electrónico")}</div>
+              <div className="label">{t("Email")}</div>
               <input
                 type="email"
                 className="text"
-                placeholder={t("usuario@ejemplo.com")}
+                placeholder={t("user@example.com")}
                 {...register("email", {
                   required: true,
                   pattern: {
@@ -118,10 +118,10 @@ function AddMember() {
           disabled={!canInvite}
           invalid={!isValid || !isDirty}
           loading={inviteMember.isPending}
-          disabledReason={t("Requiere el permiso para invitar miembros")}
+          disabledReason={t("Requires permission to invite members")}
           className="primary"
         >
-          {t("Invitar")}
+          {t("Invite")}
         </Button>
       </SectionFooter>
     </>

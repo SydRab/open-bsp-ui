@@ -21,11 +21,11 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 const SOURCE_LABELS: Record<string, string> = {
-  keyword: "Palabra clave",
+  keyword: "Keyword",
   admin: "Manual",
-  signup_default: "Alta",
+  signup_default: "Signup",
   api: "API",
-  csv_import: "Importación CSV",
+  csv_import: "CSV import",
 };
 
 export default function ContactConsent({
@@ -77,11 +77,11 @@ export default function ContactConsent({
     <div className="flex flex-col gap-[8px] mt-[16px]">
       <div className="flex items-center justify-between">
         <div className="text-[14px] font-medium text-muted-foreground uppercase tracking-wide">
-          {t("Consentimiento")}
+          {t("Consent")}
         </div>
         <button
           className="p-[4px] rounded-full cursor-pointer hover:bg-accent text-muted-foreground"
-          title={t("Registrar consentimiento")}
+          title={t("Record consent")}
           onClick={() => setOpen((v) => !v)}
         >
           <Plus className="w-[16px] h-[16px]" />
@@ -91,7 +91,7 @@ export default function ContactConsent({
       {open && (
         <div className="flex flex-col gap-[8px] p-[12px] rounded-[12px] border border-border">
           <label>
-            <div className="label">{t("Estado")}</div>
+            <div className="label">{t("Status")}</div>
             <select
               className="text"
               value={status}
@@ -104,25 +104,25 @@ export default function ContactConsent({
             </select>
           </label>
           <label>
-            <div className="label">{t("Prueba (opcional)")}</div>
+            <div className="label">{t("Proof (optional)")}</div>
             <input
               type="text"
               className="text"
-              placeholder={t("Texto, URL, o id de formulario")}
+              placeholder={t("Text, URL, or form id")}
               value={note}
               onChange={(e) => setNote(e.target.value)}
             />
           </label>
           <div className="flex gap-[8px]">
             <Button className="secondary flex-1" onClick={() => setOpen(false)}>
-              {t("Cancelar")}
+              {t("Cancel")}
             </Button>
             <Button
               className="primary flex-1"
               loading={setContactConsent.isPending}
               onClick={save}
             >
-              {t("Guardar")}
+              {t("Save")}
             </Button>
           </div>
         </div>
@@ -135,7 +135,7 @@ export default function ContactConsent({
       )}
       {!isLoading && (events ?? []).length === 0 && (
         <div className="text-[13px] text-muted-foreground">
-          {t("Sin registros de consentimiento.")}
+          {t("No consent records.")}
         </div>
       )}
       {(events ?? []).map((e: ConsentEvent) => (

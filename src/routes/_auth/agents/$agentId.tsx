@@ -106,7 +106,7 @@ function AgentDetail() {
             });
           }}
           deleteDisabled={!isAdmin}
-          deleteDisabledReason={t("Requiere permisos de administrador")}
+          deleteDisabledReason={t("Requires administrator permissions")}
           deleteLoading={deleteAgent.isPending}
         />
 
@@ -117,11 +117,11 @@ function AgentDetail() {
           >
             {/* Root view fields */}
             <label>
-              <div className="label">{t("Nombre")}</div>
+              <div className="label">{t("Name")}</div>
               <input
                 type="text"
                 className="text"
-                placeholder={t("Nombre del agente")}
+                placeholder={t("Agent name")}
                 {...register("name", { required: true })}
               />
             </label>
@@ -129,10 +129,10 @@ function AgentDetail() {
             <SelectField
               name="extra.mode"
               control={control}
-              label={t("Estado")}
+              label={t("Status")}
               options={[
-                { value: "active", label: t("Activo") },
-                { value: "inactive", label: t("Inactivo") },
+                { value: "active", label: t("Active") },
+                { value: "inactive", label: t("Inactive") },
               ]}
             />
 
@@ -141,8 +141,8 @@ function AgentDetail() {
             <TextAreaField
               name="extra.instructions"
               control={control}
-              label={t("Instrucciones")}
-              placeholder={t("Eres un asistente útil...")}
+              label={t("Instructions")}
+              placeholder={t("You are a helpful assistant...")}
             />
 
             {/* Tools Section */}
@@ -154,8 +154,8 @@ function AgentDetail() {
 
             {/* AI Section */}
             <SectionField
-              label={t("Modelo de IA")}
-              description={model || t("Ninguno")}
+              label={t("AI model")}
+              description={model || t("None")}
             >
               <SelectField
                 value={provider}
@@ -174,13 +174,13 @@ function AgentDetail() {
                     setValue("extra.api_url", "", { shouldDirty: true });
                   }
                 }}
-                label={t("Proveedor")}
+                label={t("Provider")}
                 options={[
                   { value: "openai", label: "OpenAI" },
                   { value: "anthropic", label: "Anthropic" },
                   { value: "groq", label: "Groq" },
                   { value: "google", label: "Google" },
-                  { value: "custom", label: t("Personalizado") },
+                  { value: "custom", label: t("Custom") },
                 ]}
               />
 
@@ -188,7 +188,7 @@ function AgentDetail() {
                 name="extra.protocol"
                 control={control}
                 modalClassName="bottom-0"
-                label={t("Protocolo")}
+                label={t("Protocol")}
                 options={(
                   protocols[provider as keyof typeof protocols] || []
                 ).map((p) => ({
@@ -210,11 +210,11 @@ function AgentDetail() {
               )}
 
               <label>
-                <div className="label">{t("Clave API")}</div>
+                <div className="label">{t("API Key")}</div>
                 <input
                   type="text"
                   className="text"
-                  placeholder={t("Clave API del proveedor")}
+                  placeholder={t("Provider API Key")}
                   {...register("extra.api_key")}
                 />
               </label>
@@ -223,14 +223,14 @@ function AgentDetail() {
                 <div className="instructions">
                   <p>
                     {t(
-                      "Usar una clave API propia no consume créditos locales y permite usar cualquier modelo.",
+                      "Using your own API key does not consume local credits and allows you to use any model.",
                     )}
                   </p>
                   <p>
                     <strong>
                       {apiKeyInstructions[provider].free
-                        ? t("Obtené una clave gratuita:")
-                        : t("Obtené una clave:")}
+                        ? t("Get a free key:")
+                        : t("Get a key:")}
                     </strong>{" "}
                     <a
                       href={apiKeyInstructions[provider].url}
@@ -247,20 +247,18 @@ function AgentDetail() {
               )}
 
               <label>
-                <div className="label">{t("Modelo")}</div>
+                <div className="label">{t("Model")}</div>
                 <input
                   type="text"
                   className="text"
-                  placeholder={t("Nombre del modelo")}
+                  placeholder={t("Model name")}
                   {...register("extra.model")}
                 />
               </label>
 
               {provider !== "custom" && creditModels[provider] && (
                 <div className="instructions">
-                  <p>
-                    {t("Los siguientes modelos funcionan con créditos de IA:")}
-                  </p>
+                  <p>{t("The following models work with AI credits:")}</p>
                   <ul>
                     {creditModels[provider].map((m) => (
                       <li key={m}>
@@ -272,9 +270,7 @@ function AgentDetail() {
               )}
 
               <label>
-                <div className="label">
-                  {t("Demora de respuesta (segundos)")}
-                </div>
+                <div className="label">{t("Response delay (seconds)")}</div>
                 <input
                   type="number"
                   className="text"
@@ -289,14 +285,14 @@ function AgentDetail() {
               <TextAreaField
                 control={control}
                 name="extra.welcome_message"
-                label={t("Mensaje de bienvenida")}
+                label={t("Welcome message")}
                 placeholder={t(
-                  "Hola! Soy un agente virtual. ¿En qué puedo ayudarte?",
+                  "Hello! I'm a virtual agent. How can I help you?",
                 )}
               />
 
               <label>
-                <div className="label">{t("Mensajes máximos")}</div>
+                <div className="label">{t("Maximum messages")}</div>
                 <input
                   type="number"
                   className="text"
@@ -307,7 +303,7 @@ function AgentDetail() {
               </label>
 
               <label>
-                <div className="label">{t("Temperatura")}</div>
+                <div className="label">{t("Temperature")}</div>
                 <input
                   type="number"
                   className="text"
@@ -323,7 +319,7 @@ function AgentDetail() {
                 <div className="instructions">
                   <p>
                     {t(
-                      "Se envían los siguientes encabezados HTTP con cada solicitud:",
+                      "The following HTTP headers are sent with each request:",
                     )}
                   </p>
                   <ul>
@@ -359,7 +355,7 @@ function AgentDetail() {
               className="primary"
               onClick={() => void handleChat()}
             >
-              {t("Chatea con este agente")}
+              {t("Chat with this agent")}
             </button>
           ) : (
             <Button
@@ -368,10 +364,10 @@ function AgentDetail() {
               disabled={!isAdmin}
               invalid={!isValid}
               loading={updateAgent.isPending}
-              disabledReason={t("Requiere permisos de administrador")}
+              disabledReason={t("Requires administrator permissions")}
               className="primary"
             >
-              {t("Actualizar")}
+              {t("Update")}
             </Button>
           )}
         </SectionFooter>

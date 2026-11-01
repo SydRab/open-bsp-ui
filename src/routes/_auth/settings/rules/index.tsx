@@ -22,18 +22,18 @@ export const Route = createFileRoute("/_auth/settings/rules/")({
 });
 
 const CATEGORIES: { key: string; label: string }[] = [
-  { key: "messaging", label: "Mensajes" },
-  { key: "approvals", label: "Aprobaciones" },
-  { key: "disclaimer", label: "Aviso legal" },
-  { key: "trial", label: "Clase de prueba" },
-  { key: "modules", label: "Módulos" },
+  { key: "messaging", label: "Messages" },
+  { key: "approvals", label: "Approvals" },
+  { key: "disclaimer", label: "Disclaimer" },
+  { key: "trial", label: "Trial class" },
+  { key: "modules", label: "Modules" },
 ];
 
 const SOURCE_LABELS: Record<SettingRow["source"], string> = {
-  platform: "Predeterminado",
-  pack: "Del pack",
-  tenant: "Personalizado",
-  team: "Del equipo",
+  platform: "Default",
+  pack: "From pack",
+  tenant: "Custom",
+  team: "From team",
   user: "Personal",
 };
 
@@ -62,7 +62,7 @@ function Rules() {
 
   return (
     <>
-      <SectionHeader title={t("Reglas y módulos")} />
+      <SectionHeader title={t("Rules & modules")} />
 
       <SectionBody className="gap-[24px]">
         {isLoading && (
@@ -128,24 +128,22 @@ function SettingBlock({
       {planLocked ? (
         <span className="rounded-full bg-accent px-[8px] py-[1px]">
           {planUnlocksAtTier
-            ? t("No incluido en tu plan (disponible en {tier})").replace(
+            ? t("Not in your plan (available on {tier})").replace(
                 "{tier}",
                 planUnlocksAtTier,
               )
-            : t("No incluido en tu plan")}
+            : t("Not in your plan")}
         </span>
       ) : (
         <span className="rounded-full bg-accent px-[8px] py-[1px]">
           {setting.is_locked
-            ? t("Fijado por la plataforma")
+            ? t("Set by the platform")
             : t(SOURCE_LABELS[setting.source])}
         </span>
       )}
       {setting.team_conflict && (
         <span className="text-destructive">
-          {t(
-            "Tus equipos tienen valores distintos; se usa el de la organización.",
-          )}
+          {t("Your teams have different values; the organization's applies.")}
         </span>
       )}
       {setting.can_edit && setting.tenant_value !== null && (
@@ -155,7 +153,7 @@ function SettingBlock({
           disabled={saving}
           onClick={() => onSave(null)}
         >
-          {t("Restablecer")}
+          {t("Reset")}
         </button>
       )}
     </div>

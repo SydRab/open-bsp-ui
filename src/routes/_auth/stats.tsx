@@ -22,10 +22,10 @@ function StatsLayout() {
 
   return (
     <>
-      <SectionHeader title={t("Estadísticas")} />
+      <SectionHeader title={t("Statistics")} />
       <SectionBody>
         <SectionItem
-          title={t("Cuotas")}
+          title={t("Quotas")}
           aside={
             <div
               className={`p-[8px] rounded-full ${pathname === "/stats/quotas" ? "bg-primary/10" : ""}`}
@@ -41,7 +41,7 @@ function StatsLayout() {
           className={pathname === "/stats/quotas" ? "bg-accent" : ""}
         />
         <SectionItem
-          title={t("Uso")}
+          title={t("Usage")}
           aside={
             <div
               className={`p-[8px] rounded-full ${pathname === "/stats/usage" ? "bg-primary/10" : ""}`}
@@ -77,7 +77,7 @@ function StatsLayout() {
         />
         {/* [crm] P3-10b: response times + rep leaderboard. */}
         <SectionItem
-          title={t("Equipo")}
+          title={t("Team")}
           aside={
             <div
               className={`p-[8px] rounded-full ${pathname === "/stats/team" ? "bg-primary/10" : ""}`}

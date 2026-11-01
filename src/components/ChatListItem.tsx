@@ -57,7 +57,7 @@ function mediaPreview(t: (content: string) => ReactNode, message?: MessageRow) {
         </svg>
       </div>
     );
-    mediaPreviewContent = t("Contenido multimedia no disponible");
+    mediaPreviewContent = t("Unavailable media");
     return { mediaIcon, mediaPreviewContent };
   }
 
@@ -78,13 +78,13 @@ function mediaPreview(t: (content: string) => ReactNode, message?: MessageRow) {
 
   // Instagram "native" share kinds get friendlier last-message labels.
   const igLabels: Record<string, ReactNode> = {
-    ig_post: t("Publicación"),
+    ig_post: t("Post"),
     ig_reel: t("Reel"),
     reel: t("Reel"),
-    story: t("Historia"),
-    ig_story: t("Historia"),
-    story_mention: t("Mención de historia"),
-    story_reply: t("Respuesta a historia"),
+    story: t("Story"),
+    ig_story: t("Story"),
+    story_mention: t("Story mention"),
+    story_reply: t("Story reply"),
   };
 
   switch (iconKind) {
@@ -100,15 +100,15 @@ function mediaPreview(t: (content: string) => ReactNode, message?: MessageRow) {
       break;
     case "document":
       mediaIconClass += " h-[20px] w-[13px]";
-      mediaPreviewContent = message.content.file?.name || t("Documento");
+      mediaPreviewContent = message.content.file?.name || t("Document");
       break;
     case "image":
       mediaIconClass += " h-[20px] w-[16px]";
-      mediaPreviewContent = t("Foto");
+      mediaPreviewContent = t("Photo");
       break;
     case "sticker":
       mediaIconClass += " h-[16px] w-[16px] mt-[4px]";
-      mediaPreviewContent = t("Pegatina");
+      mediaPreviewContent = t("Sticker");
       break;
     case "video":
       mediaIconClass += " h-[20px] w-[16px]";
@@ -327,7 +327,7 @@ export default function ChatListItem({ itemId }: { itemId: string }) {
 
     if (days < 1) return dayjsTs.format("HH:mm");
 
-    if (days < 2) return t("ayer");
+    if (days < 2) return t("yesterday");
 
     if (days < 7) return dayjsTs.format("dddd"); // Jueves
 
@@ -413,13 +413,13 @@ export default function ChatListItem({ itemId }: { itemId: string }) {
                 {mediaIcon}
                 {draft && (
                   <div className="text-[14px] text-primary mr-1">
-                    {t("Borrador:")}
+                    {t("Draft:")}
                   </div>
                 )}
                 {preview?.content.type === "data" &&
                   preview?.content.kind === "template" && (
                     <div className="text-[14px] text-primary mr-1">
-                      {t("Plantilla:")}
+                      {t("Template:")}
                     </div>
                   )}
                 <div className="truncate text-[14px]">
@@ -431,7 +431,7 @@ export default function ChatListItem({ itemId }: { itemId: string }) {
                     preview.content.kind === "poll_vote" &&
                     `🗳️ ${
                       preview.content.data.selected.join(", ") ||
-                      t("Voto retirado")
+                      t("Vote withdrawn")
                     }`}
                   {preview?.content.type === "data" &&
                     preview.content.kind !== "media_placeholder" &&

@@ -23,7 +23,7 @@ export default function CustomFieldInput({
     <div className="label">
       {d.label.en}
       {d.required ? " *" : ""}
-      {d.archived ? ` (${t("archivado")})` : ""}
+      {d.archived ? ` (${t("archived")})` : ""}
     </div>
   );
   // Archived options only where already stored.

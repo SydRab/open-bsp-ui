@@ -21,19 +21,19 @@ const REGISTRATION_TYPES: { value: string; label: string }[] = [
   { value: "sebi_ia", label: "SEBI IA" },
   { value: "cin", label: "CIN" },
   { value: "udyam", label: "Udyam" },
-  { value: "other", label: "Otro" },
+  { value: "other", label: "Other" },
 ];
 
 const ADDRESS_FIELDS: {
   key: keyof BusinessDetails["address"];
   label: string;
 }[] = [
-  { key: "line1", label: "Dirección" },
-  { key: "line2", label: "Dirección (línea 2)" },
-  { key: "city", label: "Ciudad" },
-  { key: "state", label: "Estado o provincia" },
-  { key: "postal_code", label: "Código postal" },
-  { key: "country", label: "País (código, p. ej. IN)" },
+  { key: "line1", label: "Address" },
+  { key: "line2", label: "Address (line 2)" },
+  { key: "city", label: "City" },
+  { key: "state", label: "State" },
+  { key: "postal_code", label: "Postal code" },
+  { key: "country", label: "Country (code, e.g. IN)" },
 ];
 
 export default function BusinessDetailsForm() {
@@ -78,11 +78,11 @@ export default function BusinessDetailsForm() {
       onSubmit={handleSubmit((data) => update.mutate(data))}
     >
       <div className="text-[16px] text-muted-foreground">
-        {t("Datos de la empresa")}
+        {t("Business details")}
       </div>
 
       <label>
-        <div className="label">{t("Razón social")}</div>
+        <div className="label">{t("Legal name")}</div>
         <input
           className="text"
           disabled={!canManage}
@@ -102,7 +102,7 @@ export default function BusinessDetailsForm() {
       ))}
 
       <label>
-        <div className="label">{t("Correo de soporte")}</div>
+        <div className="label">{t("Support email")}</div>
         <input
           className="text"
           type="email"
@@ -111,7 +111,7 @@ export default function BusinessDetailsForm() {
         />
       </label>
       <label>
-        <div className="label">{t("Teléfono de soporte")}</div>
+        <div className="label">{t("Support phone")}</div>
         <input
           className="text"
           type="tel"
@@ -121,7 +121,7 @@ export default function BusinessDetailsForm() {
         />
       </label>
       <label>
-        <div className="label">{t("Sitio web")}</div>
+        <div className="label">{t("Website")}</div>
         <input
           className="text"
           type="url"
@@ -132,7 +132,7 @@ export default function BusinessDetailsForm() {
       </label>
 
       <div className="flex flex-col gap-[8px]">
-        <div className="label">{t("Números de registro")}</div>
+        <div className="label">{t("Registration numbers")}</div>
         {registrations.fields.map((field, index) => (
           <div key={field.id} className="flex items-center gap-[8px]">
             <select
@@ -155,7 +155,7 @@ export default function BusinessDetailsForm() {
               <button
                 type="button"
                 className="cursor-pointer text-muted-foreground"
-                title={t("Quitar")}
+                title={t("Remove")}
                 onClick={() => registrations.remove(index)}
               >
                 <Trash2 className="w-[18px] h-[18px]" />
@@ -170,12 +170,12 @@ export default function BusinessDetailsForm() {
             onClick={() => registrations.append({ type: "gstin", number: "" })}
           >
             <Plus className="w-[16px] h-[16px]" />
-            {t("Añadir número")}
+            {t("Add number")}
           </button>
         )}
         <div className="text-[12px] text-muted-foreground">
           {t(
-            "Se muestran en tus páginas públicas y recibos, no en los mensajes de WhatsApp.",
+            "Shown on your public pages and receipts, not in WhatsApp messages.",
           )}
         </div>
       </div>
@@ -193,12 +193,10 @@ export default function BusinessDetailsForm() {
           disabled={!canManage}
           invalid={!formState.isDirty}
           loading={update.isPending}
-          disabledReason={t(
-            "Requiere el permiso para gestionar la organización",
-          )}
+          disabledReason={t("Requires permission to manage the organization")}
           className="primary"
         >
-          {t("Guardar datos")}
+          {t("Save details")}
         </Button>
       </div>
     </form>

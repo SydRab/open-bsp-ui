@@ -95,7 +95,7 @@ export default function ConversationTags({
           {tag.name}
           <button
             className="cursor-pointer opacity-60 hover:opacity-100"
-            title={t("Quitar etiqueta")}
+            title={t("Remove tag")}
             onClick={() =>
               setConversationTag.mutate({
                 conversationId,
@@ -111,7 +111,7 @@ export default function ConversationTags({
 
       <button
         className="p-[4px] rounded-full cursor-pointer hover:bg-accent text-muted-foreground"
-        title={t("Agregar etiqueta")}
+        title={t("Add tag")}
         onClick={() => toggle("tagPicker")}
       >
         <Plus className="w-[16px] h-[16px]" />
@@ -147,7 +147,7 @@ export default function ConversationTags({
 
           {!orgTags?.length && (
             <div className="px-[8px] py-[6px] text-[13px] text-muted-foreground">
-              {t("Todavía no hay etiquetas")}
+              {t("No tags yet")}
             </div>
           )}
 
@@ -162,14 +162,14 @@ export default function ConversationTags({
                   createAndApply().catch(console.error);
                 }
               }}
-              placeholder={t("Nueva etiqueta...")}
+              placeholder={t("New tag...")}
               className="grow min-w-0 text-[13px] outline-none bg-transparent"
               maxLength={40}
             />
             <button
               disabled={!newTagName.trim()}
               className="p-[4px] rounded-full cursor-pointer hover:bg-accent disabled:opacity-30 disabled:cursor-default text-muted-foreground"
-              title={t("Crear etiqueta")}
+              title={t("Create tag")}
               onClick={() => createAndApply().catch(console.error)}
             >
               <Plus className="w-[14px] h-[14px]" />

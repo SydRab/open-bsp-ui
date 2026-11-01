@@ -50,7 +50,7 @@ function PipelineSettings() {
 
       <SectionBody className="gap-[20px]">
         <LeadCatalogSection
-          title="Etapas"
+          title="Stages"
           items={stages ?? []}
           canManage={canManage}
           create={stageMutations.create}
@@ -60,7 +60,7 @@ function PipelineSettings() {
             <button
               type="button"
               className="p-[4px] text-muted-foreground hover:text-primary shrink-0"
-              title={t("Campos requeridos")}
+              title={t("Required fields")}
               onClick={() =>
                 setEditingStage({ id: stage.id, name: stage.name })
               }
@@ -76,7 +76,7 @@ function PipelineSettings() {
         />
 
         <LeadCatalogSection
-          title="Calidad del lead"
+          title="Lead quality"
           items={qualities ?? []}
           canManage={canManage}
           create={qualityMutations.create}
@@ -85,7 +85,7 @@ function PipelineSettings() {
         />
 
         <LeadCatalogSection
-          title="Motivos de pérdida"
+          title="Lost reasons"
           items={dropReasons ?? []}
           canManage={canManage}
           create={dropReasonMutations.create}

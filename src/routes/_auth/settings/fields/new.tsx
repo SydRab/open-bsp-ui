@@ -26,11 +26,11 @@ function NewField() {
 
   return (
     <>
-      <SectionHeader title={t("Nuevo campo")} />
+      <SectionHeader title={t("New field")} />
       <SectionBody>
         <div className="px-[6px] flex flex-col gap-[16px]">
           <label>
-            <div className="label">{t("Se aplica a")}</div>
+            <div className="label">{t("Applies to")}</div>
             <select
               className="text"
               value={entity}
@@ -38,8 +38,8 @@ function NewField() {
                 setEntity(e.target.value as FieldDefinition["entity"])
               }
             >
-              <option value="contact">{t("Contactos")}</option>
-              <option value="deal">{t("Oportunidades")}</option>
+              <option value="contact">{t("Contacts")}</option>
+              <option value="deal">{t("Deals")}</option>
             </select>
           </label>
           <CustomFieldForm

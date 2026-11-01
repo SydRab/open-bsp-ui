@@ -70,12 +70,10 @@ export default function ContactPanel() {
   return (
     <div className="flex flex-col bg-background text-foreground z-50 absolute inset-y-0 right-0 w-full sm:w-[340px] border-l border-border shadow-lg">
       <div className="py-[8px] px-[16px] min-h-[60px] flex justify-between items-center border-b border-border">
-        <span className="text-[15px] font-medium truncate">
-          {t("Contacto")}
-        </span>
+        <span className="text-[15px] font-medium truncate">{t("Contact")}</span>
         <button
           className="p-[8px] rounded-full hover:bg-muted"
-          title={t("Cerrar")}
+          title={t("Close")}
           onClick={() => toggle("contactPanel", false)}
         >
           <X className="w-[20px] h-[20px]" />
@@ -115,7 +113,7 @@ export default function ContactPanel() {
             })
           }
         >
-          {t("Ver contacto completo")}
+          {t("View full contact")}
           <ExternalLink className="w-[14px] h-[14px]" />
         </button>
       </div>

@@ -20,7 +20,7 @@ export default function ScopeToggle({
   const { translate: t } = useTranslation();
 
   const options: { scope: ConnectionScope; label: string }[] = [
-    { scope: "organization", label: t("De la organización") },
+    { scope: "organization", label: t("Organization's") },
     { scope: "personal", label: t("Personal") },
   ];
 
@@ -37,7 +37,7 @@ export default function ScopeToggle({
               disabled={disabled || unavailable}
               title={
                 unavailable
-                  ? t("Requiere permisos de administrador")
+                  ? t("Requires administrator permissions")
                   : undefined
               }
               onClick={() => onChange(scope)}
@@ -58,8 +58,8 @@ export default function ScopeToggle({
       </div>
       <p className="text-[13px] text-muted-foreground">
         {value === "organization"
-          ? t("Sus conversaciones las ve todo el equipo.")
-          : t("Sus conversaciones las ves solo vos.")}
+          ? t("Its conversations are visible to the whole team.")
+          : t("Its conversations are visible only to you.")}
       </p>
     </div>
   );

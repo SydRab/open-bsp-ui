@@ -258,8 +258,8 @@ export default function VideoMessage(message: MessageRow) {
               onClick={() => setShowAnnotation(!showAnnotation)}
             >
               {showAnnotation
-                ? t("ocultar descripción...")
-                : t("ver descripción...")}
+                ? t("hide description...")
+                : t("show description...")}
             </div>
           </div>
         )}

@@ -52,11 +52,11 @@ export function mediaType(type: string) {
     case "audio":
       return "Audio";
     case "application":
-      return "Documento";
+      return "Document";
     case "image":
       return "Imagen";
     case "sticker":
-      return "Pegatina";
+      return "Sticker";
     case "video":
       return "Video";
     default:
@@ -214,8 +214,8 @@ export default function DocumentMessage(message: MessageRow) {
               onClick={() => setShowAnnotation(!showAnnotation)}
             >
               {showAnnotation
-                ? t("ocultar descripción...")
-                : t("ver descripción...")}
+                ? t("hide description...")
+                : t("show description...")}
             </div>
           </div>
         )}

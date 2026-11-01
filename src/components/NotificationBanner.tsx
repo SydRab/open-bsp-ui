@@ -22,9 +22,9 @@ export default function NotificationBanner() {
     <div className="pt-[10px] pb-[5px] pl-[10px] pr-[20px]">
       <div className="bg-primary/10 rounded-lg">
         <SectionItem
-          title={t("Activar notificaciones de escritorio")}
+          title={t("Enable desktop notifications")}
           description={t(
-            "Recibe un aviso cuando llegue un mensaje mientras no estás mirando esa conversación.",
+            "Get notified when a message arrives while you're not looking at that conversation.",
           )}
           aside={
             <div className="p-[8px]">

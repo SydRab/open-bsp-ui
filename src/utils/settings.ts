@@ -4,20 +4,20 @@
 
 /** Field name → label, in the order fields are shown. */
 export const SETTING_FIELD_LABELS: Record<string, string> = {
-  start: "Desde",
-  end: "Hasta",
-  max_messages: "Máximo de mensajes",
-  period_days: "Cada (días)",
-  broadcast: "Difusiones",
-  digest: "Resúmenes",
-  ai_message: "Mensajes de IA",
-  receipt: "Recibos",
-  payment_confirmation: "Confirmaciones de pago",
+  start: "From",
+  end: "Until",
+  max_messages: "Max messages",
+  period_days: "Per (days)",
+  broadcast: "Broadcasts",
+  digest: "Digests",
+  ai_message: "AI messages",
+  receipt: "Receipts",
+  payment_confirmation: "Payment confirmations",
   // [crm] P3-08
-  days: "Días",
-  times: "Horarios",
-  slot_duration_minutes: "Duración (min)",
-  capacity_per_slot: "Cupos por horario",
+  days: "Days",
+  times: "Times",
+  slot_duration_minutes: "Duration (min)",
+  capacity_per_slot: "Seats per slot",
 };
 
 const FIELD_ORDER = Object.keys(SETTING_FIELD_LABELS);
